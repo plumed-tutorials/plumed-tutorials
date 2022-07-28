@@ -1,0 +1,56 @@
+#! /bin/bash
+
+set -e
+set -x
+
+suffix=""
+version=""
+repo=https://github.com/plumed/plumed2.git
+program_name=plumed
+
+for opt
+do
+case "$opt" in
+  (version=*) version="${opt#version=}" ;;
+  (suffix=*)
+     suffix="--program-suffix=${opt#suffix=}"
+     program_name="plumed${opt#suffix=}"
+   ;;
+  (repo=*) repo="${opt#repo=}" ;;
+  (*) echo "unknown option $opt" ; exit 1 ;;
+esac
+done
+
+cd "$(mktemp -dt plumed.XXXXXX)"
+
+git clone $repo
+cd plumed2
+
+if [ -n "$version" ] ; then
+  echo "installing plumed $version"
+else
+  version=$(git tag --sort=-creatordate | grep '^v2\.[0-9][0-9]*\.[0-9][0-9]*' | head -n 1 )
+  echo "installing latest stable plumed $version"
+fi
+
+git checkout $version
+
+hash=$(git rev-parse HEAD)
+
+if test -f $HOME/opt/lib/$program_name/$hash
+then
+  echo "ALREADY AVAILABLE, NO NEED TO REINSTALL"
+else
+
+rm -fr $HOME/opt/lib/$program_name
+rm -fr $HOME/opt/bin/$program_name
+rm -fr $HOME/opt/include/$program_name
+rm -fr $HOME/opt/lib/lib$program_name.so*
+
+./configure --prefix=$HOME/opt  --enable-modules=all --enable-boost_serialization --enable-fftw $suffix --enable-libtorch LDFLAGS=-Wl,-rpath,$LD_LIBRARY_PATH
+make -j 5
+make install
+
+touch $HOME/opt/lib/$program_name/$hash
+
+fi

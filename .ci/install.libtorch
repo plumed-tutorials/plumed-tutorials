@@ -1,0 +1,27 @@
+#! /bin/bash
+
+set -e
+set -x
+
+echo "installing libtorch library"
+
+if [ ! -d "$HOME/opt" ]; then mkdir $HOME/opt; fi
+cd $HOME/opt
+
+if [ -d "./libtorch" ]
+then
+ echo "ALREADY AVAILABLE, NO NEED TO REINSTALL"
+else
+
+# get libtorch
+wget --no-check-certificate https://download.pytorch.org/libtorch/lts/1.8/cpu/libtorch-cxx11-abi-shared-with-deps-1.8.2%2Bcpu.zip
+
+# unzip it
+unzip libtorch-cxx11-abi-shared-with-deps-1.8.2+cpu.zip
+
+# clean
+rm libtorch-cxx11-abi-shared-with-deps-1.8.2+cpu.zip
+
+fi
+
+cd ../
