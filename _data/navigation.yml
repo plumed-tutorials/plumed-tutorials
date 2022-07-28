@@ -1,0 +1,15 @@
+pages:
+- title: Home
+  url: /
+- title: News 
+  url: /news.html
+- title: PLUMED
+  url: /plumed.html
+- title: Consortium
+  url: /consortium.html
+- title: Contribute
+  url: /contribute.html
+- title: Cite
+  url: /cite.html
+- title: Browse
+  url: /browse.html
