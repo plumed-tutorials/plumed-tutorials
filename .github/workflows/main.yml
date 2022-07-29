@@ -1,0 +1,96 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a job called "build"
+  build:
+    strategy:
+      matrix:
+        replica: [0, 1]
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/opt
+          ~/.ccache
+        key: ccache-${{ runner.os }}-${{ github.sha }}
+        restore-keys: ccache-${{ runner.os }}-
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Set paths
+      run: |
+        echo "$HOME/opt/bin" >> $GITHUB_PATH
+        echo "CPATH=$HOME/opt/include:$HOME/opt/libtorch/include/torch/csrc/api/include/:$HOME/opt/libtorch/include/:$HOME/opt/libtorch/include/torch:$CPATH" >> $GITHUB_ENV
+        echo "INCLUDE=$HOME/opt/include:$HOME/opt/libtorch/include/torch/csrc/api/include/:$HOME/opt/libtorch/include/:$HOME/opt/libtorch/include/torch:$INCLUDE" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/libtorch/lib:$LIBRARY_PATH" >> $GITHUB_ENV
+        echo "LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/libtorch/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "PYTHONPATH=$HOME/opt/lib/plumed/python:$PYTHONPATH" >> $GITHUB_ENV
+        # needed to avoid MPI warning
+        echo "OMPI_MCA_btl=^openib" >> $GITHUB_ENV
+
+    - name: Install software
+      run: |
+        sudo apt update
+        sudo apt install mpi-default-bin mpi-default-dev
+        sudo apt install libfftw3-dev gsl-bin libgsl0-dev libboost-serialization-dev
+        sudo apt install ccache
+        sudo apt-get update
+        pip install PyYAML pytz
+        pip install PlumedToHTML
+        git clone --bare https://github.com/plumed/plumed2.git
+        sudo ln -s ccache /usr/local/bin/mpic++
+        export PATH=/usr/lib/ccache:${PATH}
+        ccache -s
+        .ci/install.libtorch
+        # version=master or version=f123f12f3 to select a specific version
+        # pick newest release branch (alphabetic, will fail at v2.10)
+        CXX="mpic++" .ci/install.plumed version="$(cd plumed2.git ; git branch | sed "s/^ *//" | grep '^v2\.[0-9]$' | tail -n 1)" repo=$PWD/plumed2.git
+        # GB: in addition, we install master version as plumed_master
+        CXX="mpic++" .ci/install.plumed version=master suffix=_master repo=$PWD/plumed2.git
+        ccache -s
+    - name: Run
+      run: |
+        python --version
+        tar cf nest_files.tar $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") # _data/eggs*.yml _data/plumed.yml
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: lesson-content${{matrix.replica}}
+        path: file.dat
+        retention-days: 1
+
+  # This is the job that uploads the website
+  upload:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: build
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+    - name: Upload
+      env:
+        PLUMED_SCHOOL_GITHUB_TOKEN: ${{ secrets.PLUMED_SCHOOL_GITHUB_TOKEN }}
+      run: |
+        bash .ci/push _config.yml _layouts _data assets
