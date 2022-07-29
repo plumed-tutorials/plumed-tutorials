@@ -68,13 +68,13 @@ jobs:
     - name: Run
       run: |
         python --version
-        tar cf nest_files.tar $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") # _data/eggs*.yml _data/plumed.yml
+        tar cf lessons.tar $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") # _data/eggs*.yml _data/plumed.yml
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: lesson-content${{matrix.replica}}
-        path: file.dat
+        path: lessons.tar 
         retention-days: 1
 
   # This is the job that uploads the website

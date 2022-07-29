@@ -27,10 +27,10 @@ tar cf all.tar $@
 cd tmp/$$
 tar xf ../../all.tar
 # Unzip tar files from all replicas
-#for file in `ls ../../nest-content*/nest_files.tar` ; do
-#    tar xf $file
-#done
-cat _data/eggs*.yml > _data/eggs.yml
+for file in `ls ../../lesson-content*/lessons.tar` ; do
+    tar xf $file
+done
+#cat _data/eggs*.yml > _data/eggs.yml
 
 export GIT_BOT_EMAIL=giovanni.bussi+plumedbot@gmail.com
 
@@ -64,4 +64,4 @@ git add --all .
 # >/dev/null to avoid excessive noise on travis log
 git commit -m "Update to @$hash" >/dev/null
 # -q and 2> is not to show the PLUMED_SCHOOL_GITHUB_TOKEN log
-git push -q -f origin master 2> /dev/null 
+git push -q -f origin main 2> /dev/null 
