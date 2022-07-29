@@ -7,7 +7,7 @@ set -x
 GIT_OWNER=plumed-school
 GIT_REPO=plumed-school
 
-if [[ "${GITHUB_REF##*/}" = master ]] ; then
+if [[ "${GITHUB_REF##*/}" = main ]] ; then
   PUSH_REPO=plumed-school/plumed-school.github.io.git
 elif [[ "${GITHUB_REF##*/}" = test ]] ; then
   PUSH_REPO=plumed-school/test-site.git
