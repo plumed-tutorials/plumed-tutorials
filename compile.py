@@ -34,7 +34,7 @@ def processLesson( path ) :
         if "\endplumedfile" in line : 
            inplumed = False
            # Read solution from solution file
-           sf = open( solutionfile, "r" )
+           sf = open( "data/" + solutionfile, "r" )
            solution = sf.read() 
            sf.close()
            # Test whether the input solution can be parsed
