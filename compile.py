@@ -23,7 +23,7 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
-def process_egg(path,eggdb=None):
+def process_lesson(path,eggdb=None):
     if not eggdb:
         eggdb=sys.stdout
 
