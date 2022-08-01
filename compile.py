@@ -45,6 +45,8 @@ def processLesson( path ) :
            stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
            # Use PlumedToHTML to create the input with all the bells and whistles
            html = get_html( plumed_inp, solution, ("v"+ stable_version,"master"), (success,success_master), ("plumed","plumed_master") )           
+           # Print the html for the solution
+           ofile.write( "{% raw %}\n" + html + "\n {% endraw %}" )
 
         # Detect and copy plumed input files 
         elif "\plumedfile" in line :
