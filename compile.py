@@ -24,23 +24,22 @@ def cd(newdir):
         os.chdir(prevdir)
 
 def processLesson( path ) :
-    with cd(path) :
-        f = open( "data/README.md", "r" )
-        inp = f.read()
-        f.close()
+    f = open( "data/README.md", "r" )
+    inp = f.read()
+    f.close()
  
-        ofile, inplumed, plumed_inp = open( "README.md", "w+" ), False, ""
-        for line in inp.splitlines() :
-            # Test plumed input files that have been found in tutorial 
-            if "\endplumedfile" in line : 
-               inplumed = False
-            # Detect and copy plumed input files 
-            elif "\plumedfile" in line :
-               inplumed, plumed_inp  = True, ""
-            elif inplumed : plumed_inp += line + "\n"
-            # Just copy any line that isn't part of a plumed input
-            else : ofile.write( line )
-        ofile.close()
+    ofile, inplumed, plumed_inp = open( "README.md", "w+" ), False, ""
+    for line in inp.splitlines() :
+        # Test plumed input files that have been found in tutorial 
+        if "\endplumedfile" in line : 
+           inplumed = False
+        # Detect and copy plumed input files 
+        elif "\plumedfile" in line :
+           inplumed, plumed_inp  = True, ""
+        elif inplumed : plumed_inp += line + "\n"
+        # Just copy any line that isn't part of a plumed input
+        else : ofile.write( line )
+    ofile.close()
 
 def process_lesson(path,eggdb=None):
     if not eggdb:
