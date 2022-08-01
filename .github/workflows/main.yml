@@ -68,6 +68,7 @@ jobs:
     - name: Run
       run: |
         python --version
+        python compile.py --nreplicas 2 --replica ${{matrix.replica}}
         tar cf lessons.tar $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") # _data/eggs*.yml _data/plumed.yml
 
     - name: Upload artifact
