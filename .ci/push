@@ -30,7 +30,7 @@ tar xf ../../all.tar
 for file in `ls ../../lesson-content*/lessons.tar` ; do
     tar xf $file
 done
-#cat _data/eggs*.yml > _data/eggs.yml
+cat _data/lessons*.yml > _data/lessons.yml
 
 export GIT_BOT_EMAIL=giovanni.bussi+plumedbot@gmail.com
 
