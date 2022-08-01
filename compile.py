@@ -51,9 +51,9 @@ def processLesson( path ) :
         # Detect and copy plumed input files 
         elif "\plumedfile" in line :
            inplumed, plumed_inp, solutionfile  = True, "", ""
-        elif inplumed and not "````" in line : plumed_inp += line + "\n"
         # This finds us the solution file
         elif inplumed and "#SOLUTIONFILE=" in line : solutionfile=line.replace("#SOLUTIONFILE=","")
+        elif inplumed and not "````" in line : plumed_inp += line + "\n"
         # Just copy any line that isn't part of a plumed input
         elif not inplumed : ofile.write( line + "\n" )
     ofile.close()
