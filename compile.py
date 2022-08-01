@@ -28,17 +28,32 @@ def processLesson( path ) :
     inp = f.read()
     f.close()
  
-    ofile, inplumed, plumed_inp = open( "README.md", "w+" ), False, ""
+    ofile, inplumed, plumed_inp, solutionfile = open( "README.md", "w+" ), False, "", ""
     for line in inp.splitlines() :
         # Test plumed input files that have been found in tutorial 
         if "\endplumedfile" in line : 
            inplumed = False
+           # Read solution from solution file
+           sf = open( solutionfile, "r" )
+           solution = sf.read() 
+           sf.close()
+           # Test whether the input solution can be parsed
+           success, success_master = True, True
+           # Create the full input for PlumedToHTML formatter 
+           plumed_inp += "#SOLUTION \n" + solution
+           # Find the stable version 
+           stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
+           # Use PlumedToHTML to create the input with all the bells and whistles
+           html = get_html( plumed_inp, solution, ("v"+ stable_version,"master"), (success,success_master), ("plumed","plumed_master") )           
+
         # Detect and copy plumed input files 
         elif "\plumedfile" in line :
-           inplumed, plumed_inp  = True, ""
-        elif inplumed : plumed_inp += line + "\n"
+           inplumed, plumed_inp, solutionfile  = True, "", ""
+        elif inplumed and "````" in line : plumed_inp += line + "\n"
+        # This finds us the solution file
+        elif inplumed and "#SOLUTIONFILE=" in line : solutionfile=line.replace("#SOLUTIONFILE=","")
         # Just copy any line that isn't part of a plumed input
-        else : ofile.write( line + "\n" )
+        elif not inplumed : ofile.write( line + "\n" )
     ofile.close()
 
 def process_lesson(path,eggdb=None):
