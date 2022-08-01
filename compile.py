@@ -66,11 +66,11 @@ def process_lesson(path,eggdb=None):
            raise RuntimeError("No README.md file found in lesson")
  
         # Get the lesson id from the path
-        lesson_id = path[5:7] + "." + path[8:11]
+        lesson_id = path[9:11] + "." + path[12:15]
         print("- id: '" + lesson_id + "'",file=eggdb)
         print("  title: " + config["title"],file=eggdb)
-        print("  path: " + path, file=eggdb)
-        print("  instructors: " + config["instructors"],file=eggdb)
+        print("  path: " + path + "data/README", file=eggdb)
+        print("  instructors: " + config["instructors"], file=eggdb)
       
 
 if __name__ == "__main__":
