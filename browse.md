@@ -4,9 +4,9 @@ The lessons that have been submitted to the PLUMED-SCHOOL are listed below.  PLU
 versions of the code and integrates links from these files to the PLUMED manual.
 
 {:#browse-table .display}
-| plumID | Name | Category | Keywords | Contributor |
-|:--------:|:--------:|:---------:|:---------:|:---------:|
-{% for item in site.data.eggs %}| [{{ item.id }}]({{ item.path }}) | {{ item.name }} | {{ item.category }} | {{ item.keywords }} | {{ item.contributor | split: " " | last}} {{ item.contributor | split: " " | first | slice: 0}}. |
+| ID | Name | Contributor |
+|:--------:|:--------:|:---------:|
+{% for item in site.data.lessons %}| [{{ item.id }}]({{ item.path }}) | {{ item.name }} | {{ item.contributor | split: " " | last}} {{ item.contributor | split: " " | first | slice: 0}}. |
 {% endfor %}
 
 <script>
