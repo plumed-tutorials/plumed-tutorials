@@ -38,7 +38,7 @@ def processLesson( path ) :
            inplumed, plumed_inp  = True, ""
         elif inplumed : plumed_inp += line + "\n"
         # Just copy any line that isn't part of a plumed input
-        else : ofile.write( line )
+        else : ofile.write( line + "\n" )
     ofile.close()
 
 def process_lesson(path,eggdb=None):
