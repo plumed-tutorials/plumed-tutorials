@@ -23,6 +23,25 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
+def processLesson( path ) :
+    with cd(path) :
+        f = open( "data/README.md", "r" )
+        inp = f.read()
+        f.close()
+ 
+        ofile, inplumed, plumed_inp = open( "README.md", "w+" ), False, ""
+        for line in inp.splitlines() :
+            # Test plumed input files that have been found in tutorial 
+            if "\endplumedfile" in line : 
+               inplumed = False
+            # Detect and copy plumed input files 
+            elif "\plumedfile" in line :
+               inplumed, plumed_inp  = True, ""
+            elif inplumed : plumed_inp += line + "\n"
+            # Just copy any line that isn't part of a plumed input
+            else : ofile.write( line )
+        ofile.close()
+
 def process_lesson(path,eggdb=None):
     if not eggdb:
         eggdb=sys.stdout
@@ -65,7 +84,7 @@ def process_lesson(path,eggdb=None):
         if not os.path.exists("data/README.md") : 
            raise RuntimeError("No README.md file found in lesson")
         # Process the readme file to construct the lesson
-        shutil.copyfile("data/README.md", "README.md")         
+        processLesson( path )
 
         # Get the lesson id from the path
         lesson_id = path[8:10] + "." + path[11:14]
