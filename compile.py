@@ -5,6 +5,9 @@ import shutil
 import re
 import urllib.request
 import zipfile
+import os
+import pathlib
+import subprocess
 from contextlib import contextmanager
 from PlumedToHTML import test_plumed, get_html
 
