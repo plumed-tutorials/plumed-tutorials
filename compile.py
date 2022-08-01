@@ -67,7 +67,7 @@ def process_lesson(path,eggdb=None):
  
         # Get the lesson id from the path
         lesson_id = path[5:7] + "." + path[8:11]
-        print("- id: '" + egg_id + "'",file=eggdb)
+        print("- id: '" + lesson_id + "'",file=eggdb)
         print("  title: " + config["title"],file=eggdb)
         print("  path: " + path, file=eggdb)
         print("  instructors: " + config["instructors"],file=eggdb)
