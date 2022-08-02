@@ -28,7 +28,7 @@ def processLesson( path ) :
     inp = f.read()
     f.close()
  
-    ofile, inplumed, plumed_inp, solutionfile = open( "README.md", "w+" ), False, "", ""
+    ofile, inplumed, plumed_inp, solutionfile = open( "data/README.md", "w+" ), False, "", ""
     for line in inp.splitlines() :
         # Test plumed input files that have been found in tutorial 
         if "\endplumedfile" in line : 
@@ -106,7 +106,7 @@ def process_lesson(path,eggdb=None):
         lesson_id = path[8:10] + "." + path[11:14]
         print("- id: '" + lesson_id + "'",file=eggdb)
         print("  title: " + config["title"],file=eggdb)
-        print("  path: " + path, file=eggdb)
+        print("  path: " + path + "data/", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
       
 
