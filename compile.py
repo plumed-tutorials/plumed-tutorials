@@ -30,8 +30,11 @@ def processLesson( path ) :
  
     ofile, inplumed, plumed_inp, solutionfile = open( "data/README.md", "w+" ), False, "", ""
     for line in inp.splitlines() :
+        # Detect and copy plumed input files 
+        if "```plumed" in line :
+           inplumed, plumed_inp, solutionfile  = True, "", "" 
         # Test plumed input files that have been found in tutorial 
-        if "\endplumedfile" in line : 
+        elif inplumed and "```" in line : 
            inplumed = False
            # Read solution from solution file
            sf = open( "data/" + solutionfile, "r" )
@@ -48,13 +51,9 @@ def processLesson( path ) :
            html = get_html( plumed_inp, solutionfile, ("v"+ stable_version,"master"), (success,success_master), ("plumed","plumed_master") )
            # Print the html for the solution
            ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
-
-        # Detect and copy plumed input files 
-        elif "\plumedfile" in line :
-           inplumed, plumed_inp, solutionfile  = True, "", ""
         # This finds us the solution file
         elif inplumed and "#SOLUTIONFILE=" in line : solutionfile=line.replace("#SOLUTIONFILE=","")
-        elif inplumed and not "````" in line : plumed_inp += line + "\n"
+        elif inplumed : plumed_inp += line + "\n"
         # Just copy any line that isn't part of a plumed input
         elif not inplumed : ofile.write( line + "\n" )
     ofile.close()
