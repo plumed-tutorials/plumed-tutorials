@@ -38,7 +38,8 @@ def processLesson( path ) :
            solution = sf.read() 
            sf.close()
            # Test whether the input solution can be parsed
-           success, success_master = True, True
+           success = success=test_plumed( "plumed", "data/" + solutionfile )
+           success_master=test_plumed( "plumed_master", "data/" + solutionfile  )
            # Create the full input for PlumedToHTML formatter 
            plumed_inp += "#SOLUTION \n" + solution
            # Find the stable version 
