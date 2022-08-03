@@ -33,7 +33,7 @@ def processResource( rind, data, rfile ) :
        ofile.write("{% endraw %}\n")
     elif data["type"]=="notebook" :
        pass 
-    else 
+    else :
        raise RuntimeError("cannot process resource of type " + data["type"]
     ofile.close() 
     # Print information on this resource to the resource file
