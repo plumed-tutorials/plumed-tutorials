@@ -71,7 +71,7 @@ jobs:
       run: |
         python --version
         python compile.py --nreplicas 2 --replica ${{matrix.replica}}
-        tar cf lessons.tar $(find . -name "*.png") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") $(find lessons -name "*.yml") _data/lessons*.yml _data/plumed.yml
+        tar cf lessons.tar $(find . -name "*.png") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") $(find lessons -name "*.yml") _data/*.yml
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3

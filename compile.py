@@ -9,6 +9,7 @@ import os
 import pathlib
 import subprocess
 import nbformat
+from traitlets.config import Config
 from nbconvert import MarkdownExporter 
 from contextlib import contextmanager
 from PlumedToHTML import test_plumed, get_html
@@ -37,7 +38,9 @@ def processResource( lessonname, rind, data, rfile ) :
        with open("data/" + data["location"]) as f : 
            mynotebook = nbformat.read( f, as_version=4 )
        # Instantiate the exporter
-       exporter = MarkdownExporter()
+       c = Config()
+       #c.MarkdownExporter.preprocessors = ['nbconvert.preprocessors.ExtractOutputPreprocessor']
+       exporter = MarkdownExporter( config=c )
        (body, resources) = exporter.from_notebook_node( mynotebook )
        ofile.write( body ) 
     else :
@@ -140,11 +143,11 @@ def process_lesson(path,eggdb=None):
         os.mkdir("data/resources")
         rfile = open( "data/resources/RESOURCELIST.md", "w+" )
         rfile.write("# Additional resources: " + config["title"] + "\n\n" )
-        rfile.write("The authors of this lesson have provided the additional videos and python notebooks in the table below to help you complete the exercises in the lesson.\n\n")
+        rfile.write("The authors of the lesson on [" + config["title"] + "](" + path + ") have provided the additional videos and python notebooks in the table below to help you complete the exercises.\n\n")
         rfile.write("{:browse-table .display}\n")
         rfile.write("| Name | Type | Description |\n")
         rfile.write("|:--------:|:--------:|:---------:|\n")
-        rfile.write("{% for item in site." + path.replace("/",".") + "data.resources.resourcelist %}| [{{ item.title }}]({{ item.path }}) | {{ item.type }} | {{ item.description }} | \n")
+        rfile.write("{% for item in site.data.res" + lesson_id + " %}| [{{ item.title }}]({{ item.path }}) | {{ item.type }} | {{ item.description }} | \n")
         rfile.write("{% endfor %}\n\n")
         rfile.write('<script>\n')
         rfile.write('$(document).ready(function() {\n')
@@ -164,7 +167,7 @@ def process_lesson(path,eggdb=None):
         rfile.close()
 
         # Now get the resources from the yml file
-        rind, ryfile = 1, open( "data/resources/resourcelist.yml", "w+" )
+        rind, ryfile = 1, open( "../_data/res" +  lesson_id + ".yml", "w+" )
         ryfile.write("# file containing resources database for this lesson \n")
         for resource in config["resources"] :
             processResource( config["title"], rind, resource, ryfile )
