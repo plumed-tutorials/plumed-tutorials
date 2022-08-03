@@ -53,6 +53,8 @@ jobs:
         sudo apt install ccache
         sudo apt-get update
         pip install PyYAML pytz
+        pip install nbconvert
+        pip install nbformat
         pip install PlumedToHTML
         git clone --bare https://github.com/plumed/plumed2.git
         sudo ln -s ccache /usr/local/bin/mpic++
