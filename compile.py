@@ -23,7 +23,7 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
-def processResource( rind, data, rfile ) :
+def processResource( lessonname, rind, data, rfile ) :
     ofile = open("data/resources/RESOURCE" + str(rind) + ".md", "w+" )
     if data["type"]=="video" : 
        ofile.write("# " + lessonname + ": " + data["title"] + "\n\n")
@@ -160,7 +160,7 @@ def process_lesson(path,eggdb=None):
         rind, ryfile = 1, open( "data/resources/resourcelist.yml", "w+" )
         ryfile.write("# file containing resources database for this lesson \n")
         for resource in config["resources"] :
-            processResource( rind, resource, ryfile )
+            processResource( config["title"], rind, resource, ryfile )
             if rind<3 :
                print("  resource" + str(rind) + ": " + resource["title"], file=eggdb)
                print("  rpath" + str(rind) + ": " + path + "data/resources/RESOURCE" + str(rind), file=eggdb)
