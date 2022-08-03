@@ -29,7 +29,7 @@ def processResource( rind, data, rfile ) :
        ofile.write("# " + lessonname + ": " + data["title"] + "\n\n")
        ofile.write( data["description"] + "\n\n" )
        ofile.write("{% raw %}\n")
-       ofile.write( of.write('<iframe width="630" height="472" src="' + data["location"] + '" frameborder="0" allowfullscreen></iframe>\n')
+       ofile.write('<iframe width="630" height="472" src="' + data["location"] + '" frameborder="0" allowfullscreen></iframe>\n')
        ofile.write("{% endraw %}\n")
     elif data["type"]=="notebook" :
        pass 
