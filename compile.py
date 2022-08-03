@@ -8,6 +8,8 @@ import zipfile
 import os
 import pathlib
 import subprocess
+import nbformat
+from nbconvert import HTMLExporter 
 from contextlib import contextmanager
 from PlumedToHTML import test_plumed, get_html
 
@@ -32,7 +34,12 @@ def processResource( lessonname, rind, data, rfile ) :
        ofile.write('<p align="center"><iframe width="630" height="472" src="' + data["location"] + '" frameborder="0" allowfullscreen></iframe></p>\n')
        ofile.write("{% endraw %}\n")
     elif data["type"]=="notebook" :
-       pass 
+       with open("data/" + data["location"]) as f : 
+           mynotebook = nbformat.read( f, as_version=4 )
+       # Instantiate the exporter
+       html_exporter = HTMLExporter(template_name = 'classic')
+       (body, resources) = html_exporter.from_notebook_node( mynotebook )
+       ofile.write("{% raw %}\n" + body + "{% endraw %}\n") 
     else :
        raise RuntimeError("cannot process resource of type " + data["type"] )
     ofile.close() 
