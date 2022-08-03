@@ -48,7 +48,7 @@ def processResource( lessonname, rind, data, rfile ) :
     ofile.close() 
     # Print information on this resource to the resource file
     rfile.write("- title: " + data["title"] + "\n" )
-    rfile.write("  path: data/resource/RESOURCE" + str(rind) + "\n"  )
+    rfile.write("  path: RESOURCE" + str(rind) + "\n"  )
     rfile.write("  type: " + data["type"] + "\n" )
     rfile.write("  description: " + data["description"] + "\n" )
 
