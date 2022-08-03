@@ -4,9 +4,9 @@ The lessons that have been submitted to the PLUMED-SCHOOL are listed below.  PLU
 versions of the code and integrates links from these files to the PLUMED manual.
 
 {:#browse-table .display}
-| ID | Name | Instructors |
-|:--------:|:--------:|:---------:|
-{% for item in site.data.lessons %}| [{{ item.id }}]({{ item.path }}) | {{ item.title }} | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. |
+| ID | Name | Instructors | Resource I | Resource II | All resources |
+|:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|
+{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]( item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | [{{ item.resource1 }}]({{ item.rpath1 }}) | [{{ item.resource2 }}]({{ item.rpath2 }}) | [{{ item.resource3 }}]({{ item.rpath3 }}) | 
 {% endfor %}
 
 <script>

@@ -23,6 +23,15 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
+def processResource( rind, data, rfile ) :
+    print( data )
+    # Print information on this resource to the resource file
+    rfile.write("-  title: " + data["title"] + "\n" )
+    rfile.write("   path: data/RESOURCE" + str(rind) + "\n"  )
+    rfile.write("   type: " + data["type"] + "\n" )
+    rfile.write("   description: " + data["description"] + "\n" )
+
+
 def processLesson( path ) :
     f = open( "data/README.md", "r" )
     inp = f.read()
@@ -108,7 +117,30 @@ def process_lesson(path,eggdb=None):
         print("  title: " + config["title"],file=eggdb)
         print("  path: " + path + "data/", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
-      
+ 
+        # Create a resourcelist file 
+        rfile = open( "data/RESOURCELIST.md", "w+" )
+        rfile.write("# Additional resources: " + config["title"] + "\n\n" )
+        rfile.write("The authors of this lesson have provided the additional videos and python notebooks in the table below to help you complete the exercises in the lesson.\n\n")
+        rfile.write("{:browse-table .display}\n")
+        rfile.write("| Name | Type | description |\n")
+        rfile.write("|:--------:|:--------:|:---------:|\n")
+        rfile.write("{% for item in site." + path.replace("/",".") + "data.resourcelist %}| [{{ item.title }}]({{ item.path }}) | {{ item.type }} | {{ item.description }} | \n")
+        rfile.write("{% endfor %}\n")
+        rfile.close()
+
+        # Now get the resources from the yml file
+        rind, ryfile = 1, open( "data/resourcelist.yml", "w+" )
+        for resource in config["resources"] :
+            processResource( rind, resource, ryfile )
+            if rind<3 :
+               print("  resource" + str(rind) + ": " + resource["title"], file=eggdb)
+               print("  rpath" + str(rind) + ": " + path + "data/RESOURCE" + str(rind) + ".md", file=eggdb)
+            rind = rind + 1
+        rfile.close()
+        print("  resource3: all resources for lesson", file=eggdb)
+        print("  rpath3: " + path + "data/RESOURCELIST.md", file=eggdb)
+     
 
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]

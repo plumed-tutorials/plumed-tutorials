@@ -1,3 +1,28 @@
 url: https://github.com/plumed/masterclass-21-2/archive/refs/heads/main.zip
 instructors: Gareth Tribello
 title: Statistical errors in MD
+resources:
+   - title: Lecture I 
+     description: A lecture that was given on February 1st 2021 as part of the plumed masterclass series that introduces you to the exercises in this lesson
+     type: video
+     location: https://www.youtube.com/embed/dJKajNwbJ74" 
+   - title: Lecture II
+     description: A lecture that was given on February 8th 2021 as part of the plumed masterclass series that goes through the solutions to the exercises in the lesson
+     type: video
+     location: https://www.youtube.com/embed/XKqislC2GYA
+   - title: Data generator
+     description: A python notebook that shows how the data sets in the files uncorrelated_data, correlated_data and weighted data that are all used in the exericses was generated
+     type: notebook
+     location: notebooks/gendata.ipynb
+   - title: Template notebook
+     description: A python notebook file that explains how you can work on the exercises from a python notebook.  Advice on running PLUMED from a notebook and on plotting the data that is generated is given.
+     type: notebook
+     location: notebooks/template.ipynb
+   - title: Solutions
+     description: A python notebook file that provides a complete set of solutions to the exercises.
+     type: notebook
+     location: notebooks/solution.ipynb
+   - title: Solutions II
+     description: A second python notebook file that contains solutions to the exercises.  In this notebook a different method has been used to generate the figures showing the final free energy surfaces.
+     type: notebook
+     location: notebooks/answers_notebook.ipynb 
