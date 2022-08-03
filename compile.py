@@ -147,7 +147,7 @@ def process_lesson(path,eggdb=None):
 
         # Now get the resources from the yml file
         rind, ryfile = 1, open( "data/resources/resourcelist.yml", "w+" )
-        ryfile.print("# file containing resources database for this lesson \n")
+        ryfile.write("# file containing resources database for this lesson \n")
         for resource in config["resources"] :
             processResource( rind, resource, ryfile )
             if rind<3 :
