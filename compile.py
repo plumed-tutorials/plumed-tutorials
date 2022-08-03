@@ -49,7 +49,9 @@ def processResource( lessonname, rind, data, rfile ) :
     rfile.write("- title: " + data["title"] + "\n" )
     rfile.write("  path: RESOURCE" + str(rind) + "\n"  )
     rfile.write("  type: " + data["type"] + "\n" )
-    rfile.write("  description: " + data["description"] + "\n" )
+    rfile.write("  description: " + data["description"] ) 
+    if data["type"]=="notebook" : rfile.write(".  A copy of this notebook can be found at " + data["location"] + " in the exercise archive you downloaded") 
+    rfile.write("\n" )
 
 
 def processLesson( path ) :
