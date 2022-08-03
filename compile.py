@@ -9,8 +9,7 @@ import os
 import pathlib
 import subprocess
 import nbformat
-from traitlets.config import Config
-from nbconvert import MarkdownExporter 
+from nbconvert import HTMLExporter 
 from contextlib import contextmanager
 from PlumedToHTML import test_plumed, get_html
 
@@ -27,25 +26,25 @@ def cd(newdir):
         os.chdir(prevdir)
 
 def processResource( lessonname, rind, data, rfile ) :
-    ofile = open("data/resources/RESOURCE" + str(rind) + ".md", "w+" )
-    if data["type"]=="video" : 
+    if data["type"]=="video" :
+       ofile = open("data/resources/RESOURCE" + str(rind) + ".md", "w+" ) 
        ofile.write("# " + lessonname + ": " + data["title"] + "\n\n")
        ofile.write( data["description"] + "\n\n" )
        ofile.write("{% raw %}\n")
        ofile.write('<p align="center"><iframe width="630" height="472" src="' + data["location"] + '" frameborder="0" allowfullscreen></iframe></p>\n')
        ofile.write("{% endraw %}\n")
+       ofile.close()
     elif data["type"]=="notebook" :
        with open("data/" + data["location"]) as f : 
            mynotebook = nbformat.read( f, as_version=4 )
        # Instantiate the exporter
-       c = Config()
-       #c.MarkdownExporter.preprocessors = ['nbconvert.preprocessors.ExtractOutputPreprocessor']
-       exporter = MarkdownExporter( config=c )
+       exporter = HTMLExporter(template_name = 'classic')
        (body, resources) = exporter.from_notebook_node( mynotebook )
+       ofile = open("data/resources/RESOURCE" + str(rind) + ".html", "w+" )
        ofile.write( body ) 
+       ofile.close()
     else :
        raise RuntimeError("cannot process resource of type " + data["type"] )
-    ofile.close() 
     # Print information on this resource to the resource file
     rfile.write("- title: " + data["title"] + "\n" )
     rfile.write("  path: RESOURCE" + str(rind) + "\n"  )
