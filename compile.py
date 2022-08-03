@@ -9,7 +9,7 @@ import os
 import pathlib
 import subprocess
 import nbformat
-from nbconvert import HTMLExporter 
+from nbconvert import MarkdownExporter 
 from contextlib import contextmanager
 from PlumedToHTML import test_plumed, get_html
 
@@ -37,9 +37,9 @@ def processResource( lessonname, rind, data, rfile ) :
        with open("data/" + data["location"]) as f : 
            mynotebook = nbformat.read( f, as_version=4 )
        # Instantiate the exporter
-       html_exporter = HTMLExporter(template_name = 'classic')
-       (body, resources) = html_exporter.from_notebook_node( mynotebook )
-       ofile.write("{% raw %}\n" + body + "{% endraw %}\n") 
+       exporter = MarkdownExporter()
+       (body, resources) = exporter.from_notebook_node( mynotebook )
+       ofile.write( body ) 
     else :
        raise RuntimeError("cannot process resource of type " + data["type"] )
     ofile.close() 
