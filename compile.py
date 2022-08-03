@@ -115,7 +115,7 @@ def process_lesson(path,eggdb=None):
         lesson_id = path[8:10] + "." + path[11:14]
         print("- id: '" + lesson_id + "'",file=eggdb)
         print("  title: " + config["title"],file=eggdb)
-        print("  path: " + path + "data/", file=eggdb)
+        print("  path: " + path + "data/README", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
  
         # Create a resourcelist file 
@@ -139,7 +139,7 @@ def process_lesson(path,eggdb=None):
             rind = rind + 1
         rfile.close()
         print("  resource3: all resources for lesson", file=eggdb)
-        print("  rpath3: " + path + "data/RESOURCELIST.md", file=eggdb)
+        print("  rpath3: " + path + "data/RESOURCELIST", file=eggdb)
      
 
 if __name__ == "__main__":
