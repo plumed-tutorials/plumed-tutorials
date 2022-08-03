@@ -143,7 +143,7 @@ def process_lesson(path,eggdb=None):
         os.mkdir("data/resources")
         rfile = open( "data/resources/RESOURCELIST.md", "w+" )
         rfile.write("# Additional resources: " + config["title"] + "\n\n" )
-        rfile.write("The authors of the lesson on [" + config["title"] + "](" + path + ") have provided the additional videos and python notebooks in the table below to help you complete the exercises.\n\n")
+        rfile.write("The authors of the lesson on [" + config["title"] + "](..) have provided the additional videos and python notebooks in the table below to help you complete the exercises.\n\n")
         rfile.write("{:browse-table .display}\n")
         rfile.write("| Name | Type | Description |\n")
         rfile.write("|:--------:|:--------:|:---------:|\n")
