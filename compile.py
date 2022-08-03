@@ -24,18 +24,18 @@ def cd(newdir):
         os.chdir(prevdir)
 
 def processResource( rind, data, rfile ) :
-    file = open("data/resources/RESOURCE" + str(rind) + ".md", "w+" )
+    ofile = open("data/resources/RESOURCE" + str(rind) + ".md", "w+" )
     if data["type"]=="video" : 
-       file.write("# " + lessonname + ": " + data["title"] + "\n\n"
-       file.write( data["description"] + "\n\n" )
-       file.write("{% raw %}\n")
-       file.write( of.write('<iframe width="630" height="472" src="' + data["location"] + + '" frameborder="0" allowfullscreen></iframe>\n')
-       file.write("{% endraw %}\n")
+       ofile.write("# " + lessonname + ": " + data["title"] + "\n\n")
+       ofile.write( data["description"] + "\n\n" )
+       ofile.write("{% raw %}\n")
+       ofile.write( of.write('<iframe width="630" height="472" src="' + data["location"] + + '" frameborder="0" allowfullscreen></iframe>\n')
+       ofile.write("{% endraw %}\n")
     elif data["type"]=="notebook" :
        pass 
     else 
        raise RuntimeError("cannot process resource of type " + data["type"]
-    file.close() 
+    ofile.close() 
     # Print information on this resource to the resource file
     rfile.write("- title: " + data["title"] + "\n" )
     rfile.write("  path: data/resource/RESOURCE" + str(rind) + "\n"  )
