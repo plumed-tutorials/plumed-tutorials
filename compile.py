@@ -34,7 +34,7 @@ def processResource( rind, data, rfile ) :
     elif data["type"]=="notebook" :
        pass 
     else :
-       raise RuntimeError("cannot process resource of type " + data["type"]
+       raise RuntimeError("cannot process resource of type " + data["type"] )
     ofile.close() 
     # Print information on this resource to the resource file
     rfile.write("- title: " + data["title"] + "\n" )
