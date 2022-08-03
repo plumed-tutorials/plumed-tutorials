@@ -167,7 +167,7 @@ def process_lesson(path,eggdb=None):
         rfile.close()
 
         # Now get the resources from the yml file
-        rind, ryfile = 1, open( "../_data/res" +  lesson_id + ".yml", "w+" )
+        rind, ryfile = 1, open( "../../_data/res" +  lesson_id + ".yml", "w+" )
         ryfile.write("# file containing resources database for this lesson \n")
         for resource in config["resources"] :
             processResource( config["title"], rind, resource, ryfile )
