@@ -26,10 +26,10 @@ def cd(newdir):
 def processResource( rind, data, rfile ) :
     print( data )
     # Print information on this resource to the resource file
-    rfile.write("-  title: " + data["title"] + "\n" )
-    rfile.write("   path: data/resource/RESOURCE" + str(rind) + "\n"  )
-    rfile.write("   type: " + data["type"] + "\n" )
-    rfile.write("   description: " + data["description"] + "\n" )
+    rfile.write("- title: " + data["title"] + "\n" )
+    rfile.write("  path: data/resource/RESOURCE" + str(rind) + "\n"  )
+    rfile.write("  type: " + data["type"] + "\n" )
+    rfile.write("  description: " + data["description"] + "\n" )
 
 
 def processLesson( path ) :
@@ -147,11 +147,12 @@ def process_lesson(path,eggdb=None):
 
         # Now get the resources from the yml file
         rind, ryfile = 1, open( "data/resources/resourcelist.yml", "w+" )
+        ryfile.print("# file containing resources database for this lesson \n")
         for resource in config["resources"] :
             processResource( rind, resource, ryfile )
             if rind<3 :
                print("  resource" + str(rind) + ": " + resource["title"], file=eggdb)
-               print("  rpath" + str(rind) + ": " + path + "data/resources/RESOURCE" + str(rind) + ".md", file=eggdb)
+               print("  rpath" + str(rind) + ": " + path + "data/resources/RESOURCE" + str(rind), file=eggdb)
             rind = rind + 1
         ryfile.close()
         print("  resource3: all resources for lesson", file=eggdb)
