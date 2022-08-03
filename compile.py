@@ -147,7 +147,7 @@ def process_lesson(path,eggdb=None):
         rfile.write("{:browse-table .display}\n")
         rfile.write("| Name | Type | Description |\n")
         rfile.write("|:--------:|:--------:|:---------:|\n")
-        rfile.write("{% for item in site.data.res" + lesson_id + " %}| [{{ item.title }}]({{ item.path }}) | {{ item.type }} | {{ item.description }} | \n")
+        rfile.write("{% for item in site.data.res" + lesson_id.replace(".","l") + " %}| [{{ item.title }}]({{ item.path }}) | {{ item.type }} | {{ item.description }} | \n")
         rfile.write("{% endfor %}\n\n")
         rfile.write('<script>\n')
         rfile.write('$(document).ready(function() {\n')
@@ -167,7 +167,7 @@ def process_lesson(path,eggdb=None):
         rfile.close()
 
         # Now get the resources from the yml file
-        rind, ryfile = 1, open( "../../../_data/res" +  lesson_id + ".yml", "w+" )
+        rind, ryfile = 1, open( "../../../_data/res" +  lesson_id.replace(".","l") + ".yml", "w+" )
         ryfile.write("# file containing resources database for this lesson \n")
         for resource in config["resources"] :
             processResource( config["title"], rind, resource, ryfile )
