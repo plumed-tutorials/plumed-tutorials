@@ -26,11 +26,11 @@ def cd(newdir):
 def processResource( rind, data, rfile ) :
     file = open("data/resources/RESOURCE" + str(rind) + ".md", "w+" )
     if data["type"]=="video" : 
-       file.print("# " + lessonname + ": " + data["title"] + "\n\n"
-       file.print( data["description"] + "\n\n" )
-       file.print("{% raw %}\n")
-       file.print( of.write('<iframe width="630" height="472" src="' + data["location"] + + '" frameborder="0" allowfullscreen></iframe>\n')
-       file.print("{% endraw %}\n")
+       file.write("# " + lessonname + ": " + data["title"] + "\n\n"
+       file.write( data["description"] + "\n\n" )
+       file.write("{% raw %}\n")
+       file.write( of.write('<iframe width="630" height="472" src="' + data["location"] + + '" frameborder="0" allowfullscreen></iframe>\n')
+       file.write("{% endraw %}\n")
     elif data["type"]=="notebook" :
        pass 
     else 
