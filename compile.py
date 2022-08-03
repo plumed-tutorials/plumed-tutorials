@@ -119,6 +119,7 @@ def process_lesson(path,eggdb=None):
         print("  instructors: " + config["instructors"], file=eggdb)
  
         # Create a resourcelist file 
+        os.mkdir("data/resources")
         rfile = open( "data/resources/RESOURCELIST.md", "w+" )
         rfile.write("# Additional resources: " + config["title"] + "\n\n" )
         rfile.write("The authors of this lesson have provided the additional videos and python notebooks in the table below to help you complete the exercises in the lesson.\n\n")
