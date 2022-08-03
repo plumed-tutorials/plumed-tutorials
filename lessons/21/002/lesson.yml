@@ -5,7 +5,7 @@ resources:
    - title: Lecture I 
      description: A lecture that was given on February 1st 2021 as part of the plumed masterclass series that introduces you to the exercises in this lesson
      type: video
-     location: https://www.youtube.com/embed/dJKajNwbJ74" 
+     location: https://www.youtube.com/embed/dJKajNwbJ74 
    - title: Lecture II
      description: A lecture that was given on February 8th 2021 as part of the plumed masterclass series that goes through the solutions to the exercises in the lesson
      type: video
