@@ -1,0 +1,16 @@
+url: https://github.com/plumed/masterclass-21-3/archive/refs/heads/main.zip
+instructors: Giovanni Bussi
+title: Umbrella Sampling
+resources:
+   - title: Lecture I 
+     description: A lecture that was given on February 15th 2021 as part of the plumed masterclass series that introduces you to the exercises in this lesson
+     type: video
+     location: https://www.youtube.com/embed/gHXXGYIgasE
+   - title: Lecture II
+     description: A lecture that was given on February 22nd 2021 as part of the plumed masterclass series that goes through the solutions to the exercises in the lesson
+     type: video
+     location: https://www.youtube.com/embed/SuHcOYqIOrY
+   - title: Solutions
+     description: A python notebook that contains a full set of solutions to the exercises that are discussed in the masterclass.  This notebook is the one that was editted during the section video lecture of the masterclass
+     type: notebook
+     location: Solution.ipynb 
