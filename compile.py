@@ -59,23 +59,29 @@ def processLesson( path ) :
     inp = f.read()
     f.close()
  
-    ofile, inplumed, plumed_inp, solutionfile = open( "data/README.md", "w+" ), False, "", ""
+    ofile, inplumed, plumed_inp, solutionfile, incomplete = open( "data/README.md", "w+" ), False, "", "", False
     for line in inp.splitlines() :
         # Detect and copy plumed input files 
         if "```plumed" in line :
-           inplumed, plumed_inp, solutionfile  = True, "", "" 
+           inplumed, plumed_inp, solutionfile, incomplete  = True, "", "", False 
         # Test plumed input files that have been found in tutorial 
         elif inplumed and "```" in line : 
            inplumed = False
-           # Read solution from solution file
-           sf = open( "data/" + solutionfile, "r" )
-           solution = sf.read() 
-           sf.close()
+           if incomplete :
+               # Read solution from solution file
+               sf = open( "data/" + solutionfile, "r" )
+               solution = sf.read() 
+               sf.close()
+               # Create the full input for PlumedToHTML formatter 
+               plumed_inp += "#SOLUTION \n" + solution
+           else : 
+               solutionfile = "this_input_should_work.dat"
+               sf = open( "data/" + solutionfile, "w+" )
+               sf.write( plumed_inp )
+               sf.close()
            # Test whether the input solution can be parsed
            success = success=test_plumed( "plumed", "data/" + solutionfile )
            success_master=test_plumed( "plumed_master", "data/" + solutionfile  )
-           # Create the full input for PlumedToHTML formatter 
-           plumed_inp += "#SOLUTION \n" + solution
            # Find the stable version 
            stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
            # Use PlumedToHTML to create the input with all the bells and whistles
@@ -84,7 +90,9 @@ def processLesson( path ) :
            ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
         # This finds us the solution file
         elif inplumed and "#SOLUTIONFILE=" in line : solutionfile=line.replace("#SOLUTIONFILE=","")
-        elif inplumed : plumed_inp += line + "\n"
+        elif inplumed :
+             if "__FILL__" in line : incomplete = True 
+             plumed_inp += line + "\n"
         # Just copy any line that isn't part of a plumed input
         elif not inplumed : ofile.write( line + "\n" )
     ofile.close()
