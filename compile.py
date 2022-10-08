@@ -62,7 +62,7 @@ def processNavigation( lessonname ) :
               # Instantiate the exporter
               exporter = HTMLExporter(template_name = 'classic')
               (body, resources) = exporter.from_notebook_node( mynotebook )
-              ipfile = open("data/" + name + ".html", "w+" )
+              ipfile = open("data/" + name.split(".")[0] + ".html", "w+" )
               ipfile.write( body ) 
               ipfile.close() 
            else :
