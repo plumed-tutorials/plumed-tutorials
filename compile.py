@@ -104,7 +104,7 @@ def processNavigation( lessonname ) :
 
 def processMarkdown( filename ) :
     if not os.path.exists("data/" + filename) : 
-       raise RuntimeError("Found no file called " + filename " in lesson")
+       raise RuntimeError("Found no file called " + filename + " in lesson")
     f = open( "data/" + filename, "r" )
     inp = f.read()
     f.close()
