@@ -40,10 +40,10 @@ def processNavigation( lessonname ) :
     for line in inp.splitlines() : 
         if "```mermaid" in line : 
            inmermaid = True
-           ofile.write( line )
+           ofile.write( line + "\n")
         elif inmermaid and "```" in line :
            inmermaid = False 
-           ofile.write( line )
+           ofile.write( line + "\n" )
         elif inmermaid and "click" in line :
            name = line.split('"')[1] 
            if name in embeds :
@@ -68,9 +68,9 @@ def processNavigation( lessonname ) :
            else :
               raise RuntimeError("cannot process filname called " + name + " use md or ipynb extension")   
            # And write out the updated click line with the proper link 
-           ofile.write( line.split('"')[0] + ' "data/' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"' ) 
+           ofile.write( line.split('"')[0] + ' "data/' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '" \n' ) 
         else :
-           ofile.write( line )
+           ofile.write( line + "\n" )
     ofile.close()
 
 # def processResource( lessonname, rind, data, rfile ) :
@@ -200,6 +200,7 @@ def process_lesson(path,eggdb=None):
         print("  title: " + config["title"],file=eggdb)
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
+        print("  description: " + config["description", file=eggdb)
  
         # Create a resourcelist file 
         # os.mkdir("data/resources")
