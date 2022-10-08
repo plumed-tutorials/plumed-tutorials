@@ -6,7 +6,7 @@ versions of the code and integrates links from these files to the PLUMED manual.
 {:#browse-table .display}
 | ID | Name | Instructors | Description |
 |:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|
-{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | item.description |
+{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.description }} |
 {% endfor %}
 
 <script>
