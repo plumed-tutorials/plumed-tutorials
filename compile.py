@@ -25,41 +25,91 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
-def processResource( lessonname, rind, data, rfile ) :
-    if data["type"]=="video" :
-       ofile = open("data/resources/RESOURCE" + str(rind) + ".md", "w+" ) 
-       ofile.write("# " + lessonname + ": " + data["title"] + "\n\n")
-       ofile.write( data["description"] + "\n\n" )
-       ofile.write("{% raw %}\n")
-       ofile.write('<p align="center"><iframe width="630" height="472" src="' + data["location"] + '" frameborder="0" allowfullscreen></iframe></p>\n')
-       ofile.write("{% endraw %}\n")
-       ofile.close()
-    elif data["type"]=="notebook" :
-       with open("data/" + data["location"]) as f : 
-           mynotebook = nbformat.read( f, as_version=4 )
-       # Instantiate the exporter
-       exporter = HTMLExporter(template_name = 'classic')
-       (body, resources) = exporter.from_notebook_node( mynotebook )
-       ofile = open("data/resources/RESOURCE" + str(rind) + ".html", "w+" )
-       ofile.write( body ) 
-       ofile.close()
-    else :
-       raise RuntimeError("cannot process resource of type " + data["type"] )
-    # Print information on this resource to the resource file
-    rfile.write("- title: " + data["title"] + "\n" )
-    rfile.write("  path: RESOURCE" + str(rind) + "\n"  )
-    rfile.write("  type: " + data["type"] + "\n" )
-    rfile.write("  description: " + data["description"] ) 
-    if data["type"]=="notebook" : rfile.write(".  A copy of this notebook can be found at " + data["location"] + " in the exercise archive you downloaded") 
-    rfile.write("\n" )
+def processNavigation( lessonname ) :
+    f = open( "data/NAVIGATION.md", "r" )
+    inp = f.read()
+    f.close()
+
+    if not os.path.exists("data/EMBED.yml") : 
+       raise RuntimeError("No EMBED.yml file found in lesson")
+    stram=open("data/EMBED.yml", "r")
+    embeds=yaml.load(stram,Loader=yaml.BaseLoader)
+    stram.close()
+
+    ofile, inmermaid = open( "data/NAVIGATION.md"), "w+", False
+    for line in inp.splitlines() : 
+        if "```mermaid" in line : 
+           inmermaid = True
+           ofile.write( line )
+        elif inmermaid and "```" in line :
+           inmermaid = False 
+           ofile.write( line )
+        elif inmermaid and "click" in line :
+           name = line.split('"')[1] 
+           if name in embeds :
+              efile = open( "data/" + name + ".md", "w+" ) 
+              efile.write( "# " + lessonname + ": " + embeds[name]["title"] + "\n\n")
+              efile.write( line.split('"')[3] + "\n\n" )
+              efile.write("{% raw %}\n")
+              efile.write('<p align="center"><iframe width="630" height="472" src="' + embeds[name]["location"] + '" frameborder="0" allowfullscreen></iframe></p>\n')
+              efile.write("{% endraw %}\n")
+              efile.close()
+           elif "md" in name.split(".")[1] : 
+              processMarkdown(name)
+           elif "ipynb" in name.split(".")[1] :
+              with open("data/" + data["location"]) as f : 
+                  mynotebook = nbformat.read( f, as_version=4 )
+              # Instantiate the exporter
+              exporter = HTMLExporter(template_name = 'classic')
+              (body, resources) = exporter.from_notebook_node( mynotebook )
+              ipfile = open("data/" + name + ".html", "w+" )
+              ipfile.write( body ) 
+              ipfile.close() 
+           else :
+              raise RuntimeError("cannot process filname called " + name + " use md or ipynb extension")   
+           # And write out the updated click line with the proper link 
+           ofile.write( line.split('"')[0] + ' "data/' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"' ) 
+        else :
+           ofile.write( line )
+    ofile.close()
+
+# def processResource( lessonname, rind, data, rfile ) :
+#     if data["type"]=="video" :
+#        ofile = open("data/resources/RESOURCE" + str(rind) + ".md", "w+" ) 
+#        ofile.write("# " + lessonname + ": " + data["title"] + "\n\n")
+#        ofile.write( data["description"] + "\n\n" )
+#        ofile.write("{% raw %}\n")
+#        ofile.write('<p align="center"><iframe width="630" height="472" src="' + data["location"] + '" frameborder="0" allowfullscreen></iframe></p>\n')
+#        ofile.write("{% endraw %}\n")
+#        ofile.close()
+#     elif data["type"]=="notebook" :
+#        with open("data/" + data["location"]) as f : 
+#            mynotebook = nbformat.read( f, as_version=4 )
+#        # Instantiate the exporter
+#        exporter = HTMLExporter(template_name = 'classic')
+#        (body, resources) = exporter.from_notebook_node( mynotebook )
+#        ofile = open("data/resources/RESOURCE" + str(rind) + ".html", "w+" )
+#        ofile.write( body ) 
+#        ofile.close()
+#     else :
+#        raise RuntimeError("cannot process resource of type " + data["type"] )
+#     # Print information on this resource to the resource file
+#     rfile.write("- title: " + data["title"] + "\n" )
+#     rfile.write("  path: RESOURCE" + str(rind) + "\n"  )
+#     rfile.write("  type: " + data["type"] + "\n" )
+#     rfile.write("  description: " + data["description"] ) 
+#     if data["type"]=="notebook" : rfile.write(".  A copy of this notebook can be found at " + data["location"] + " in the exercise archive you downloaded") 
+#     rfile.write("\n" )
 
 
-def processLesson( path ) :
-    f = open( "data/README.md", "r" )
+def processMarkdown( filename ) :
+    if not os.path.exists("data/" + filename) : 
+       raise RuntimeError("Found no file called " + filename " in lesson")
+    f = open( "data/" + filename, "r" )
     inp = f.read()
     f.close()
  
-    ofile, inplumed, plumed_inp, solutionfile, incomplete = open( "data/README.md", "w+" ), False, "", "", False
+    ofile, inplumed, plumed_inp, solutionfile, incomplete = open( "data/" + filename, "w+" ), False, "", "", False
     for line in inp.splitlines() :
         # Detect and copy plumed input files 
         if "```plumed" in line :
@@ -104,6 +154,7 @@ def process_lesson(path,eggdb=None):
     with cd(path):
         stram = open("lesson.yml", "r")
         config=yaml.load(stram,Loader=yaml.BaseLoader)
+        stram.close()
         # check fields
         for field in ("url","instructors","title"):
             if not field in config:
@@ -135,58 +186,60 @@ def process_lesson(path,eggdb=None):
            shutil.rmtree("data")
         shutil.move(root,"data")
 
-        # Check for the existence of a README file
-        if not os.path.exists("data/README.md") : 
-           raise RuntimeError("No README.md file found in lesson")
+        # Check for the existence of a NAVIGATION file
+        if not os.path.exists("data/NAVIGATION.md") : 
+           raise RuntimeError("No NAVIGATION.md file found in lesson")
+        # Process the navigation file
+        processNavigation( config["title"] )
         # Process the readme file to construct the lesson
-        processLesson( path )
+        # processLesson( path )
 
         # Get the lesson id from the path
         lesson_id = path[8:10] + "." + path[11:14]
         print("- id: '" + lesson_id + "'",file=eggdb)
         print("  title: " + config["title"],file=eggdb)
-        print("  path: " + path + "data", file=eggdb)
+        print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
  
         # Create a resourcelist file 
-        os.mkdir("data/resources")
-        rfile = open( "data/resources/RESOURCELIST.md", "w+" )
-        rfile.write("# Additional resources: " + config["title"] + "\n\n" )
-        rfile.write("The authors of the lesson on [" + config["title"] + "](..) have provided the additional videos and python notebooks in the table below to help you complete the exercises.\n\n")
-        rfile.write("{:browse-table .display}\n")
-        rfile.write("| Name | Type | Description |\n")
-        rfile.write("|:--------:|:--------:|:---------:|\n")
-        rfile.write("{% for item in site.data.res" + lesson_id.replace(".","l") + " %}| [{{ item.title }}]({{ item.path }}) | {{ item.type }} | {{ item.description }} | \n")
-        rfile.write("{% endfor %}\n\n")
-        rfile.write('<script>\n')
-        rfile.write('$(document).ready(function() {\n')
-        rfile.write("var table = $('#browse-table').DataTable({\n")
-        rfile.write("  \"dom\": '<\"search\"f><\"top\"il>rt<\"bottom\"Bp><\"clear\">',\n")
-        rfile.write("  language: { search: '', searchPlaceholder: \"Search resource...\"\n },")
-        rfile.write("  buttons: [\n")
-        rfile.write("        'copy', 'excel', 'pdf'\n")
-        rfile.write('  ],\n')           
-        rfile.write('  "order": [[ 0, "desc" ]]\n')
-        rfile.write('  });\n')       
-        rfile.write("$('#browse-table-searchbar').keyup(function () {\n")
-        rfile.write('  table.search( this.value ).draw();\n')
-        rfile.write('  });\n')   
-        rfile.write('});\n')
-        rfile.write('</script>\n')
-        rfile.close()
+        # os.mkdir("data/resources")
+        # rfile = open( "data/resources/RESOURCELIST.md", "w+" )
+        # rfile.write("# Additional resources: " + config["title"] + "\n\n" )
+        # rfile.write("The authors of the lesson on [" + config["title"] + "](..) have provided the additional videos and python notebooks in the table below to help you complete the exercises.\n\n")
+        # rfile.write("{:browse-table .display}\n")
+        # rfile.write("| Name | Type | Description |\n")
+        # rfile.write("|:--------:|:--------:|:---------:|\n")
+        # rfile.write("{% for item in site.data.res" + lesson_id.replace(".","l") + " %}| [{{ item.title }}]({{ item.path }}) | {{ item.type }} | {{ item.description }} | \n")
+        # rfile.write("{% endfor %}\n\n")
+        # rfile.write('<script>\n')
+        # rfile.write('$(document).ready(function() {\n')
+        # rfile.write("var table = $('#browse-table').DataTable({\n")
+        # rfile.write("  \"dom\": '<\"search\"f><\"top\"il>rt<\"bottom\"Bp><\"clear\">',\n")
+        # rfile.write("  language: { search: '', searchPlaceholder: \"Search resource...\"\n },")
+        # rfile.write("  buttons: [\n")
+        # rfile.write("        'copy', 'excel', 'pdf'\n")
+        # rfile.write('  ],\n')           
+        # rfile.write('  "order": [[ 0, "desc" ]]\n')
+        # rfile.write('  });\n')       
+        # rfile.write("$('#browse-table-searchbar').keyup(function () {\n")
+        # rfile.write('  table.search( this.value ).draw();\n')
+        # rfile.write('  });\n')   
+        # rfile.write('});\n')
+        # rfile.write('</script>\n')
+        # rfile.close()
 
         # Now get the resources from the yml file
-        rind, ryfile = 1, open( "../../../_data/res" +  lesson_id.replace(".","l") + ".yml", "w+" )
-        ryfile.write("# file containing resources database for this lesson \n")
-        for resource in config["resources"] :
-            processResource( config["title"], rind, resource, ryfile )
-            if rind<3 :
-               print("  resource" + str(rind) + ": " + resource["title"], file=eggdb)
-               print("  rpath" + str(rind) + ": " + path + "data/resources/RESOURCE" + str(rind), file=eggdb)
-            rind = rind + 1
-        ryfile.close()
-        print("  resource3: all resources for lesson", file=eggdb)
-        print("  rpath3: " + path + "data/resources/RESOURCELIST", file=eggdb)
+        # rind, ryfile = 1, open( "../../../_data/res" +  lesson_id.replace(".","l") + ".yml", "w+" )
+        # ryfile.write("# file containing resources database for this lesson \n")
+        # for resource in config["resources"] :
+        #     processResource( config["title"], rind, resource, ryfile )
+        #     if rind<3 :
+        #        print("  resource" + str(rind) + ": " + resource["title"], file=eggdb)
+        #        print("  rpath" + str(rind) + ": " + path + "data/resources/RESOURCE" + str(rind), file=eggdb)
+        #     rind = rind + 1
+        # ryfile.close()
+        # print("  resource3: all resources for lesson", file=eggdb)
+        # print("  rpath3: " + path + "data/resources/RESOURCELIST", file=eggdb)
      
 
 if __name__ == "__main__":

@@ -15,6 +15,7 @@ To incorporate your lesson into the PLUMED-SCHOOL website you then need to write
 url: the location to download your zip archive from goes here
 instructors: your name/s
 title: the title of your lesson
+description: a short description of the content covered in your lesson
 ```
 
 Once you have prepared this file email it to the <b><a href="mailto:plumed.nest@gmail.com">plumed.nest@gmail.com</a></b> and one of the PLUMED consortium coordinators will 
@@ -62,7 +63,9 @@ on these lines will appear in a tooltip)
 If there are HTML objects (e.g. YouTube videos, GeoGebra apps) that you would like to embed into your lesson pages you should list them in a yml file called EMBED.yml that will look as follows:
 
 ```yml
-video1: <insert embed link here>
+video1: 
+  title: <insert title to use on page that embeds your resource here> 
+  location: <insert embed link here>
 ``` 
 
 Notice that keys in this file are used when constructing the flowchart in the NAVIGATION.md file in place of the location of the file that should be included.
