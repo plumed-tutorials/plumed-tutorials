@@ -68,7 +68,7 @@ def processNavigation( lessonname ) :
            else :
               raise RuntimeError("cannot process filname called " + name + " use md or ipynb extension")   
            # And write out the updated click line with the proper link 
-           ofile.write( line.split('"')[0] + '"data/' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '" \n' ) 
+           ofile.write( line.split('"')[0] + '"data/' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"\n' ) 
         else :
            ofile.write( line + "\n" )
     ofile.close()
