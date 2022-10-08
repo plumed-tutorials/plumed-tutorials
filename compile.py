@@ -36,7 +36,7 @@ def processNavigation( lessonname ) :
     embeds=yaml.load(stram,Loader=yaml.BaseLoader)
     stram.close()
 
-    ofile, inmermaid = open( "data/NAVIGATION.md"), "w+", False
+    ofile, inmermaid = open( "data/NAVIGATION.md", "w+"), False
     for line in inp.splitlines() : 
         if "```mermaid" in line : 
            inmermaid = True
