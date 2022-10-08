@@ -3,9 +3,11 @@ How to contribute a new lesson to the PLUMED-SCHOOL
 Adding a lesson to the PLUMED-SCHOOL is free and easy. To do so you must:
 
 * Collect the input files that the students will need to run the calculations that they will perform as they complete the exercise.  
-* Write a README file in [markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) that explains the tasks that the students should work through during the lesson and how they should use the input files you provide.  More detailed information on how to do this is provided below.
-* Identify videos and jupyter notebook files that you think it would be useful to share with students in order to help them complete your lesson. 
-* Create and upload a zip file containing the input files, the jupyter notebooks and your markdown README file to your favorite repository. Popular solutions are [Zenodo](https://zenodo.org) and [GitHub](http://github.com) (we would recommend creating a git repository and using the second of these tools). Additional info about where to host your zip file can be found [here](https://github.com/plumed-nest/plumed-nest/blob/master/README.md#zip-info).
+* Write instructions in [markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) that explain the tasks that the students should work through during the lesson and how they should use the input files you provide.  More detailed information on how to do this is provided below.  Notice that you can divide your instructions inbetween as many markdown files as you feel is appropriate.
+* Identify embedable objects (e.g. YouTube videos) and jupyter notebook files that you think it would be useful to share with students in order to help them complete your lesson.  
+* Write a file called EMBED.yml that contains information about the location of the videos that you would like students to have access to.  See instructions below.
+* Write a file called NAVIGATION.md that contains a flowchart that shows students the order they should work through your exercises.  See instructions below.
+* Create and upload a zip file containing the input files, the jupyter notebooks, your markdown files, the EMBED.yml file and the NAVIGATION.md to your favorite repository. Popular solutions are [Zenodo](https://zenodo.org) and [GitHub](http://github.com) (we would recommend creating a git repository and using the second of these tools). Additional info about where to host your zip file can be found [here](https://github.com/plumed-nest/plumed-nest/blob/master/README.md#zip-info).
 
 To incorporate your lesson into the PLUMED-SCHOOL website you then need to write a yaml file like the one below:
 
@@ -13,23 +15,14 @@ To incorporate your lesson into the PLUMED-SCHOOL website you then need to write
 url: the location to download your zip archive from goes here
 instructors: your name/s
 title: the title of your lesson
-resources:
-  - title: the title for your first video
-    description: a description of what is contained in your video
-    type: video
-    location: the embed link for the video you would like to share
-  - title: the title for your notebook
-    description: a description of the notebook that you are sharing
-    type: notebook
-    location: the location of the notebook in the zip file you uploaded
 ```
 
 Once you have prepared this file email it to the <b><a href="mailto:plumed.nest@gmail.com">plumed.nest@gmail.com</a></b> and one of the PLUMED consortium coordinators will 
 ensure that your content is loaded into the site.  The instruction page for your lesson is created from the README.md file you provide.  The list of additional 
 resources, video pages and notebook pages are generated automatically from the information you provide in the yaml file  
 
-Once your content is loaded on the PLUMED-SCHOOL site, the lesson will upload if you edit the README.md file or the jupyter notebooks that are in zip archive whose link you shared with us.
-If you wish to list additional jupyter notebooks or videos on your pages you will need to contact the PLUMED developers in order to update your yaml file.
+Once your content is loaded on the PLUMED-SCHOOL site, the lesson will upload if you edit the files in the zip archive whose link you shared with us.
+If for some reason you need to change teh location of zip file you will will need to contact the PLUMED developers in order to update your yaml file.
 
 __Please note that:__
 
@@ -42,9 +35,41 @@ __Please note that:__
 <p><b><a href="mailto:plumed.nest@gmail.com">plumed.nest@gmail.com</a></b></p>
 </center>
 
-# Writing your README.md file
+# Writing the NAVIGATION.md file
 
-As explained in the instructions above, the instructions for your lessons must be written in file called `README.md` that is 
+The NAVIGATION.md file is the first file that the user will see when they open your lesson.  This file should provide a flow chart that indicates the order in which the resources you have 
+provided in your lesson should be accessed.  You can write these files using [mermaid flowcharts](https://mermaid-js.github.io/mermaid/#/flowchart) which can be emdedded directly into 
+[github markdown files](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams).  The following snippet 
+shows an example flow chart for a lesson that contains a single video, a markdown file and a python notebook.
+
+````
+```mermaid
+flowchart LR
+A[Lecture I] ==> B[Instructions]
+B ==> C[solution]
+click A "video1" "A video that introduces the exercise"
+click B "README.md" "The instructions for the exercise"
+click C "notebooks/solultion.ipynb" "A python notebook containing a full set of solutions for the exercise"
+```
+```` 
+
+When the school website is built the nodes in the flowchart thus serve as links to the various pages that are built from the resources you provide.  The NAVIGATION.md file is parsed and 
+the name of the file or object to embed that is provided in the first set of inverted commas after each click command is replaced by a suitable hyperlink.  (the text in the second set of inverted commas 
+on these lines will appear in a tooltip)
+
+# Writing the EMBED.yml file
+
+If there are HTML objects (e.g. YouTube videos, GeoGebra apps) that you would like to embed into your lesson pages you should list them in a yml file called EMBED.yml that will look as follows:
+
+```yml
+video1: <insert embed link here>
+``` 
+
+Notice that keys in this file are used when constructing the flowchart in the NAVIGATION.md file in place of the location of the file that should be included.
+
+# Writing your markdown files
+
+As explained in the instructions above, the instructions for your lessons must be written in files called `<name>.md` that are
 written in [markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax). The 
 website we have linked above gives a good introduction to markdown.  It is worth noting, however, that Markdown also allows you to:
 
