@@ -200,7 +200,7 @@ def process_lesson(path,eggdb=None):
         print("  title: " + config["title"],file=eggdb)
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
-        print("  description: " + config["description", file=eggdb)
+        print("  description: " + config["description"], file=eggdb)
  
         # Create a resourcelist file 
         # os.mkdir("data/resources")
