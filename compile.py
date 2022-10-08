@@ -47,7 +47,7 @@ def processNavigation( lessonname ) :
         elif inmermaid and "click" in line :
            name, islesson = line.split('"')[1], False 
            if name in embeds :
-              if title in embeds[name]["title"] :
+              if "title" in embeds[name] :
                  efile = open( "data/" + name + ".md", "w+" ) 
                  efile.write( "# " + lessonname + ": " + embeds[name]["title"] + "\n\n")
                  efile.write( line.split('"')[3] + "\n\n" )
