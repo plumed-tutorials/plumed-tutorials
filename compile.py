@@ -45,15 +45,18 @@ def processNavigation( lessonname ) :
            inmermaid = False 
            ofile.write( line + "\n" )
         elif inmermaid and "click" in line :
-           name = line.split('"')[1] 
+           name, islesson = line.split('"')[1], False 
            if name in embeds :
-              efile = open( "data/" + name + ".md", "w+" ) 
-              efile.write( "# " + lessonname + ": " + embeds[name]["title"] + "\n\n")
-              efile.write( line.split('"')[3] + "\n\n" )
-              efile.write("{% raw %}\n")
-              efile.write('<p align="center"><iframe width="630" height="472" src="' + embeds[name]["location"] + '" frameborder="0" allowfullscreen></iframe></p>\n')
-              efile.write("{% endraw %}\n")
-              efile.close()
+              if title in embeds[name]["title"]
+                 efile = open( "data/" + name + ".md", "w+" ) 
+                 efile.write( "# " + lessonname + ": " + embeds[name]["title"] + "\n\n")
+                 efile.write( line.split('"')[3] + "\n\n" )
+                 efile.write("{% raw %}\n")
+                 efile.write('<p align="center"><iframe width="630" height="472" src="' + embeds[name]["location"] + '" frameborder="0" allowfullscreen></iframe></p>\n')
+                 efile.write("{% endraw %}\n")
+                 efile.close()
+              else : 
+                 name, islesson = "../../" + name + "/data/NAVIGATION.html", True
            elif "md" in name.split(".")[1] : 
               processMarkdown(name)
            elif "ipynb" in name.split(".")[1] :
@@ -68,7 +71,8 @@ def processNavigation( lessonname ) :
            else :
               raise RuntimeError("cannot process filname called " + name + " use md or ipynb extension")   
            # And write out the updated click line with the proper link 
-           ofile.write( line.split('"')[0] + '"' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"\n' ) 
+           if islesson : ofile.write( line.split('"')[0] + '"' + name + '.html" "' + line.split('"')[3] + '"\n' )
+           else : ofile.write( line.split('"')[0] + '"' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"\n' ) 
         else :
            ofile.write( line + "\n" )
     ofile.close()

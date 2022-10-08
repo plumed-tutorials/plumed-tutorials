@@ -41,16 +41,19 @@ __Please note that:__
 The NAVIGATION.md file is the first file that the user will see when they open your lesson.  This file should provide a flow chart that indicates the order in which the resources you have 
 provided in your lesson should be accessed.  You can write these files using [mermaid flowcharts](https://mermaid-js.github.io/mermaid/#/flowchart) which can be emdedded directly into 
 [github markdown files](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams).  The following snippet 
-shows an example flow chart for a lesson that contains a single video, a markdown file and a python notebook.
+shows an example flow chart for a lesson that contains a single video, a markdown file and a python notebook.  In this exercise you are also strongly encouraging them to complete masterclass
+21/001 before starting your masterclass.
 
 ````
 ```mermaid
 flowchart LR
-A[Lecture I] ==> B[Instructions]
-B ==> C[solution]
-click A "video1" "A video that introduces the exercise"
-click B "README.md" "The instructions for the exercise"
-click C "notebooks/solultion.ipynb" "A python notebook containing a full set of solutions for the exercise"
+A[PLUMED intro] ==> B[Lecture I]
+B ==> C[Instructions]
+C ==> D[solution]
+click A "ref1" "You should complete this earlier masterclass before completing this exercise"
+click B "video1" "A video that introduces the exercise"
+click C "README.md" "The instructions for the exercise"
+click D "notebooks/solultion.ipynb" "A python notebook containing a full set of solutions for the exercise"
 ```
 ```` 
 
@@ -60,12 +63,15 @@ on these lines will appear in a tooltip)
 
 # Writing the EMBED.yml file
 
-If there are HTML objects (e.g. YouTube videos, GeoGebra apps) that you would like to embed into your lesson pages you should list them in a yml file called EMBED.yml that will look as follows:
+If there are HTML objects (e.g. YouTube videos, GeoGebra apps) that you would like to embed into your lesson pages or if you would like students to complete some earlier masterclass before trying yours you should list 
+them in a yml file called EMBED.yml that will look as follows:
 
 ```yml
 video1: 
   title: <insert title to use on page that embeds your resource here> 
   location: <insert embed link here>
+ref1: 
+  location: <insert unique ID of earlier masterclass here e.g. 21/001>
 ``` 
 
 Notice that keys in this file are used when constructing the flowchart in the NAVIGATION.md file in place of the location of the file that should be included.
