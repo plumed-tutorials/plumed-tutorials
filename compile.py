@@ -57,7 +57,7 @@ def processNavigation( lessonname ) :
            elif "md" in name.split(".")[1] : 
               processMarkdown(name)
            elif "ipynb" in name.split(".")[1] :
-              with open("data/" + data["location"]) as f : 
+              with open("data/" + name) as f : 
                   mynotebook = nbformat.read( f, as_version=4 )
               # Instantiate the exporter
               exporter = HTMLExporter(template_name = 'classic')
