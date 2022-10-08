@@ -25,7 +25,7 @@
       });
     </script>
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js"></script>
   </head>
   <body>
     <section class="page-header">
@@ -98,6 +98,16 @@
             long_div.style.display = "block";
         }
       } 
+      var config = {
+          startOnLoad:true,
+          theme: 'forest',
+          flowchart:{
+                  useMaxWidth:false,
+                  htmlLabels:true
+              }
+      };
+      mermaid.initialize(config);
+      window.mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
     </script>
   </body>
 </html>
