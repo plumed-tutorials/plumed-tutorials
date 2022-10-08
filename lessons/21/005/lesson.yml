@@ -1,0 +1,4 @@
+url: https://github.com/plumed/masterclass-21-5/archive/refs/heads/main.zip
+instructors: Giovanni Bussi
+title: Replica exchange methods
+description: Runninge umbrella sampling with replica exchange, bias exchange metadynamics and parallel tempering metadynamics
