@@ -63,8 +63,8 @@ on these lines will appear in a tooltip)
 
 # Writing the EMBED.yml file
 
-If there are HTML objects (e.g. YouTube videos, GeoGebra apps) that you would like to embed into your lesson pages or if you would like students to complete some earlier masterclass before trying yours you should list 
-them in a yml file called EMBED.yml that will look as follows:
+If there are HTML objects (e.g. YouTube videos, GeoGebra apps) that you would like to embed into your lesson pages, if you would like students to complete some earlier masterclass before trying yours or if you 
+want users to connsult an external link you should list them in a yml file called EMBED.yml that will look as follows:
 
 ```yml
 video1: 
@@ -72,6 +72,10 @@ video1:
   location: <insert embed link here>
 ref1: 
   location: <insert unique ID of earlier masterclass here e.g. 21/001>
+  type: internal
+ref2:
+  location: <insert link to exeternal website>
+  type: external
 ``` 
 
 Notice that keys in this file are used when constructing the flowchart in the NAVIGATION.md file in place of the location of the file that should be included.

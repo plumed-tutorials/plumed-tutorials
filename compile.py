@@ -56,7 +56,9 @@ def processNavigation( lessonname ) :
                  efile.write("{% endraw %}\n")
                  efile.close()
               else : 
-                 name, islesson = "../../../" + embeds[name]["location"] + "/data/NAVIGATION.html", True
+                 islesson = True
+                 if embeds[name]["type"]=="internal" : name = "../../../" + embeds[name]["location"] + "/data/NAVIGATION.html" 
+                 else : name = embeds[name]["location"]
            elif "md" in name.split(".")[1] : 
               processMarkdown(name)
            elif "ipynb" in name.split(".")[1] :
