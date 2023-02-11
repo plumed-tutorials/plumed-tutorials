@@ -70,7 +70,15 @@ def processNavigation( lessonname ) :
               ipfile = open("data/" + name.split(".")[0] + ".html", "w+" )
               ipfile.write( body ) 
               ipfile.close() 
-           elif "pdf" not in name.split(".")[1] :
+           elif "pdf" in name.split(".")[1] :
+              efile = open( "data/" + name + ".md", "w+" )
+              efile.write( "# " + lessonname + ": " + name + "\n\n")
+              efile.write( line.split('"')[3] + "\n\n" )
+              efile.write("{% raw %}\n")
+              efile.write('<p align="center"><iframe src=' + name +' allowfullscreen></iframe></p>\n')
+              efile.write("{% endraw %}\n")
+              efile.close()
+           else :
               raise RuntimeError("cannot process filname called " + name + " use md, pdf or ipynb extension")   
            # And write out the updated click line with the proper link 
            if islesson : ofile.write( line.split('"')[0] + '"' + name + '" "' + line.split('"')[3] + '"\n' )
