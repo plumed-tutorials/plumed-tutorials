@@ -1,6 +1,6 @@
-How to contribute a new lesson to the PLUMED-SCHOOL
+How to contribute a new lesson to the PLUMED-TUTORIALS
 ---------------------------------------------------
-Adding a lesson to the PLUMED-SCHOOL is free and easy. To do so you must:
+Adding a lesson to the PLUMED-TUTORIALS is free and easy. To do so you must:
 
 * Collect the input files that the students will need to run the calculations that they will perform as they complete the exercise.  
 * Write instructions in [markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) that explain the tasks that the students should work through during the lesson and how they should use the input files you provide.  More detailed information on how to do this is provided below.  Notice that you can divide your instructions inbetween as many markdown files as you feel is appropriate.
@@ -9,7 +9,7 @@ Adding a lesson to the PLUMED-SCHOOL is free and easy. To do so you must:
 * Write a file called NAVIGATION.md that contains a flowchart that shows students the order they should work through your exercises.  See instructions below.
 * Create and upload a zip file containing the input files, the jupyter notebooks, your markdown files, the EMBED.yml file and the NAVIGATION.md to your favorite repository. Popular solutions are [Zenodo](https://zenodo.org) and [GitHub](http://github.com) (we would recommend creating a git repository and using the second of these tools). Additional info about where to host your zip file can be found [here](https://github.com/plumed-nest/plumed-nest/blob/master/README.md#zip-info).
 
-To incorporate your lesson into the PLUMED-SCHOOL website you then need to write a yaml file like the one below:
+To incorporate your lesson into the PLUMED-TUTORIALS website you then need to write a yaml file like the one below:
 
 ```yml
 url: the location to download your zip archive from goes here
@@ -22,17 +22,17 @@ Once you have prepared this file email it to the <b><a href="mailto:plumed.nest@
 ensure that your content is loaded into the site.  The instruction page for your lesson is created from the README.md file you provide.  The list of additional 
 resources, video pages and notebook pages are generated automatically from the information you provide in the yaml file  
 
-Once your content is loaded on the PLUMED-SCHOOL site, the lesson will upload if you edit the files in the zip archive whose link you shared with us.
-If for some reason you need to change teh location of zip file you will will need to contact the PLUMED developers in order to update your yaml file.
+Once your content is loaded on the PLUMED-TUTORIAL site, the lesson will upload if you edit the files in the zip archive whose link you shared with us.
+If for some reason you need to change the location of zip file you will will need to contact the PLUMED developers in order to update your yaml file.
 
 __Please note that:__
 
 * <b> All contributions are curated and manually uploaded by the coordinators of the PLUMED consortium. Therefore, a delay between submission and online publication should be expected.</b>
-* PLUMED-SCHOOL will not host your archive, so make sure the indicated URL remains accessible. More info about where to host your contribution can be found [here](https://github.com/plumed-nest/plumed-nest/blob/master/README.md#zip-info).
-* PLUMED-SCHOOL does not test whether the exercises in your lesson are executed correctly.  It only tests whether the PLUMED can parse the input files you provided in the README instructions.
+* PLUMED-TUTORIALS will not host your archive, so make sure the indicated URL remains accessible. More info about where to host your contribution can be found [here](https://github.com/plumed-nest/plumed-nest/blob/master/README.md#zip-info).
+* PLUMED-TUTORIALS does not test whether the exercises in your lesson are executed correctly.  It only tests whether the PLUMED can parse the input files you provided in the README instructions.
 
 <center>
-<p><b>Questions related to the submission to PLUMED-SCHOOL can be directed to:</b></p>
+<p><b>Questions related to the submission to PLUMED-TUTORIALS can be directed to:</b></p>
 <p><b><a href="mailto:plumed.nest@gmail.com">plumed.nest@gmail.com</a></b></p>
 </center>
 

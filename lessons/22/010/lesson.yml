@@ -1,0 +1,4 @@
+url: https://github.com/plumed/masterclass-22-10/archive/refs/heads/main.zip
+instructors: Giovanni Bussi
+title: Hamiltonian replica exchange with PLUMED and GROMACS
+description: An introduction to running Hamiltonian replica exchange calculations using PLUMED and GROMACS.
