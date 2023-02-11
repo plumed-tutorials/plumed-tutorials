@@ -72,10 +72,10 @@ def processNavigation( lessonname ) :
               ipfile.close() 
            elif "pdf" in name.split(".")[1] :
               efile = open( "data/" + name.split(".")[0] + ".md", "w+" )
-              efile.write( "# " + lessonname + ": " + name + "\n\n")
+              efile.write( "# " + lessonname + " \n\n")
               efile.write( line.split('"')[3] + "\n\n" )
               efile.write("{% raw %}\n")
-              efile.write('<p align="center"><iframe src=' + name +' allowfullscreen></iframe></p>\n')
+              efile.write('<p align="center"><iframe src="' + name + '" allowfullscreen></iframe></p>\n')
               efile.write("{% endraw %}\n")
               efile.close()
            else :
