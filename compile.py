@@ -71,7 +71,7 @@ def processNavigation( lessonname ) :
               ipfile.write( body ) 
               ipfile.close() 
            elif "pdf" in name.split(".")[1] :
-              efile = open( "data/" + name + ".md", "w+" )
+              efile = open( "data/" + name.split(".")[0] + ".md", "w+" )
               efile.write( "# " + lessonname + ": " + name + "\n\n")
               efile.write( line.split('"')[3] + "\n\n" )
               efile.write("{% raw %}\n")
