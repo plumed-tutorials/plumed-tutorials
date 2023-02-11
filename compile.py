@@ -75,7 +75,7 @@ def processNavigation( lessonname ) :
               efile.write( "# " + lessonname + " \n\n")
               efile.write( line.split('"')[3] + "\n\n" )
               efile.write("{% raw %}\n")
-              efile.write('<p align="center"><iframe src="' + name + '" allowfullscreen></iframe></p>\n')
+              efile.write('<p align="center"><iframe width="630" height="472" src="' + name + '" allowfullscreen></iframe></p>\n')
               efile.write("{% endraw %}\n")
               efile.close()
            else :
