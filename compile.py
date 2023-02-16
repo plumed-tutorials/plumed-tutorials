@@ -60,6 +60,12 @@ def processNavigation( lessonname ) :
                  if embeds[name]["type"]=="internal" : name = "../../../" + embeds[name]["location"] + "/data/NAVIGATION.html" 
                  else : name = embeds[name]["location"]
            elif "md" in name.split(".")[1] : 
+              # Special treatment for README.md files as GitHub links to data/README.html don't work as pages opens the rendered README.md file when you open data/
+              if "README.md" in name : 
+                 old_name, spl_name, new_name = name, name.split("/"), ""
+                 for i in range(len(spl_name)-1) : new_name += spl_name[i] + "/"
+                 name = new_name + "GAT_SAFE_README.md"
+                 shutil.copyFile(old_name,name)
               processMarkdown(name)
            elif "ipynb" in name.split(".")[1] :
               with open("data/" + name) as f : 
