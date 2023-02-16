@@ -65,7 +65,7 @@ def processNavigation( lessonname ) :
                  old_name, spl_name, new_name = name, name.split("/"), ""
                  for i in range(len(spl_name)-1) : new_name += spl_name[i] + "/"
                  name = new_name + "GAT_SAFE_README.md"
-                 shutil.copyFile(old_name,name)
+                 shutil.copyfile(old_name,name)
               processMarkdown(name)
            elif "ipynb" in name.split(".")[1] :
               with open("data/" + name) as f : 
