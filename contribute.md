@@ -16,6 +16,7 @@ url: the location to download your zip archive from goes here
 instructors: your name/s
 title: the title of your lesson
 description: a short description of the content covered in your lesson
+command: a command that must be executed to build your tutorial
 ```
 
 Once you have prepared this file email it to the <b><a href="mailto:plumed.nest@gmail.com">plumed.nest@gmail.com</a></b> and one of the PLUMED consortium coordinators will 
@@ -24,6 +25,11 @@ resources, video pages and notebook pages are generated automatically from the i
 
 Once your content is loaded on the PLUMED-TUTORIAL site, the lesson will upload if you edit the files in the zip archive whose link you shared with us.
 If for some reason you need to change the location of zip file you will will need to contact the PLUMED developers in order to update your yaml file.
+
+N.B. In the vast majority of cases you do not need to include the `command` key pair in the yaml file.  This option is used in cases where there is content in a lesson that 
+changes as PLUMED develops.  You might use this option if you want to include a list of collective variables in your tutorial as folks are always implementing new CVs. If you 
+would like to use this option then you can look at the scripts in <a href="https://github.com/plumed/installation-instructions">this tutorial</a> and 
+its <a href="https://github.com/plumed-school/plumed-school/blob/main/lessons/20/001/lesson.yml">yaml file</a>.
 
 __Please note that:__
 
