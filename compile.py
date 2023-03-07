@@ -179,9 +179,8 @@ def process_lesson(path,eggdb=None):
         # Check if there is a command to run in the config and run it if there is
         if "command" in config : 
            with cd("data") : 
-             print("RUNNING COMMAND: " + config["command"] + " in " + os.getcwd() + " which contains files ")
-             print( os.listdir() )
-             subprocess.call(config["command"])
+             print("RUNNING COMMAND: " + config["command"] + " in " + os.getcwd() )
+             subprocess.run(config["command"])
 
         # Check for the existence of a NAVIGATION file
         if not os.path.exists("data/NAVIGATION.md") : 
