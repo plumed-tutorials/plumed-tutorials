@@ -85,7 +85,8 @@ def processNavigation( lessonname ) :
               efile.write("{% endraw %}\n")
               efile.close()
            else :
-              raise RuntimeError("cannot process filname called " + name + " use md, pdf or ipynb extension")   
+              print("failing for file named " + name )
+              raise RuntimeError("cannot process filname called %s use md, pdf or ipynb extension" % name)   
            # And write out the updated click line with the proper link 
            if islesson : ofile.write( line.split('"')[0] + '"' + name + '" "' + line.split('"')[3] + '"\n' )
            else : ofile.write( line.split('"')[0] + '"' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"\n' ) 
