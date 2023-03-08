@@ -16,7 +16,7 @@ url: the location to download your zip archive from goes here
 instructors: your name/s
 title: the title of your lesson
 description: a short description of the content covered in your lesson
-command: a command that must be executed to build your tutorial
+command: the name of a python script that must be executed to build your tutorial
 ```
 
 Once you have prepared this file email it to the <b><a href="mailto:plumed.nest@gmail.com">plumed.nest@gmail.com</a></b> and one of the PLUMED consortium coordinators will 
