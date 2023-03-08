@@ -180,7 +180,8 @@ def process_lesson(path,eggdb=None):
         if "command" in config : 
            with cd("data") : 
              print("RUNNING COMMAND: " + config["command"] + " in " + os.getcwd() )
-             subprocess.run(config["command"])
+             import config["command"]
+             #subprocess.run(config["command"])
 
         # Check for the existence of a NAVIGATION file
         if not os.path.exists("data/NAVIGATION.md") : 
