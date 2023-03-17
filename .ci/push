@@ -64,4 +64,4 @@ git add --all .
 # >/dev/null to avoid excessive noise on travis log
 git commit -m "Update to @$hash" >/dev/null
 # -q and 2> is not to show the PLUMED_SCHOOL_GITHUB_TOKEN log
-git push -f origin master 2> /dev/null 
+git push -f origin master   #2> /dev/null 
