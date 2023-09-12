@@ -1,0 +1,5 @@
+url: https://github.com/plumed/ssec-georgiatech-blog/archive/refs/heads/main.zip
+instructors: Ketan Bhardwaj
+title: Profiling, GPUs and PLUMED
+description: A report based on some profiling work on PLUMED that has been performed by the SSEC  
+tags: developers, C++, profiling
