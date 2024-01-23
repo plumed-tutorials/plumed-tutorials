@@ -5,12 +5,15 @@ import yaml
 f = open('syntax.0.json')
 syntax = json.load(f)
 f.close()
+print("Read python syntax")
 
 # Make a dictionary that contains all the actions
 counts = {}
 for key in syntax :
     if key=="vimlink" or key=="replicalink" or key=="groups" : continue
     counts[key] = 0
+
+print("Built initial counts")
 
 # Now read the yaml 
 with open("lessons.yml", "r") as stream:
@@ -19,12 +22,16 @@ with open("lessons.yml", "r") as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
+print("Read all lessons")
+
 # And work through the items in the yaml file
 # Counting number of actions used in each 
 for l in lessons :
     if l["actions"] : 
        for a in l["actions"].split() : 
           if a in counts.keys() : counts[a] += 1 
+
+print("Obtained final action counts")
 
 # Create the table summarising all the action counts
 of = open("actioncount.md","w")

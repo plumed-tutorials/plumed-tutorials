@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -x
+
 mkdir -p tmpl
 cd tmpl
 # Unzip tar files from all replicas
