@@ -199,7 +199,8 @@ def process_lesson(path,eggdb=None):
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
-        print("  actions: " + str(list(actions)), file=eggdb)
+        astr = ' '.join(actions)
+        print("  actions: " + astr), file=eggdb)
 
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]
