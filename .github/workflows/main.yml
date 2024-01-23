@@ -99,6 +99,7 @@ jobs:
         python-version: 3.8
     - name: Compute action counts
       run: |
+        pip install PyYAML pytz
         python actioncount.py
     - name: Upload
       env:
