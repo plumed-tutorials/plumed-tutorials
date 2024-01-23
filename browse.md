@@ -4,9 +4,9 @@ The lessons that have been submitted to the PLUMED-TUTORIALS are listed below.  
 versions of the code and integrates links from these files to the PLUMED manual.
 
 {:#browse-table .display}
-| ID | Name | Instructors | Description |
-|:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|
-{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.description }} |
+| ID | Name | Instructors | Description | Actions |
+|:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.description }} | {{ item.actions }} |
 {% endfor %}
 
 <script>
@@ -16,6 +16,9 @@ var table = $('#browse-table').DataTable({
   language: { search: '', searchPlaceholder: "Search project..." },
   buttons: [
         'copy', 'excel', 'pdf'
+  ],
+  "columnDefs": [ 
+     { "targets": 4, "visible": false }
   ],
   "order": [[ 0, "desc" ]]
   });

@@ -25,7 +25,7 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
-def processNavigation( lessonname ) :
+def processNavigation( lessonname, actions ) :
     f = open( "data/NAVIGATION.md", "r" )
     inp = f.read()
     f.close()
@@ -66,7 +66,7 @@ def processNavigation( lessonname ) :
                  for i in range(len(spl_name)-1) : new_name += spl_name[i] + "/"
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
-              processMarkdown(name)
+              processMarkdown(name, actions)
            elif "ipynb" in name.split(".")[1] :
               with open("data/" + name) as f : 
                   mynotebook = nbformat.read( f, as_version=4 )
@@ -94,7 +94,7 @@ def processNavigation( lessonname ) :
            ofile.write( line + "\n" )
     ofile.close()
 
-def processMarkdown( filename ) :
+def processMarkdown( filename, actions ) :
     if not os.path.exists("data/" + filename) : 
        raise RuntimeError("Found no file called " + filename + " in lesson")
     f = open( "data/" + filename, "r" )
@@ -127,7 +127,7 @@ def processMarkdown( filename ) :
            # Find the stable version 
            stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
            # Use PlumedToHTML to create the input with all the bells and whistles
-           html = get_html( plumed_inp, solutionfile, solutionfile, ("v"+ stable_version,"master"), (success,success_master), ("plumed","plumed_master") )
+           html = get_html( plumed_inp, solutionfile, solutionfile, ("v"+ stable_version,"master"), (success,success_master), ("plumed","plumed_master"), actions=actions )
            # Print the html for the solution
            ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
         # This finds us the solution file
@@ -189,7 +189,8 @@ def process_lesson(path,eggdb=None):
         if not os.path.exists("data/NAVIGATION.md") : 
            raise RuntimeError("No NAVIGATION.md file found in lesson")
         # Process the navigation file
-        processNavigation( config["title"] )
+        actions = set({})  # This holds the list of actions used in all the plumed input files in the markdown
+        processNavigation( config["title"], actions )
 
         # Get the lesson id from the path
         lesson_id = path[8:10] + "." + path[11:14]
@@ -198,6 +199,7 @@ def process_lesson(path,eggdb=None):
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
+        print("  actions: " + str(list(actions)), file=eggdb)
 
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]
