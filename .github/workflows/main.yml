@@ -71,7 +71,8 @@ jobs:
       run: |
         python --version
         python compile.py --nreplicas 2 --replica ${{matrix.replica}}
-        tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") $(find . -name "*.html") _data/*.yml
+        cp $(plumed info --root)/json/syntax.json syntax.${{matrix.replica}}.json
+        tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") $(find . -name "*.html") _data/*.yml syntax.${{matrix.replica}}.json
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
@@ -92,6 +93,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Download artifacts
       uses: actions/download-artifact@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with: 
+        python-version: 3.8
     - name: Upload
       env:
         PLUMED_SCHOOL_GITHUB_TOKEN: ${{ secrets.PLUMED_SCHOOL_GITHUB_TOKEN }}
