@@ -200,7 +200,7 @@ def process_lesson(path,eggdb=None):
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
         astr = ' '.join(actions)
-        print("  actions: " + astr), file=eggdb)
+        print("  actions: " + astr, file=eggdb)
 
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]
