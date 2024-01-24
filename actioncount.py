@@ -36,7 +36,7 @@ print("Obtained final action counts")
 # Create the table summarising all the action counts
 of = open("actioncount.md","w")
 of.write("# Usage of actions\n\n")
-of.write("<canvas id=\"myChart\" style=\"width:100%;max-width:600px\"></canvas>\n\n")
+of.write("<canvas id=\"myChart\" style=\"width:100%;\"></canvas>\n\n")
 of.write("<script>\n")
 allk, alln = [], []
 for k, v in counts.items() : 
