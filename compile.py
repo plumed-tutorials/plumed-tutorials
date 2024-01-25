@@ -200,7 +200,8 @@ def process_lesson(path,action_counts,eggdb=None):
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
-        for a in actions : action_counts[a] += 1
+        for a in actions : 
+            if a in action_counts.keys() : action_counts[a] += 1
         astr = ' '.join(actions)
         print("  actions: " + astr, file=eggdb)
 
