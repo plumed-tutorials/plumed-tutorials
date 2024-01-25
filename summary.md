@@ -14,6 +14,7 @@
 {% endfor %}
 
 <canvas id="myChart" style="width:100%;"></canvas>
+
 <script>
 var xValues = [ {{ actionlist | join: '", "' | prepend: '"' | append: '"' }} ];
 var yValues = [ {{ astr }} ];
@@ -21,7 +22,7 @@ var barColors = "green";
 
 new Chart("myChart", {
   type: "horizontalBar",
-  data: 
+  data: {
     labels: xValues,
     datasets: [{
       backgroundColor: barColors,
