@@ -257,7 +257,7 @@ if __name__ == "__main__":
     # output yaml file with action counts
     action_list = [] 
     for key, value in action_counts.items() : action_list.append( {'name': key, 'number': value } )
-     cfilename = "_data/action_count-" + str(replica) + ".yml"
-     with open(cfilename, 'w' ) as file:
-          yaml.safe_dump(action_list, file)
+    cfilename = "_data/action_count-" + str(replica) + ".yml"
+    with open(cfilename, 'w' ) as file :
+        yaml.safe_dump(action_list, file)
 
