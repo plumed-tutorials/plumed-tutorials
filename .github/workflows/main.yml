@@ -72,7 +72,7 @@ jobs:
         python --version
         python compile.py --nreplicas 2 --replica ${{matrix.replica}}
         cp $(plumed info --root)/json/syntax.json syntax.${{matrix.replica}}.json
-        tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") $(find . -name "*.html") _data/*.yml syntax.${{matrix.replica}}.json
+        tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") $(find . -name "*.html") _data/*.yml
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
@@ -100,10 +100,6 @@ jobs:
     - name: Install software
       run: |
         pip install PyYAML pytz
-    - name: Compute action counts
-      run: |
-        bash .ci/merge
-        python actioncount.py
     - name: Upload
       env:
         PLUMED_SCHOOL_GITHUB_TOKEN: ${{ secrets.PLUMED_SCHOOL_GITHUB_TOKEN }}

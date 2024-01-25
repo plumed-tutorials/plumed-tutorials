@@ -139,7 +139,7 @@ def processMarkdown( filename, actions ) :
         elif not inplumed : ofile.write( line + "\n" )
     ofile.close()
 
-def process_lesson(path,eggdb=None):
+def process_lesson(path,action_counts,eggdb=None):
     if not eggdb:
         eggdb=sys.stdout
 
@@ -199,6 +199,7 @@ def process_lesson(path,eggdb=None):
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
+        for a in actions : action_counts[a] += 1
         astr = ' '.join(actions)
         print("  actions: " + astr, file=eggdb)
 
@@ -223,6 +224,20 @@ if __name__ == "__main__":
     f=open("_data/plumed.yml","w")
     f.write("stable: v%s" % str(stable_version))
     f.close()
+    # Get list of plumed actions from syntax file
+    cmd = ['plumed', 'info', '--root']
+    plumed_info = subprocess.run(cmd, capture_output=True, text=True )
+    keyfile = plumed_info.stdout.strip() + "/json/syntax.json" 
+    with open(keyfile) as f :
+        try:
+           plumed_syntax = json.load(f)
+        except ValueError as ve:
+           raise InvalidJSONError(ve)
+    # Make a dictionary to hold all the actions
+    action_counts = {}
+    for key in syntax :
+        if key=="vimlink" or key=="replicalink" or key=="groups" : continue
+        action_counts[key] = 0
     with open("_data/lessons" + str(replica) + ".yml","w") as eggdb:
         print("# file containing lesson database.",file=eggdb)
 
@@ -237,6 +252,12 @@ if __name__ == "__main__":
         k=0
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
 
-            if k%nreplicas==replica : process_lesson(re.sub("lesson.yml$","",str(path)),eggdb)
+            if k%nreplicas==replica : process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,eggdb)
             k = k + 1
+    # output yaml file with action counts
+    action_list = [] 
+    for key, value in action_counts.items() : action_list.append( {'name': key, 'number': value } )
+     cfilename = "_data/action_count-" + str(replica) + ".yml"
+     with open(cfilename, 'w' ) as file:
+          yaml.safe_dump(action_list, file)
 
