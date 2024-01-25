@@ -17,8 +17,7 @@
 <script>
 var xValues = [ {{ actionlist | join: '", "' | prepend: '"' | append: '"' }} ];
 var yValues = [ {{ astr }} ];
-var barColors = \"green\";
-
+var barColors = "green";
 
 new Chart("myChart", {
   type: "horizontalBar",
