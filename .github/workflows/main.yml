@@ -70,6 +70,7 @@ jobs:
     - name: Run
       run: |
         python --version
+        # N.B. If you adjust the number of replicas used here you need to adjust the liquid syntax in summary.md that builds the total number of lessons that use each action 
         python compile.py --nreplicas 2 --replica ${{matrix.replica}}
         cp $(plumed info --root)/json/syntax.json syntax.${{matrix.replica}}.json
         tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name "*badge.svg") $(find . -name "*.html") _data/*.yml
