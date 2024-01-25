@@ -100,6 +100,10 @@ jobs:
     - name: Install software
       run: |
         pip install PyYAML pytz
+    - name: Merge action counts
+      run: |
+        python --version
+        python mergecounts.py --nreplicas 2
     - name: Upload
       env:
         PLUMED_SCHOOL_GITHUB_TOKEN: ${{ secrets.PLUMED_SCHOOL_GITHUB_TOKEN }}
