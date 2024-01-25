@@ -93,17 +93,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Download artifacts
       uses: actions/download-artifact@v3
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with: 
-        python-version: 3.8
-    - name: Install software
-      run: |
-        pip install PyYAML pytz
-    - name: Merge action counts
-      run: |
-        python --version
-        python mergecounts.py --nreplicas 2
     - name: Upload
       env:
         PLUMED_SCHOOL_GITHUB_TOKEN: ${{ secrets.PLUMED_SCHOOL_GITHUB_TOKEN }}
