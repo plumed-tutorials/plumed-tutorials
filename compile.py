@@ -236,7 +236,7 @@ if __name__ == "__main__":
            raise InvalidJSONError(ve)
     # Make a dictionary to hold all the actions
     action_counts = {}
-    for key in syntax :
+    for key in plumed_syntax :
         if key=="vimlink" or key=="replicalink" or key=="groups" : continue
         action_counts[key] = 0
     with open("_data/lessons" + str(replica) + ".yml","w") as eggdb:
