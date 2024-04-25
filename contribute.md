@@ -31,6 +31,12 @@ changes as PLUMED develops.  You might use this option if you want to include a 
 would like to use this option then you can look at the scripts in <a href="https://github.com/plumed/installation-instructions">this tutorial</a> and 
 its <a href="https://github.com/plumed-school/plumed-school/blob/main/lessons/20/001/lesson.yml">yaml file</a>.
 
+Lastly, note that if you want to a a link to content that you have contributed to PLUMED-TUTORIALS to your personal website you can use a url like the one below:
+
+````
+https://plumed-school.github.io/browse.html?search=yourname
+````
+
 __Please note that:__
 
 * <b> All contributions are curated and manually uploaded by the coordinators of the PLUMED consortium. Therefore, a delay between submission and online publication should be expected.</b>
