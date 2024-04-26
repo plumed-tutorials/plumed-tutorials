@@ -22,12 +22,12 @@
   new research and promote the highest possible standards of scientific reproducibility.
   More information can be found [here](http://www.plumed-nest.org/consortium.md).
 
-* __How to find a lesson in PLUMED-TUTORIALS
+* __How to find a lesson in PLUMED-TUTORIALS__
 
   The list of contributions to PLUMED-TUTORIALS from current members of the PLUMED consortium as well as other researchers
   can be found [here](browse.md).
 
-* __How to contribute lessons to PLUMED-TUTORIALS
+* __How to contribute lessons to PLUMED-TUTORIALS__
 
   Documentation matters! If you have developed a new method and implemented it in PLUMED you should 
   try totry to ensure that there is sufficient information online for others to use your method. A good way to 
