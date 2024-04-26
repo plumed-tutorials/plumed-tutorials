@@ -5,6 +5,8 @@ pages:
   url: /news.html
 - title: PLUMED
   url: /plumed.html
+- title: Manual
+  url: /manual.html
 - title: Browse lessons
   url: /browse.html
 - title: Going further
