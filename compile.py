@@ -26,7 +26,7 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
-def processNavigation( lessonname, actions, ninputs, nfail, nfailm ) :
+def processNavigation( lessonname, actions ) :
     f = open( "data/NAVIGATION.md", "r" )
     inp = f.read()
     f.close()
@@ -37,6 +37,7 @@ def processNavigation( lessonname, actions, ninputs, nfail, nfailm ) :
     embeds=yaml.load(stram,Loader=yaml.BaseLoader) or {}
     stram.close()
 
+    ninputs, nfail, nfailm = 0, 0, 0
     ofile, inmermaid = open( "data/NAVIGATION.md", "w+"), False
     for line in inp.splitlines() : 
         if "```mermaid" in line : 
@@ -67,7 +68,8 @@ def processNavigation( lessonname, actions, ninputs, nfail, nfailm ) :
                  for i in range(len(spl_name)-1) : new_name += spl_name[i] + "/"
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
-              processMarkdown(name, actions, ninputs, nfail, nfailm )
+              ni, nf, nfm = processMarkdown( name, actions )
+              ninputs, nfail, nfailm = ninputs + ni, nfail + nf, nfailm + nfm
            elif "ipynb" in name.split(".")[1] :
               with open("data/" + name) as f : 
                   mynotebook = nbformat.read( f, as_version=4 )
@@ -94,14 +96,16 @@ def processNavigation( lessonname, actions, ninputs, nfail, nfailm ) :
         else :
            ofile.write( line + "\n" )
     ofile.close()
+    return ninputs, nfail, nfailm 
 
-def processMarkdown( filename, actions, ninputs, nfail, nfailm ) :
+def processMarkdown( filename, actions ) :
     if not os.path.exists("data/" + filename) : 
        raise RuntimeError("Found no file called " + filename + " in lesson")
     f = open( "data/" + filename, "r" )
     inp = f.read()
     f.close()
  
+    ninputs, nfail, nfailm = 0, 0, 0
     ofile, inplumed, plumed_inp, solutionfile, incomplete = open( "data/" + filename, "w+" ), False, "", "", False
     for line in inp.splitlines() :
         # Detect and copy plumed input files 
@@ -141,6 +145,7 @@ def processMarkdown( filename, actions, ninputs, nfail, nfailm ) :
         # Just copy any line that isn't part of a plumed input
         elif not inplumed : ofile.write( line + "\n" )
     ofile.close()
+    return ninputs, nfail, nfailm
 
 def process_lesson(path,action_counts,eggdb=None):
     if not eggdb:
@@ -192,8 +197,8 @@ def process_lesson(path,action_counts,eggdb=None):
         if not os.path.exists("data/NAVIGATION.md") : 
            raise RuntimeError("No NAVIGATION.md file found in lesson")
         # Process the navigation file
-        ninputs, nfail, nfailm, actions = 0, 0, 0, set({})  # This holds the list of actions used in all the plumed input files in the markdown
-        processNavigation( config["title"], actions, ninputs, nfail, nfailm )
+        actions = set({})  # This holds the list of actions used in all the plumed input files in the markdown
+        ninputs, nfail, nfailm = processNavigation( config["title"], actions )
 
         # Get the lesson id from the path
         lesson_id = path[8:10] + "." + path[11:14]
