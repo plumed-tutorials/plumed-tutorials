@@ -26,7 +26,7 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
-def processNavigation( lessonname, actions ) :
+def processNavigation( lessonname, actions, ninputs, nfail, nfailm ) :
     f = open( "data/NAVIGATION.md", "r" )
     inp = f.read()
     f.close()
@@ -67,7 +67,7 @@ def processNavigation( lessonname, actions ) :
                  for i in range(len(spl_name)-1) : new_name += spl_name[i] + "/"
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
-              processMarkdown(name, actions)
+              processMarkdown(name, actions, ninputs, nfail, nfailm )
            elif "ipynb" in name.split(".")[1] :
               with open("data/" + name) as f : 
                   mynotebook = nbformat.read( f, as_version=4 )
@@ -95,7 +95,7 @@ def processNavigation( lessonname, actions ) :
            ofile.write( line + "\n" )
     ofile.close()
 
-def processMarkdown( filename, actions ) :
+def processMarkdown( filename, actions, ninputs, nfail, nfailm ) :
     if not os.path.exists("data/" + filename) : 
        raise RuntimeError("Found no file called " + filename + " in lesson")
     f = open( "data/" + filename, "r" )
@@ -106,7 +106,7 @@ def processMarkdown( filename, actions ) :
     for line in inp.splitlines() :
         # Detect and copy plumed input files 
         if "```plumed" in line :
-           inplumed, plumed_inp, solutionfile, incomplete  = True, "", "", False 
+           inplumed, plumed_inp, solutionfile, incomplete, ninputs = True, "", "", Falsem ninputs + 1 
         # Test plumed input files that have been found in tutorial 
         elif inplumed and "```" in line : 
            inplumed = False
@@ -124,7 +124,9 @@ def processMarkdown( filename, actions ) :
                sf.close()
            # Test whether the input solution can be parsed
            success = success=test_plumed( "plumed", "data/" + solutionfile )
+           if(success!=0 and success!="custom") : nfail = nfail + 1
            success_master=test_plumed( "plumed_master", "data/" + solutionfile  )
+           if(success_master!=0 and success_master!="custom") : nfailm = nfailm + 1
            # Find the stable version 
            stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
            # Use PlumedToHTML to create the input with all the bells and whistles
@@ -190,8 +192,8 @@ def process_lesson(path,action_counts,eggdb=None):
         if not os.path.exists("data/NAVIGATION.md") : 
            raise RuntimeError("No NAVIGATION.md file found in lesson")
         # Process the navigation file
-        actions = set({})  # This holds the list of actions used in all the plumed input files in the markdown
-        processNavigation( config["title"], actions )
+        ninputs, nfail, nfailm, actions = 0, 0, 0, set({})  # This holds the list of actions used in all the plumed input files in the markdown
+        processNavigation( config["title"], actions, ninputs, nfail, nfailm )
 
         # Get the lesson id from the path
         lesson_id = path[8:10] + "." + path[11:14]
@@ -200,6 +202,9 @@ def process_lesson(path,action_counts,eggdb=None):
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
+        print("  ninputs: " + str(ninputs), file=eggdb)
+        print("  nfail: " + str(nfail), file=eggdb)
+        print("  nfailm: " + str(nfailm), file=eggdb)
         for a in actions : 
             if a in action_counts.keys() : action_counts[a] += 1
         astr = ' '.join(actions)

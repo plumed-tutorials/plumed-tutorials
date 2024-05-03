@@ -1,5 +1,43 @@
 # Usage of actions
 
+{% assign ninp   = 0 %}
+{% assign nfail  = 0 %}
+{% assign nfailm = 0 %}
+{% assign failed = ''  | split: ',' %}
+{% assign missing = '' | split: ',' %}
+{% assign preprint = '' | split: ',' %}
+{% assign date = "now" | date: "%Y-%m-%d %H:%M" %}
+
+{% for item in site.data.lessons %}
+   {% assign ninp   = ninp   | plus: item.ninputs %} 
+   {% assign nfail  = nfail  | plus: item.nfail %}
+   {% assign nfailm = nfailm | plus: item.nfailm %}
+   {% if item.nfail > 0 or item.nfailm > 0 %}
+     {% assign failed = failed | push: item %}
+   {% endif %}
+{% endfor %}
+
+Total number of lessons and PLUMED input files deposited in PLUMED-TUTORIALS, along with number of failed inputs 
+with current ({{ site.data.plumed.stable }}) and master PLUMED versions.
+
+|   Date   |  # eggs | # inputs | ![current](https://img.shields.io/badge/current-failed-red.svg) | ![master](https://img.shields.io/badge/master-failed-red.svg) |
+| :------: |  :------:  |  :------:  | :------:  | :------:  |
+|  {{ date }} | {{ site.data.lessons.size }} | {{ ninp }} | {{ nfail }} | {{ nfailm }} |
+
+__List of lessons with failed tests__
+
+There are {{ failed.size }} tutorials with failing inputs.
+
+{:#browse-table .display}
+| ID | Name | Instructors | # inputs | # current | # master |
+| :------: |  :------:  |  :------: | :------: | :------:  | :------: |
+{% for item in failed %}| [{{ item.id }}]({{ item.path }}) | {{ item.name }} | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.ninputs }} | {{ item.nfail }} | {{ item.nfailm }} |
+{% endfor %}
+
+__Action usage chart__
+
+The chart below shows how many lessons make use of each of the available actions in PLUMED.
+
 {% assign actionlist = site.data.actioncount0 | map: "name" %}
 {% assign actionno = site.data.actioncount0 | map: "number" %}
 {% assign actionno1 = site.data.actioncount1 | map: "number" %}
