@@ -122,7 +122,7 @@ def processMarkdown( filename, actions ) :
                # Create the full input for PlumedToHTML formatter 
                plumed_inp += "#SOLUTION \n" + solution
            else : 
-               solutionfile = "this_input_should_work.dat"
+               solutionfile = filename + "_working_" + str(ninputs) + ".dat"
                sf = open( "data/" + solutionfile, "w+" )
                sf.write( plumed_inp )
                sf.close()
