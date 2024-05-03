@@ -38,6 +38,19 @@ def createActionPage( key, value, neggs, nlessons, actdb ) :
          f.write(" | \n\n## Further details and examples \n")
          f.write("Information for the manual from the code would go in here \n")
          f.write("## Syntax \n")
+         f.write("The following table describes the keywords and options that can be used with this action \n")
+         f.write("| Keyword | Type | Default | Description |\n")
+         f.write("|:-------:|:----:|:-------:|:-----------:|\n")
+         for key, docs in value["syntax"].items() : 
+             if key=="output" : continue 
+             if docs["type"]=="atoms" or key=="ARG" : f.write("| " + key + " | input | none | " + docs["description"] + " |\n") 
+         for key, docs in value["syntax"].items() : 
+             if key=="output" : continue
+             if docs["type"]=="compulsory"  : f.write("| " + key + " | compulsory | none | " + docs["description"] + " |\n") 
+         for key, docs in value["syntax"].items() :
+             if key=="output" : continue
+             if docs["type"]=="flag" : f.write("| " + key + " | optional | false | " + docs["description"] + " |\n")
+             if docs["type"]=="optional" : f.write("| " + key + " | optional | not used | " + docs["description"] + " |\n")
 
     print("- name: " + key, file=actdb)
     print("  path: manual/" + key + ".html", file=actdb)
