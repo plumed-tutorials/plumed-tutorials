@@ -54,7 +54,8 @@ def createActionPage( key, value, neggs, nlessons, actdb ) :
 
     print("- name: " + key, file=actdb)
     print("  path: manual/" + key + ".html", file=actdb)
-    print("  description: " + value["description"], file=actdb)    
+    print("  description: replace with proper description from syntax", file=actdb)
+    #print("  description: " + value["description"], file=actdb)    
 
 
 if __name__ == "__main__" : 
