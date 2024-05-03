@@ -106,7 +106,7 @@ def processMarkdown( filename, actions, ninputs, nfail, nfailm ) :
     for line in inp.splitlines() :
         # Detect and copy plumed input files 
         if "```plumed" in line :
-           inplumed, plumed_inp, solutionfile, incomplete, ninputs = True, "", "", Falsem ninputs + 1 
+           inplumed, plumed_inp, solutionfile, incomplete, ninputs = True, "", "", False, ninputs + 1 
         # Test plumed input files that have been found in tutorial 
         elif inplumed and "```" in line : 
            inplumed = False
