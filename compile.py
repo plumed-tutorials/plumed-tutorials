@@ -212,7 +212,7 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         print("  nfailm: " + str(nfailm), file=eggdb)
         modules = set()  
         for a in actions :
-            if a in plumed.syntax.keys() : 
+            if a in plumed_syntax.keys() : 
                try :
                  modules.add( plumed_syntax[a]["module"] ) 
                except : 
