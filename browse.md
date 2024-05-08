@@ -4,9 +4,9 @@ The lessons that have been submitted to the PLUMED-TUTORIALS are listed below.  
 versions of the code and integrates links from these files to the PLUMED manual.  Inputs in the tutorials listed below were last tested on {{ date }}.
 
 {:#browse-table .display}
-| ID | Name | Instructors | Description | Actions |
-|:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|
-{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.description }} | {{ item.actions }} |
+| ID | Name | Instructors | Description | Actions | Modules |
+|:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|
+{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.description }} | {{ item.actions }} | {{ item.modules }} |
 {% endfor %}
 
 <script>
@@ -18,7 +18,8 @@ var table = $('#browse-table').DataTable({
         'copy', 'excel', 'pdf'
   ],
   "columnDefs": [ 
-     { "targets": 4, "visible": false }
+     { "targets": 4, "visible": false },
+     { "targets": 5, "visible": false }
   ],
   "order": [[ 0, "desc" ]]
   });

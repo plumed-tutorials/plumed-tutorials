@@ -147,7 +147,7 @@ def processMarkdown( filename, actions ) :
     ofile.close()
     return ninputs, nfail, nfailm
 
-def process_lesson(path,action_counts,eggdb=None):
+def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
     if not eggdb:
         eggdb=sys.stdout
 
@@ -210,10 +210,17 @@ def process_lesson(path,action_counts,eggdb=None):
         print("  ninputs: " + str(ninputs), file=eggdb)
         print("  nfail: " + str(nfail), file=eggdb)
         print("  nfailm: " + str(nfailm), file=eggdb)
-        for a in actions : 
+        modules = set()  
+        for a in actions :
+            try : 
+              modules.add( plumed_syntax[a]["module"] ) 
+            except : 
+              raise Exception("could not find module for action " + a)
             if a in action_counts.keys() : action_counts[a] += 1
         astr = ' '.join(actions)
         print("  actions: " + astr, file=eggdb)
+        modstr = ' '.join(modules)
+        print("  modules: " + modstr, file=eggdb)
 
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]
@@ -237,7 +244,7 @@ if __name__ == "__main__":
     f.write("stable: v%s" % str(stable_version))
     f.close()
     # Get list of plumed actions from syntax file
-    cmd = ['plumed', 'info', '--root']
+    cmd = ['plumed_master', 'info', '--root']
     plumed_info = subprocess.run(cmd, capture_output=True, text=True )
     keyfile = plumed_info.stdout.strip() + "/json/syntax.json" 
     with open(keyfile) as f :
@@ -264,7 +271,7 @@ if __name__ == "__main__":
         k=0
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
 
-            if k%nreplicas==replica : process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,eggdb)
+            if k%nreplicas==replica : process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
             k = k + 1
     # output yaml file with action counts
     action_list = [] 

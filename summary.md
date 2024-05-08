@@ -31,7 +31,7 @@ There are {{ failed.size }} tutorials with failing inputs.
 {:#browse-table .display}
 | ID | Name | Instructors | # inputs | # current | # master |
 | :------: |  :------:  |  :------: | :------: | :------:  | :------: |
-{% for item in failed %}| [{{ item.id }}]({{ item.path }}) | {{ item.name }} | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.ninputs }} | {{ item.nfail }} | {{ item.nfailm }} |
+{% for item in failed %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.ninputs }} | {{ item.nfail }} | {{ item.nfailm }} |
 {% endfor %}
 
 __Action usage chart__
