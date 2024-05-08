@@ -212,10 +212,11 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         print("  nfailm: " + str(nfailm), file=eggdb)
         modules = set()  
         for a in actions :
-            try : 
-              modules.add( plumed_syntax[a]["module"] ) 
-            except : 
-              raise Exception("could not find module for action " + a)
+            if a in plumed.syntax.keys() : 
+               try :
+                 modules.add( plumed_syntax[a]["module"] ) 
+               except : 
+                 raise Exception("could not find module for action " + a)
             if a in action_counts.keys() : action_counts[a] += 1
         astr = ' '.join(actions)
         print("  actions: " + astr, file=eggdb)
