@@ -136,7 +136,7 @@ def processMarkdown( filename, actions ) :
            # Find the stable version 
            stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
            # Use PlumedToHTML to create the input with all the bells and whistles
-           html = get_html( plumed_inp, solutionfile, solutionfile, ("v"+ stable_version,"master"), (success,success_master), ("plumed","plumed_master"), actions=actions )
+           html = get_html( plumed_inp, solutionfile, solutionfile, ("v"+ stable_version,"master"), (success,success_master), ("plumed","plumed_master"), usejson=(not success_master), actions=actions )
            # Print the html for the solution
            ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
         # This finds us the solution file
