@@ -129,7 +129,8 @@ def processMarkdown( filename, actions ) :
            # Test whether the input solution can be parsed
            success = success=test_plumed( "plumed", "data/" + solutionfile )
            if(success!=0 and success!="custom") : nfail = nfail + 1
-           success_master=test_plumed( "plumed_master", "data/" + solutionfile  )
+           # Json files are put in directory one up from us to ensure that PlumedToHTML finds them when we do get_html (i.e. these will nto be in the data directory where the calculation is run)
+           success_master=test_plumed( "plumed_master", "data/" + solutionfile, shortcutfile='../' + solutionfile + '.json', valuefile='../values_' + solutionfile + '.json'  )
            if(success_master!=0 and success_master!="custom") : nfailm = nfailm + 1
            # Find the stable version 
            stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
