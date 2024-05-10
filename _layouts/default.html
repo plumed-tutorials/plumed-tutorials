@@ -80,11 +80,11 @@
       //   }
       // }
       var redpath="";
-      function showPath(eg,name) {
+      function showPath(eg,name,color) {
         var i; var y = document.getElementsByName(redpath);
-        for (i=0; i < y.length; i++ ) { y[i].style.color="black"; }
+        for (i=0; i < y.length; i++ ) { y[i].style.color=""; }
         var x = document.getElementsByName(name); redpath=name;
-        for (i = 0; i < x.length; i++) { x[i].style.color="red"; }
+        for (i = 0; i < x.length; i++) { x[i].style.color=color; }
         var valid="value_details_".concat(eg);
         var valueField = document.getElementById(valid);
         var dataField = document.getElementById(name);
@@ -100,7 +100,7 @@
             short_div.style.display = "none";
             long_div.style.display = "block";
         }
-      } 
+      }
     </script>
   </body>
   <script>
