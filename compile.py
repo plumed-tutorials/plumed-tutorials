@@ -12,7 +12,7 @@ import subprocess
 import nbformat
 from nbconvert import HTMLExporter 
 from contextlib import contextmanager
-from PlumedToHTML import test_plumed, get_html
+from PlumedToHTML import test_plumed, get_html, get_mermaid
 
 if not (sys.version_info > (3, 0)):
    raise RuntimeError("We are using too many python 3 constructs, so this is only working with python 3")
@@ -106,7 +106,7 @@ def processMarkdown( filename, actions ) :
     f.close()
  
     ninputs, nfail, nfailm = 0, 0, 0
-    ofile, inplumed, plumed_inp, solutionfile, incomplete = open( "data/" + filename, "w+" ), False, "", "", False
+    ofile, inplumed, plumed_inp, solutionfile, incomplete, usemermaid = open( "data/" + filename, "w+" ), False, "", "", False, ""
     for line in inp.splitlines() :
         # Detect and copy plumed input files 
         if "```plumed" in line :
@@ -114,6 +114,13 @@ def processMarkdown( filename, actions ) :
         # Test plumed input files that have been found in tutorial 
         elif inplumed and "```" in line : 
            inplumed = False
+           # Create mermaid graphs from PLUMED inputs if this has been requested
+           if usemermaid!="" :
+              mermaidinpt = ""
+              if usemermaid=="value" : mermaidinpt = get_mermaid( plumed_inp, False )
+              elif usemermaid=="force" : mermaidinpt = get_mermaid( plumed_inp, True )
+              else : raise Exception(usemermaid + "is invalid instruction for use mermaid") 
+              ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
            if incomplete :
                # Read solution from solution file
                sf = open( "data/" + solutionfile, "r" )
@@ -141,6 +148,8 @@ def processMarkdown( filename, actions ) :
            ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
         # This finds us the solution file
         elif inplumed and "#SOLUTIONFILE=" in line : solutionfile=line.replace("#SOLUTIONFILE=","")
+        elif inplumed and "#MERMAID=" in line : 
+             usemermaid = line.replace("#MERMAID=","")
         elif inplumed :
              if "__FILL__" in line : incomplete = True 
              plumed_inp += line + "\n"
