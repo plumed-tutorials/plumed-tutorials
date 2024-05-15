@@ -149,7 +149,7 @@ def processMarkdown( filename, actions ) :
         # This finds us the solution file
         elif inplumed and "#SOLUTIONFILE=" in line : solutionfile=line.replace("#SOLUTIONFILE=","")
         elif inplumed and "#MERMAID=" in line : 
-             usemermaid = line.replace("#MERMAID=","")
+             usemermaid = line.replace("#MERMAID=","").strip()
         elif inplumed :
              if "__FILL__" in line : incomplete = True 
              plumed_inp += line + "\n"
