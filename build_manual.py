@@ -77,7 +77,7 @@ if __name__ == "__main__" :
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
    school_map = create_map("https://plumed-school.github.io/summary.html")
    # Get list of plumed actions from syntax file
-   cmd = ['plumed', 'info', '--root']
+   cmd = ['plumed_master', 'info', '--root']
    plumed_info = subprocess.run(cmd, capture_output=True, text=True )
    keyfile = plumed_info.stdout.strip() + "/json/syntax.json"
    with open(keyfile) as f :
