@@ -21,18 +21,18 @@ def create_map( URL ) :
     
     return dict(map(lambda i,j : (i,j) , xdata,ydata))
 
-def createActionPage( key, value, neggs, nlessons, actdb ) :
-    with open("manual/" + key + ".md", "w") as f : 
-         f.write("# Action: " + key + "\n\n")
+def createActionPage( action, value, neggs, nlessons, actdb ) :
+    with open("manual/" + action + ".md", "w") as f : 
+         f.write("# Action: " + action + "\n\n")
          f.write("| Description    | Usage |\n")
          f.write("|:--------:|:--------:|\n") 
          f.write("| " + value["description"] + " | ")
          if nlessons>0 : 
-            f.write("[![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-" + str(nlessons) + "-green.svg)](https://plumed-school.github.io/browse.html?search=" + key + ")")
+            f.write("[![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-" + str(nlessons) + "-green.svg)](https://plumed-school.github.io/browse.html?search=" + action + ")")
          else : 
             f.write("![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-0-red.svg)")
          if neggs>0 : 
-            f.write("[![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-" + str(neggs) + "-green.svg)](https://www.plumed-nest.org/browse.html?search=" + key + ")")
+            f.write("[![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-" + str(neggs) + "-green.svg)](https://www.plumed-nest.org/browse.html?search=" + action + ")")
          else : 
             f.write("![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-0-red.svg)") 
          f.write(" | \n\n## Further details and examples \n")
@@ -52,10 +52,9 @@ def createActionPage( key, value, neggs, nlessons, actdb ) :
              if docs["type"]=="flag" : f.write("| " + key + " | optional | false | " + docs["description"] + " |\n")
              if docs["type"]=="optional" : f.write("| " + key + " | optional | not used | " + docs["description"] + " |\n")
 
-    print("- name: " + key, file=actdb)
-    print("  path: manual/" + key + ".html", file=actdb)
-    print("  description: replace with proper description from syntax", file=actdb)
-    #print("  description: " + value["description"], file=actdb)    
+    print("- name: " + action, file=actdb)
+    print("  path: manual/" + action + ".html", file=actdb)
+    print("  description: " + value["description"], file=actdb)    
 
 
 if __name__ == "__main__" : 
