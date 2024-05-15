@@ -117,8 +117,8 @@ def processMarkdown( filename, actions ) :
            # Create mermaid graphs from PLUMED inputs if this has been requested
            if usemermaid!="" :
               mermaidinpt = ""
-              if usemermaid=="value" : mermaidinpt = get_mermaid( plumed_inp, False )
-              elif usemermaid=="force" : mermaidinpt = get_mermaid( plumed_inp, True )
+              if usemermaid=="value" : mermaidinpt = get_mermaid( "plumed_master", plumed_inp, False )
+              elif usemermaid=="force" : mermaidinpt = get_mermaid( "plumed_master", plumed_inp, True )
               else : raise Exception(usemermaid + "is invalid instruction for use mermaid") 
               ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
            if incomplete :
