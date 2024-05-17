@@ -91,7 +91,7 @@ if __name__ == "__main__" :
  
        k=0
        for key, value in plumed_syntax.items() :
-           if key=="vimlink" or key=="replicalink" or key=="groups" : continue
+           if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
            # Now create the page contents
            if k%nreplicas==replica : 
               neggs, nlessons = 0, 0
