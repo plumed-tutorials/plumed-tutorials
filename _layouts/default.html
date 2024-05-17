@@ -80,14 +80,14 @@
       //   }
       // }
       var redpath="";
-      function showPath(eg,name,color) {
+      function showPath(eg,name,valfield,color) {
         var i; var y = document.getElementsByName(redpath);
         for (i=0; i < y.length; i++ ) { y[i].style.color=""; }
         var x = document.getElementsByName(name); redpath=name;
         for (i = 0; i < x.length; i++) { x[i].style.color=color; }
         var valid="value_details_".concat(eg);
         var valueField = document.getElementById(valid);
-        var dataField = document.getElementById(name);
+        var dataField = document.getElementById(valfield);
         valueField.innerHTML = dataField.innerHTML;
       }
       function toggleDisplay(name) {
