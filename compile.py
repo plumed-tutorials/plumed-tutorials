@@ -31,11 +31,11 @@ def processNavigation( lessonname, actions ) :
     inp = f.read()
     f.close()
 
-    if not os.path.exists("data/EMBED.yml") : 
-       raise RuntimeError("No EMBED.yml file found in lesson")
-    stram=open("data/EMBED.yml", "r")
-    embeds=yaml.load(stram,Loader=yaml.BaseLoader) or {}
-    stram.close()
+    embeds = {}
+    if os.path.exists("data/EMBED.yml") : 
+       stram=open("data/EMBED.yml", "r")
+       embeds=yaml.load(stram,Loader=yaml.BaseLoader) or {}
+       stram.close()
 
     ninputs, nfail, nfailm = 0, 0, 0
     ofile, inmermaid = open( "data/NAVIGATION.md", "w+"), False
