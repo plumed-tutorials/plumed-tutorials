@@ -8,17 +8,15 @@ import yaml
 import os
 
 if __name__ == "__main__":
-   lessondict, pathlist= [], list(pathlib.Path('.').glob('lesson-content*.zip'))
+   lessondict, pathlist= [], list(pathlib.Path('.').glob('lesson-content*/lessons.tar'))
    for path in pathlist : 
-       num = str(path).split(".")[0].replace("lesson-content","")
-       with ZipFile( path, 'r' ) as zip :
-            zip.extractall()
-            tar = tarfile.open("lessons.tar")
-            lf = tar.extractfile("_data/lessons" + num + ".yml")
-            theselessons = yaml.load(lf,Loader=yaml.BaseLoader)
-            lf.close()
-            os.remove("lessons.tar")
-            for l in theselessons : lessondict.append(l)
+       print("PROCESSING DATA IN", str(path) )
+       num = str(path).split("/")[0].replace("lesson-content","")
+       tar = tarfile.open( str(path) )
+       lf = tar.extractfile("_data/lessons" + num + ".yml")
+       theselessons = yaml.load(lf,Loader=yaml.BaseLoader)
+       lf.close()
+       for l in theselessons : lessondict.append(l)
    
    print("FOUND LESSONS", lessondict )    
 
