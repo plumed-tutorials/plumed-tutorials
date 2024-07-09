@@ -10,15 +10,12 @@ import os
 if __name__ == "__main__":
    lessondict, pathlist= [], list(pathlib.Path('.').glob('lesson-content*/lessons.tar'))
    for path in pathlist : 
-       print("PROCESSING DATA IN", str(path) )
        num = str(path).split("/")[0].replace("lesson-content","")
        tar = tarfile.open( str(path) )
        lf = tar.extractfile("_data/lessons" + num + ".yml")
        theselessons = yaml.load(lf,Loader=yaml.BaseLoader)
        lf.close()
        for l in theselessons : lessondict.append(l)
-   
-   print("FOUND LESSONS", lessondict )    
 
    plessondict = {}
    for data in lessondict :
@@ -32,8 +29,6 @@ if __name__ == "__main__":
                      if idname==data2["id"] : 
                         plessondict[idname]=data2
                         break
-
-   print("LESSONS IN GRAPH", plessondict )
    
    of = open("summarygraph.md", "w")
    of.write("""
@@ -44,6 +39,8 @@ if __name__ == "__main__":
    versions of the code and integrates links from these files to the PLUMED manual.  Inputs in the tutorials listed below were last tested on {{ site.data.date.date }}.
    
    You can return to a complete list of the tutorials by clicking [here](browse.md).
+
+   ```mermaid
    """)
    of.write("flowchart TD\n")
    
@@ -70,5 +67,5 @@ if __name__ == "__main__":
        of.write("click " + str(k) + " \"" + data["path"] + "\" \"**Authors: " + data["instructors"] + "** " + data["description"] + "\"\n" )
        k = k + 1
    
-   
+   of.write("```\n")
    of.close()
