@@ -63,7 +63,7 @@ if __name__ == "__main__":
    
    pG = nx.minimum_spanning_arborescence(G)
    for edge in pG.edges() :
-       of.write( str(edge[0]) + "-->" + str(edge[1]) + "\n" )
+       of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
    
    k=0
    for key, data in plessondict.items() : 
