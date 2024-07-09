@@ -26,16 +26,10 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
-def processNavigation( lessonname, actions ) :
+def processNavigation( lessonname, actions, embeds ) :
     f = open( "data/NAVIGATION.md", "r" )
     inp = f.read()
     f.close()
-
-    embeds = {}
-    if os.path.exists("data/EMBED.yml") : 
-       stram=open("data/EMBED.yml", "r")
-       embeds=yaml.load(stram,Loader=yaml.BaseLoader) or {}
-       stram.close()
 
     ninputs, nfail, nfailm = 0, 0, 0
     ofile, inmermaid = open( "data/NAVIGATION.md", "w+"), False
@@ -207,9 +201,20 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         # Check for the existence of a NAVIGATION file
         if not os.path.exists("data/NAVIGATION.md") : 
            raise RuntimeError("No NAVIGATION.md file found in lesson")
+        # Get the contents of the embeds file
+        embeds = {}
+        if os.path.exists("data/EMBED.yml") :
+           stram=open("data/EMBED.yml", "r")
+           embeds=yaml.load(stram,Loader=yaml.BaseLoader) or {}
+           stram.close()
+
         # Process the navigation file
         actions = set({})  # This holds the list of actions used in all the plumed input files in the markdown
-        ninputs, nfail, nfailm = processNavigation( config["title"], actions )
+        ninputs, nfail, nfailm = processNavigation( config["title"], actions, embeds )
+
+        dependlist = []
+        for key, data in embeds.items() :
+            if "type" in data and data["type"]=="internal" : dependlist.append( data["location"] )
 
         # Get the lesson id from the path
         lesson_id = path[8:10] + "." + path[11:14]
@@ -221,6 +226,9 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         print("  ninputs: " + str(ninputs), file=eggdb)
         print("  nfail: " + str(nfail), file=eggdb)
         print("  nfailm: " + str(nfailm), file=eggdb)
+        if len(dependlist)>0 : 
+           print("  depends: ", file=eggdb)
+           for d in dependlist : print("    - " + str(d), file=eggdb ) 
         modules = set()  
         for a in actions :
             if a in plumed_syntax.keys() : 
