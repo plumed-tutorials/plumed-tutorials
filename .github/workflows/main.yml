@@ -110,7 +110,6 @@ jobs:
     - name: Install software
       run: |
         pip install PyYAML pytz
-        pip install textwrap
         pip install networkx
     - name: Create graph
       run: |
