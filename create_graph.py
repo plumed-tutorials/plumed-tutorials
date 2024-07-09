@@ -49,7 +49,7 @@ if __name__ == "__main__":
    k, translate = 0, {} 
    for key, data in plessondict.items() : 
        title, wrappedtext = "", textwrap.wrap(data["title"],30)
-       for i in range(len(wrappedtext-1)) : title += wrappedtext[i] + "\n"
+       for i in range(len(wrappedtext)-1) : title += wrappedtext[i] + "\n"
        title += wrappedtext[-1]
        of.write(  str(k) + "[" + title + "]\n")
        translate[key] = k
