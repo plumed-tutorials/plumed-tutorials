@@ -20,6 +20,8 @@ if __name__ == "__main__":
             os.remove("lessons.tar")
             for l in theselessons : lessondict.append(l)
    
+   print("FOUND LESSONS", lessondict )    
+
    plessondict = {}
    for data in lessondict :
        if "depends" in data :
@@ -32,6 +34,8 @@ if __name__ == "__main__":
                      if idname==data2["id"] : 
                         plessondict[idname]=data2
                         break
+
+   print("LESSONS IN GRAPH", plessondict )
    
    of = open("summarygraph.md", "w")
    of.write("""
