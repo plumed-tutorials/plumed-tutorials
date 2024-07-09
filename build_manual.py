@@ -4,6 +4,7 @@ import json
 import getopt
 import requests
 import subprocess
+from datetime import date 
 from bs4 import BeautifulSoup
 
 def create_map( URL ) :
@@ -75,6 +76,11 @@ if __name__ == "__main__" :
    print("RUNNING", nreplicas, "REPLICAS. THIS IS REPLICA", replica )
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
    school_map = create_map("https://plumed-school.github.io/summary.html")
+   # Print the date to the data directory
+   today = { "date": date.today().strftime('%B %d, %Y') }
+   df = open("_data/date.json","w")
+   json.dump( today, df, indent=4 )
+   df.close()
    # Get list of plumed actions from syntax file
    cmd = ['plumed_master', 'info', '--root']
    plumed_info = subprocess.run(cmd, capture_output=True, text=True )
