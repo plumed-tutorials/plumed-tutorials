@@ -31,9 +31,10 @@ if __name__ == "__main__":
                         break
    
    of = open("summarygraph.md", "w")
-   of.write("""
+   ghead = """
    Browse the lessons
    ------------------------
+
    The graph below shows a subset of the lessons that have been submitted to the PLUMED-TUTORIALS website and suggests an order for working through them.
    PLUMED-TUTORIAL monitors whether PLUMED input files in these lessons are compatible with the current and development
    versions of the code and integrates links from these files to the PLUMED manual.  Inputs in the tutorials listed below were last tested on {{ site.data.date.date }}.
@@ -41,13 +42,15 @@ if __name__ == "__main__":
    You can return to a complete list of the tutorials by clicking [here](browse.md).
 
    ```mermaid
-   """)
+   """
+   of.write(ghead + "\n")
    of.write("flowchart TD\n")
    
    k, translate = 0, {} 
    for key, data in plessondict.items() : 
-       title = ""
-       for t in textwrap.wrap(data["title"],30) : title += t + "\n"
+       title, wrappedtext = "", textwrap.wrap(data["title"],30)
+       for i in range(len(wrappedtext-1) : title += wrappedtext[i] + "\n"
+       title += wrappedtext[-1]
        of.write(  str(k) + "[" + title + "]\n")
        translate[key] = k
        translate[key.replace(".","/")] = k
