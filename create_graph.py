@@ -65,7 +65,7 @@ You can return to a complete list of the tutorials by clicking [here](browse.md)
    
    k=0
    for key, data in plessondict.items() : 
-       of.write("click " + str(k) + " \"" + data["path"] + "\" \""  + data["description"] + " <b>Authors: " + data["instructors"] + "</b>\"\n" )
+       of.write("click " + str(k) + " \"" + data["path"] + "\" \""  + data["description"] + " [Authors: " + data["instructors"] + "]\"\n" )
        k = k + 1
    
    of.write("```\n")
