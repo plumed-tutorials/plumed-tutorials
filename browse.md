@@ -31,7 +31,7 @@ $('#browse-table-searchbar').keyup(function () {
   hu = window.location.search.substring(1);
   searchfor = hu.split("=");
   if( searchfor[0]=="search" ) {
-      table.search( searchfor[1] ).draw();
+      table.search( searchfor[1].replace("%20"," ") ).draw();
   }
 });
 </script>
