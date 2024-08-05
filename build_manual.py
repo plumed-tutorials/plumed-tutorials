@@ -57,7 +57,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
                onlydefault = True
                if "value" in value["syntax"]["output"] : 
                   f.write("The label for this action can be specified in the ARG keyword for another action. This label refers to a variable that is set equal to " + value["syntax"]["output"]["value"]["description"] + ". ")
-               for key, docs in value["syntax"]["output"] : 
+               for key, docs in value["syntax"]["output"].keys() : 
                    if docs["flag"]!="default" : onlydefault = False
                if onlydefault : 
                   f.write("This action" + alsostr + " calculates the quantities in the following table.  These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
