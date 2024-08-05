@@ -47,7 +47,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
              if docs["type"]=="atoms" or key=="ARG" : f.write("| " + key + " | " + docs["description"] + " |\n")
          f.write("\n\n")
 
-         if "output" in value["syntax"].items() :
+         if "output" in value["syntax"] :
             f.write("## Output\n\n")
             alsostr = "" 
             if "value" in value["syntax"]["output"] and len(value["syntax"]["output"])==1 :
