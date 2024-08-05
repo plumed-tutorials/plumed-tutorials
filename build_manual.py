@@ -63,14 +63,14 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
                   f.write("This action" + alsostr + " calculates the quantities in the following table.  These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
                   f.write("| Name | Description |\n")
                   f.write("|:-------|:-------|\n")
-                  for key, docs in value["syntax"]["output"] :
+                  for key, docs in value["syntax"]["output"].keys() :
                       if key=="value" : continue 
                       f.write("| " + key + " | " + flag["description"] + " | \n") 
                else : 
                   f.write("This action can" + alsostr + " calculate the quantities in the following table when the associated keyword is included in the input for the action. These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
                   f.write("| Name | Keyword | Description |\n")
                   f.write("|:-------|:----:|:-------|\n")
-                  for key, docs in value["syntax"]["output"] :
+                  for key, docs in value["syntax"]["output"].keys() :
                       if key=="value" : continue 
                       f.write("| " + key + " | " + docs["flag"] + " | " + flag["description"] + " | \n")
 
