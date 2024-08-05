@@ -36,7 +36,36 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
             f.write("[![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-" + str(neggs) + "-green.svg)](https://www.plumed-nest.org/browse.html?search=" + action + ")")
          else : 
             f.write("![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-0-red.svg)") 
-         f.write(" | \n\n")
+         if "output" in value["syntax"] and "value" in value["syntax"]["output"] : 
+            f.write("| **output value** | **type** |")
+            f.write("| " + value["syntax"]["output"]["value"]["description"] + " | scalar |\n\n" )
+         else : 
+            f.write(" | \n\n")
+
+         if "output" in value["syntax"] and len(value["syntax"]["output"].keys())>1 :
+            f.write("## Output components\n\n")
+            if "value" in value["syntax"]["output"] and len(value["syntax"]["output"])==1 :
+               pass
+            else :
+               onlydefault = True
+               for key, docs in value["syntax"]["output"].items() :
+                   if docs["flag"]!="default" : onlydefault = False
+               if onlydefault :
+                  f.write("This action calculates the quantities in the following table.  These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
+                  f.write("| Name | Type | Description |\n")
+                  f.write("|:-------|:-----|:-------|\n")
+                  for key, docs in value["syntax"]["output"].items() :
+                      if key=="value" : continue 
+                      f.write("| " + key + " | scalar | " + docs["description"] + " | \n") 
+                  f.write("\n\n")
+               else : 
+                  f.write("This action can calculate the quantities in the following table when the associated keyword is included in the input for the action. These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
+                  f.write("| Name | Type | Keyword | Description |\n")
+                  f.write("|:-------|:-----|:----:|:-------|\n")
+                  for key, docs in value["syntax"]["output"].items() :
+                      if key=="value" : continue 
+                      f.write("| " + key + " | scalar | " + docs["flag"] + " | " + docs["description"] + " | \n")
+                  f.write("\n\n")
          
          f.write("## Input\n\n")
          f.write("The input for this action is specified using one or more of the keywords in the following table.\n\n")
@@ -46,33 +75,6 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
              if key=="output" : continue
              if docs["type"]=="atoms" or key=="ARG" : f.write("| " + key + " | " + docs["description"] + " |\n")
          f.write("\n\n")
-
-         if "output" in value["syntax"] :
-            f.write("## Output\n\n")
-            alsostr = "" 
-            if "value" in value["syntax"]["output"] and len(value["syntax"]["output"])==1 :
-               f.write("The label for this action can be specified in the ARG keyword for another action. This label refers to a variable that is set equal to " + value["syntax"]["output"]["value"]["description"] + "\n")
-               alsostr = " also"
-            else :
-               onlydefault = True
-               if "value" in value["syntax"]["output"] : 
-                  f.write("The label for this action can be specified in the ARG keyword for another action. This label refers to a variable that is set equal to " + value["syntax"]["output"]["value"]["description"] + ". ")
-               for key, docs in value["syntax"]["output"].items() : 
-                   if docs["flag"]!="default" : onlydefault = False
-               if onlydefault : 
-                  f.write("This action" + alsostr + " calculates the quantities in the following table.  These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
-                  f.write("| Name | Description |\n")
-                  f.write("|:-------|:-------|\n")
-                  for key, docs in value["syntax"]["output"].items() :
-                      if key=="value" : continue 
-                      f.write("| " + key + " | " + docs["description"] + " | \n") 
-               else : 
-                  f.write("This action can" + alsostr + " calculate the quantities in the following table when the associated keyword is included in the input for the action. These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
-                  f.write("| Name | Keyword | Description |\n")
-                  f.write("|:-------|:----:|:-------|\n")
-                  for key, docs in value["syntax"]["output"].items() :
-                      if key=="value" : continue 
-                      f.write("| " + key + " | " + docs["flag"] + " | " + docs["description"] + " | \n")
 
          f.write("## Further details and examples \n")
          f.write("Information for the manual from the code would go in here \n")
