@@ -37,7 +37,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
          else : 
             f.write("![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-0-red.svg)") 
          if "output" in value["syntax"] and "value" in value["syntax"]["output"] : 
-            f.write("| **output value** | **type** |")
+            f.write("|\n | **output value** | **type** |\n")
             f.write("| " + value["syntax"]["output"]["value"]["description"] + " | scalar |\n\n" )
          else : 
             f.write(" | \n\n")
