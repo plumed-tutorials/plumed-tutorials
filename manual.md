@@ -8,6 +8,7 @@ The actions that can be used within a PLUMED input file are listed below.
 {% for item in site.data.actionlist %}| [{{ item.name }}]({{ item.path }}) | {{ item.description }} |
 {% endfor %}
 
+
 <script>
 $(document).ready(function() {
 var table = $('#browse-table').DataTable({
