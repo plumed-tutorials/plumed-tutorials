@@ -11,6 +11,7 @@ Suggestions for an order to work through the tutorials can be found [here](summa
 {% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.description }} | {{ item.actions }} | {{ item.modules }} |
 {% endfor %}
 
+
 <script>
 $(document).ready(function() {
 var table = $('#browse-table').DataTable({
