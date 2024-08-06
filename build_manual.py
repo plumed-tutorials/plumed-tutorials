@@ -194,11 +194,11 @@ if __name__ == "__main__" :
 
    # Create a list of modules
    modules = {}
-   for key, value in plumed_syntax.items() :
+   for key, value in plumed_syntax.items() :  
      if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
-     if value["module"] in modules.keys() : 
+     if value["module"] not in modules.keys() :
         modules[value["module"]] = { "neggs": nest_map[key], "nlessons": school_map[key] }
-     else : value[value["module"]]["neggs"], value[value["module"]]["nlessons"] = value[value["module"]]["neggs"] + nest_map[key], value[value["module"]]["nlessons"] + school_map[key]
+     else : modules[value["module"]]["neggs"], modules[value["module"]]["nlessons"] = modules[value["module"]]["neggs"] + nest_map[key], modules[value["module"]]["nlessons"] + school_map[key]
 
    # And create each module page
    for module, value in modules.items() : createModulePage( module, value["neggs"], value["nlessons"] ) 
