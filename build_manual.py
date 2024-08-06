@@ -36,11 +36,12 @@ def createModulePage( modname, neggs, nlessons ) :
             f.write("[![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-" + str(neggs) + "-green.svg)](https://www.plumed-nest.org/browse.html?search=" + modname + ")")
          else : 
             f.write("![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-0-red.svg)")
+         f.write("|\n\n")
          f.write("## Actions \n\n")
          f.write("The following actions are part of this module\n\n")
          f.write("{:#browse-table .display}\n")
          f.write("| Name | Description |\n")
-         f.write("|:--------:|:--------:|\n")
+         f.write("|:--------:|:--------|\n")
          f.write("{% for item in site.data.actionlist %}\n")
          f.write("{% if item.module == " + modname + " %}\n")
          f.write("| [{{ item.name }}]({{ item.path }}) | {{ item.description }} |\n")
@@ -172,11 +173,13 @@ if __name__ == "__main__" :
            k = k + 1
 
    # Create a list of modules
-   modules = set()
+   modules = {}
    for key, value in plumed_syntax.items() :
      if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
-     modules.add( value["module"] ) 
+     if value["module"] in modules : 
+        modules[value["module"]] = { "neggs": nest_map[key], "nlessons": school_map[key] }
+     else : value[value["module"]]["neggs"], value[value["module"]]["nlessons"] = value[value["module"]]["neggs"] + nest_map[key], value[value["module"]]["nlessons"] + school_map[key]
 
    # And create each module page
-   for module in modules : createModulePage( module, 0, 0 ) 
+   for module, value in modules.items() : createModulePage( module, value["neggs"], value["nlessons"] ) 
 
