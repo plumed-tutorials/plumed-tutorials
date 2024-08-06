@@ -17,9 +17,6 @@ var table = $('#browse-table').DataTable({
   buttons: [
         'copy', 'excel', 'pdf'
   ],
-  "columnDefs": [ 
-     { "targets": 4, "visible": false }
-  ],
   "order": [[ 0, "desc" ]]
   });
 $('#browse-table-searchbar').keyup(function () {

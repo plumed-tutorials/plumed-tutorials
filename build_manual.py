@@ -24,7 +24,7 @@ def create_map( URL ) :
 
 def createModulePage( modname, neggs, nlessons ) :
     with open("manual/" + modname + ".md", "w") as f :
-         f.write("# Action: " + modname + "\n\n")
+         f.write("# Module: " + modname + "\n\n")
          f.write("| Description    | Usage |\n")
          f.write("|:--------|:--------:|\n")
          f.write("| Description of module | ")
@@ -47,6 +47,26 @@ def createModulePage( modname, neggs, nlessons ) :
          f.write("| [{{ item.name }}]({{ item.path }}) | {{ item.description }} |\n")
          f.write("{% endif %}\n")
          f.write("{% endfor %}\n")
+         f.write("<script>\n")
+         f.write("$(document).ready(function() {\n")
+         f.write("var table = $('#browse-table').DataTable({\n")
+         f.write("  \"dom\": '<\"search\"f><\"top\"il>rt<\"bottom\"Bp><\"clear\">',\n")
+         f.write("  language: { search: '', searchPlaceholder: \"Search project...\" },\n")
+         f.write("  buttons: [\n")
+         f.write("        'copy', 'excel', 'pdf'\n")
+         f.write("  ],\n")
+         f.write("  \"order\": [[ 0, \"desc\" ]]\n")
+         f.write("  });\n")
+         f.write("$('#browse-table-searchbar').keyup(function () {\n")
+         f.write("  table.search( this.value ).draw();\n")
+         f.write("  });\n")
+         f.write("  hu = window.location.search.substring(1);\n")
+         f.write("  searchfor = hu.split(\"=\");\n")
+         f.write("  if( searchfor[0]==\"search\" ) {\n") 
+         f.write("      table.search( searchfor[1] ).draw();\n")
+         f.write("  }\n")
+         f.write("});\n")
+         f.write("</script>\n")
 
 def createActionPage( action, value, neggs, nlessons, actdb ) :
     with open("manual/" + action + ".md", "w") as f : 
@@ -176,7 +196,7 @@ if __name__ == "__main__" :
    modules = {}
    for key, value in plumed_syntax.items() :
      if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
-     if value["module"] in modules : 
+     if value["module"] in modules.keys() : 
         modules[value["module"]] = { "neggs": nest_map[key], "nlessons": school_map[key] }
      else : value[value["module"]]["neggs"], value[value["module"]]["nlessons"] = value[value["module"]]["neggs"] + nest_map[key], value[value["module"]]["nlessons"] + school_map[key]
 
