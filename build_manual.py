@@ -171,12 +171,12 @@ if __name__ == "__main__" :
               createActionPage( key, value, neggs, nlessons, actdb ) 
            k = k + 1
 
-  # Create a list of modules
-  modules = set()
-  for key, value in plumed_syntax.items() :
-    if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
-    modules.add( value["module"] ) 
+   # Create a list of modules
+   modules = set()
+   for key, value in plumed_syntax.items() :
+     if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
+     modules.add( value["module"] ) 
 
-  # And create each module page
-  for module in modules : createModulePage( module, 0, 0 ) 
+   # And create each module page
+   for module in modules : createModulePage( module, 0, 0 ) 
 
