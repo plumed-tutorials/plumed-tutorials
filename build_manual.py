@@ -22,6 +22,31 @@ def create_map( URL ) :
     
     return dict(map(lambda i,j : (i,j) , xdata,ydata))
 
+def createModulePage( modname, neggs, nlessons ) :
+    with open("manual/" + modname + ".md", "w") as f :
+         f.write("# Action: " + modname + "\n\n")
+         f.write("| Description    | Usage |\n")
+         f.write("|:--------|:--------:|\n")
+         f.write("| Description of module | ")
+         if nlessons>0 :
+            f.write("[![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-" + str(nlessons) + "-green.svg)](https://plumed-school.github.io/browse.html?search=" + modname + ")")
+         else : 
+            f.write("![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-0-red.svg)")
+         if neggs>0 : 
+            f.write("[![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-" + str(neggs) + "-green.svg)](https://www.plumed-nest.org/browse.html?search=" + modname + ")")
+         else : 
+            f.write("![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-0-red.svg)")
+         f.write("## Actions \n\n")
+         f.write("The following actions are part of this module\n\n")
+         f.write("{:#browse-table .display}\n")
+         f.write("| Name | Description |\n")
+         f.write("|:--------:|:--------:|\n")
+         f.write("{% for item in site.data.actionlist %}\n")
+         f.write("{% if item.module == " + modname + " %}\n")
+         f.write("| [{{ item.name }}]({{ item.path }}) | {{ item.description }} |\n")
+         f.write("{% endif %}\n")
+         f.write("{% endfor %}\n")
+
 def createActionPage( action, value, neggs, nlessons, actdb ) :
     with open("manual/" + action + ".md", "w") as f : 
          f.write("# Action: " + action + "\n\n")
@@ -96,7 +121,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
     print("- name: " + action, file=actdb)
     print("  path: manual/" + action + ".html", file=actdb)
     print("  description: " + value["description"], file=actdb)    
-
+    print("  module: " + value["module"], file=actdb)
 
 if __name__ == "__main__" : 
    nreplicas, replica, argv = 1, 0, sys.argv[1:]
@@ -145,4 +170,13 @@ if __name__ == "__main__" :
               if key in school_map.keys() : nlessons = school_map[key] 
               createActionPage( key, value, neggs, nlessons, actdb ) 
            k = k + 1
+
+  # Create a list of modules
+  modules = set()
+  for key, value in plumed_syntax.items() :
+    if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
+    modules.add( value["module"] ) 
+
+  # And create each module page
+  for module in modules : createModulePage( module, 0, 0 ) 
 
