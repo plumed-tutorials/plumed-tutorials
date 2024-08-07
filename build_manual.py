@@ -24,22 +24,9 @@ def create_map( URL ) :
     
     return dict(map(lambda i,j : (i,j) , xdata,ydata))
 
-def createModuleGraph( plumed_rootdir ) :
+def createModuleGraph( plumed_rootdir, plumed_syntax ) :
    # Get all the module dependencies
-   # First from includes
    requires = {}
-   for mod in plumed_rootdir.glob("src/*/Makefile" ) :
-       if thismodule not in requires.keys() : requires[thismodule] = set()
-       with open(mod) as file :
-            modules = []
-            for line in file :
-                if re.search("USE=", line ) :
-                   modules = line.replace("USE=","").split()
-                   break
-            startnode = modulelist[mod.parts[2]]
-            for conn in modules : requires[thismodule].add( conn )
-       
-   # And from shortcuts
    for key, value in plumed_syntax.items() :
        if "module" not in value : continue
        thismodule = value["module"]
@@ -47,6 +34,17 @@ def createModuleGraph( plumed_rootdir ) :
        if "needs" in value :
           for req in value["needs"] :
               if plumed_syntax[req]["module"]!=thismodule : requires[thismodule].add( plumed_syntax[req]["module"] )
+   
+   # And from inclusion
+   for key in requires.keys() :
+       modules = []
+       with open(plumed_rootdir + "/src/" + key + "/Makefile") as file :
+            for line in file :
+                if re.search("USE=", line ) :
+                   modules = line.replace("USE=","").split()
+                   break
+       for conn in modules :
+           if conn in requires.keys() : requires[key].add( conn )
 
    of = open("manual.md", "w")
    ghead = """
@@ -66,7 +64,7 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
    """
    of.write(ghead + "\n")
    of.write("flowchart TD\n")
-
+   
    k, translate = 0, {}
    for key, data in requires.items() :
        of.write(  str(k) + "(\"" + key + "\")\n")
@@ -76,19 +74,19 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
    # And create the graph
    G = nx.DiGraph()
    for key, data in requires.items() :
-       for dd in data : G.add_edge( translate[key], translate[dd] )
-
+       for dd in data : G.add_edge( translate[dd], translate[key] )
+   
    # And create the graph showing the modules
    pG = nx.minimum_spanning_arborescence(G)
    for edge in pG.edges() :
        of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
-
+   
    # And finally the click stuff
    k=0
    for key, data in requires.items() :
        of.write("click " + str(k) + " \"" + key + ".md\" \"Information about the module [Authors: list of authors]\"\n" )
        k = k + 1
-
+   
    of.write("```\n")
    of.close()
 
@@ -239,7 +237,7 @@ if __name__ == "__main__" :
    cmd = ['plumed_master', 'info', '--root']
    plumed_info = subprocess.run(cmd, capture_output=True, text=True )
    keyfile = plumed_info.stdout.strip() + "/json/syntax.json"
-   plumed_rootdir = Path(plumed_info.stdout.strip())
+   plumed_rootdir = plumed_info.stdout.strip()
    with open(keyfile) as f :
        try:
           plumed_syntax = json.load(f)
@@ -272,4 +270,4 @@ if __name__ == "__main__" :
    # And create each module page
    for module, value in modules.items() : createModulePage( module, value["neggs"], value["nlessons"] )
    # Create the graph that shows all the modules
-   createModuleGraph( plumed_rootdir )
+   createModuleGraph( plumed_rootdir, plumed_syntax )
