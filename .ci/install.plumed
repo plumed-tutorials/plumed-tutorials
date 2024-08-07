@@ -40,7 +40,7 @@ echo { > $GITHUB_WORKSPACE/_data/extradeps$version.json
 for mod in `ls src/*/Makefile` ;  do 
     n=$((n+1))
     dep=`grep USE $mod | sed -e 's/USE=//'`
-    modname=`echo $mod | sed -e 's/..\/src\///' | sed -e 's/\/Makefile//'`
+    modname=`echo $mod | sed -e 's/src\///' | sed -e 's/\/Makefile//'`
     deparr=($dep)
     echo -n \"$modname\" : [ >> $GITHUB_WORKSPACE/_data/extradeps$version.json
     for d in ${deparr[@]} ; do
