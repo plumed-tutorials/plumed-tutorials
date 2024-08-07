@@ -4,8 +4,10 @@ import json
 import getopt
 import requests
 import subprocess
+from pathlib import Path
 from datetime import date 
 from bs4 import BeautifulSoup
+import networkx as nx
 
 def create_map( URL ) :
     page = requests.get(URL)
@@ -21,6 +23,74 @@ def create_map( URL ) :
                ydata = json.loads( line.split("=")[1].replace(";","") )
     
     return dict(map(lambda i,j : (i,j) , xdata,ydata))
+
+def createModuleGraph( plumed_rootdir ) :
+   # Get all the module dependencies
+   # First from includes
+   requires = {}
+   for mod in plumed_rootdir.glob("src/*/Makefile" ) :
+       if thismodule not in requires.keys() : requires[thismodule] = set()
+       with open(mod) as file :
+            modules = []
+            for line in file :
+                if re.search("USE=", line ) :
+                   modules = line.replace("USE=","").split()
+                   break
+            startnode = modulelist[mod.parts[2]]
+            for conn in modules : requires[thismodule].add( conn )
+       
+   # And from shortcuts
+   for key, value in plumed_syntax.items() :
+       if "module" not in value : continue
+       thismodule = value["module"]
+       if thismodule not in requires.keys() : requires[thismodule] = set()
+       if "needs" in value :
+          for req in value["needs"] :
+              if plumed_syntax[req]["module"]!=thismodule : requires[thismodule].add( plumed_syntax[req]["module"] )
+
+   of = open("manual.md", "w")
+   ghead = """
+The PLUMED CODE
+------------------------
+
+PLUMED is a community-developed code that can be used to incorporate additional functionality into multiple molecular dynamics codes and for analysing 
+trajectories. PLUMED is a composed of a modules that contain a variety of different functionalities but that share a common basic syntax. You can find 
+a list of the modules that are available within PLUMED in the following graph. The graph also shows the interdependencies between the various modules. 
+If you click on the modules in the graph module-specific information will open.
+
+Each module contains implementations of a number of actions. You can find a list of all the actions implemented in in PLUMED [here](actionlist.md).
+
+If you are completely unfamiliar with PLUMED we would recommend that you start by working through [the following tutorial](https://plumed-school.github.io/lessons/21/001/data/NAVIGATION.html). 
+
+```mermaid
+   """
+   of.write(ghead + "\n")
+   of.write("flowchart TD\n")
+
+   k, translate = 0, {}
+   for key, data in requires.items() :
+       of.write(  str(k) + "(\"" + key + "\")\n")
+       translate[key] = k
+       k = k + 1
+   
+   # And create the graph
+   G = nx.DiGraph()
+   for key, data in requires.items() :
+       for dd in data : G.add_edge( translate[key], translate[dd] )
+
+   # And create the graph showing the modules
+   pG = nx.minimum_spanning_arborescence(G)
+   for edge in pG.edges() :
+       of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
+
+   # And finally the click stuff
+   k=0
+   for key, data in requires.items() :
+       of.write("click " + str(k) + " \"" + key + ".md\" \"Information about the module [Authors: list of authors]\"\n" )
+       k = k + 1
+
+   of.write("```\n")
+   of.close()
 
 def createModulePage( modname, neggs, nlessons ) :
     with open( modname + ".md", "w") as f :
@@ -169,6 +239,7 @@ if __name__ == "__main__" :
    cmd = ['plumed_master', 'info', '--root']
    plumed_info = subprocess.run(cmd, capture_output=True, text=True )
    keyfile = plumed_info.stdout.strip() + "/json/syntax.json"
+   plumed_rootdir = Path(plumed_info.stdout.strip())
    with open(keyfile) as f :
        try:
           plumed_syntax = json.load(f)
@@ -199,5 +270,6 @@ if __name__ == "__main__" :
      else : modules[value["module"]]["neggs"], modules[value["module"]]["nlessons"] = modules[value["module"]]["neggs"] + nest_map[key], modules[value["module"]]["nlessons"] + school_map[key]
 
    # And create each module page
-   for module, value in modules.items() : createModulePage( module, value["neggs"], value["nlessons"] ) 
-
+   for module, value in modules.items() : createModulePage( module, value["neggs"], value["nlessons"] )
+   # Create the graph that shows all the modules
+   createModuleGraph( plumed_rootdir )
