@@ -35,16 +35,17 @@ def createModuleGraph( plumed_rootdir, plumed_syntax ) :
           for req in value["needs"] :
               if plumed_syntax[req]["module"]!=thismodule : requires[thismodule].add( plumed_syntax[req]["module"] )
    
-   # And from inclusion   --- NEEDS FIXING TO ACTUALLY GET INCLUDES FROM CODE
-   #for key in requires.keys() :
-   #    modules = []
-   #    with open(plumed_rootdir + "/src/" + key + "/Makefile") as file :
-   #         for line in file :
-   #             if re.search("USE=", line ) :
-   #                modules = line.replace("USE=","").split()
-   #                break
-   #    for conn in modules :
-   #        if conn in requires.keys() : requires[key].add( conn )
+   # And from inclusion  
+   with open("_data/extradepsmaster.json") as f :
+      try:
+        dependinfo = json.load(f)
+      except ValueError as ve:
+        raise InvalidJSONError(ve)
+   
+   for key in requires.keys() :
+       modules = []
+       for conn in dependinfo[key] :
+           if conn in requires.keys() : requires[key].add( conn )
 
    of = open("manual.md", "w")
    ghead = """
