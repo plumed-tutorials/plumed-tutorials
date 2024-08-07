@@ -77,16 +77,25 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
    G = nx.DiGraph()
    for key, data in requires.items() :
        for dd in data : G.add_edge( translate[dd], translate[key] )
-   
+
+   # Find any closed loops in the graph and remove them
+   cycles = list( nx.simple_cycles(G) )
+   for cyc in cycles :
+      for i in range(len(cyc)-1) : G.remove_edge( cyc[i], cyc[(i+1)%len(cyc)] )   
+
    # And create the graph showing the modules
-   pG = G   #nx.minimum_spanning_arborescence(G)
+   pG = nx.transitive_reduction(G)
    for edge in pG.edges() :
        of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
    
+   # Add in the cycles
+   for cyc in cycles :
+       for i in range(len(cyc)-1) : of.write( str(cyc[i]) + "-->" + str(cyc[(i+1)%len(cyc)]) + ";\n" )
+
    # And finally the click stuff
    k=0
    for key, data in requires.items() :
-       of.write("click " + str(k) + " \"" + key + ".md\" \"Information about the module [Authors: list of authors]\"\n" )
+       of.write("click " + str(k) + " \"" + key + ".html\" \"Information about the module [Authors: list of authors]\"\n" )
        k = k + 1
    
    of.write("```\n")
