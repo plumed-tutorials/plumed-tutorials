@@ -34,20 +34,20 @@ else
 fi
 
 # This gets all the dependency information in plumed
-echo { > $HOME/_data/extradeps$version.json
+echo { > $GITHUB_WORKSPACE/_data/extradeps$version.json
 for mod in `ls src/*/Makefile` ;  do 
     dep=`grep USE $mod | sed -e 's/USE=//'`
     modname=`echo $mod | sed -e 's/..\/src\///' | sed -e 's/\/Makefile//'`
     deparr=($dep)
-    echo -n $modname : [ >> $HOME/_data/extradeps$version.json
+    echo -n $modname : [ >> $GITHUB_WORKSPACE/_data/extradeps$version.json
     for d in ${deparr[@]} ; do
         if [ $d == ${deparr[0]} ] ; then
-           echo -n $d >> $HOME/_data/extradeps$version.json
+           echo -n $d >> $GITHUB_WORKSPACE/_data/extradeps$version.json
         else 
-           echo -n , $d >> $HOME/_data/extradeps$version.json
+           echo -n , $d >> $GITHUB_WORKSPACE/_data/extradeps$version.json
         fi
     done
-    echo ] >> $HOME/_data/extradeps$version.json
+    echo ] >> $GITHUB_WORKSPACE/_data/extradeps$version.json
 done
 echo }
 
