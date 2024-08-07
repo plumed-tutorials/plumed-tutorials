@@ -42,6 +42,7 @@ def createModuleGraph( plumed_rootdir, plumed_syntax ) :
       except ValueError as ve:
         raise InvalidJSONError(ve)
    
+   print( dependinfo )
    for key in requires.keys() :
        modules = []
        for conn in dependinfo[key] :
