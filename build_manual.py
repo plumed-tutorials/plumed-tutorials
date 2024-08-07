@@ -35,16 +35,16 @@ def createModuleGraph( plumed_rootdir, plumed_syntax ) :
           for req in value["needs"] :
               if plumed_syntax[req]["module"]!=thismodule : requires[thismodule].add( plumed_syntax[req]["module"] )
    
-   # And from inclusion
-   for key in requires.keys() :
-       modules = []
-       with open(plumed_rootdir + "/src/" + key + "/Makefile") as file :
-            for line in file :
-                if re.search("USE=", line ) :
-                   modules = line.replace("USE=","").split()
-                   break
-       for conn in modules :
-           if conn in requires.keys() : requires[key].add( conn )
+   # And from inclusion   --- NEEDS FIXING TO ACTUALLY GET INCLUDES FROM CODE
+   #for key in requires.keys() :
+   #    modules = []
+   #    with open(plumed_rootdir + "/src/" + key + "/Makefile") as file :
+   #         for line in file :
+   #             if re.search("USE=", line ) :
+   #                modules = line.replace("USE=","").split()
+   #                break
+   #    for conn in modules :
+   #        if conn in requires.keys() : requires[key].add( conn )
 
    of = open("manual.md", "w")
    ghead = """
@@ -77,7 +77,7 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
        for dd in data : G.add_edge( translate[dd], translate[key] )
    
    # And create the graph showing the modules
-   pG = nx.minimum_spanning_arborescence(G)
+   pG = G   #nx.minimum_spanning_arborescence(G)
    for edge in pG.edges() :
        of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
    
