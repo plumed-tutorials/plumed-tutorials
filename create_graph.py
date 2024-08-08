@@ -59,10 +59,19 @@ You can return to a complete list of the tutorials by clicking [here](browse.md)
        if "depends" not in data : continue
        for dd in data["depends"] : G.add_edge( translate[dd], translate[key] )
    
-   pG = nx.minimum_spanning_arborescence(G)
+   # Find any closed loops in the graph and remove them
+   cycles = list( nx.simple_cycles(G) )
+   for cyc in cycles :
+      for i in range(len(cyc)-1) : G.remove_edge( cyc[i], cyc[(i+1)%len(cyc)] )
+
+   pG = nx.transitive_reduction(G)
    for edge in pG.edges() :
        of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
    
+   # Add in the cycles
+   for cyc in cycles :
+       for i in range(len(cyc)-1) : of.write( str(cyc[i]) + "-->" + str(cyc[(i+1)%len(cyc)]) + ";\n" ) 
+
    k=0
    for key, data in plessondict.items() : 
        of.write("click " + str(k) + " \"" + data["path"] + "\" \""  + data["description"] + " [Authors: " + data["instructors"] + "]\"\n" )
