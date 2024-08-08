@@ -41,10 +41,10 @@ for mod in `ls src/*/Makefile` ;  do
     n=$((n+1))
     dep=`grep USE $mod | sed -e 's/USE=//'`
     modname=`echo $mod | sed -e 's/src\///' | sed -e 's/\/Makefile//'`
-    if [ "$modname" = "wrapper" ] ; then
+    typename=`echo $mod | sed -e 's/Makefile/module.type/'`
+    if [ ! -f $typename ] ; then
          modtype="always"
     else
-         typename=`echo $mod | sed -e 's/Makefile/module.type/'`
          modtype=`head $typename`
     fi
     deparr=($dep)
