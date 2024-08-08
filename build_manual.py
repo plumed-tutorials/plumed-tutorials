@@ -247,7 +247,7 @@ if __name__ == "__main__" :
          replica = int(arg)
    print("RUNNING", nreplicas, "REPLICAS. THIS IS REPLICA", replica )
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
-   school_map = create_map("https://plumed-school.github.io/summary.html")
+   school_map = {} #create_map("https://plumed-school.github.io/summary.html")
    # Print the date to the data directory
    today = { "date": date.today().strftime('%B %d, %Y') }
    df = open("_data/date.json","w")
@@ -284,8 +284,10 @@ if __name__ == "__main__" :
    for key, value in plumed_syntax.items() :  
      if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
      if value["module"] not in modules.keys() :
-        modules[value["module"]] = { "neggs": nest_map[key], "nlessons": school_map[key] }
-     else : modules[value["module"]]["neggs"], modules[value["module"]]["nlessons"] = modules[value["module"]]["neggs"] + nest_map[key], modules[value["module"]]["nlessons"] + school_map[key]
+        nlessons = 0
+        if key in school_map.keys() : nlessons = school_map[key]
+        modules[value["module"]] = { "neggs": nest_map[key], "nlessons": nlessons }
+     else : modules[value["module"]]["neggs"], modules[value["module"]]["nlessons"] = modules[value["module"]]["neggs"] + nest_map[key], modules[value["module"]]["nlessons"] + nlessons
 
    # And create each module page
    for module, value in modules.items() : createModulePage( module, value["neggs"], value["nlessons"] )
