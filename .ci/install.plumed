@@ -49,7 +49,7 @@ for mod in `ls src/*/Makefile` ;  do
     fi
     deparr=($dep)
     echo \"$modname\" : { >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-    echo \"type\": $modtype, >> $GITHUB_WORKSPACE/_data/extradeps$version.json
+    echo \"type\": \"$modtype\", >> $GITHUB_WORKSPACE/_data/extradeps$version.json
     echo -n \"depends\" : [ >> $GITHUB_WORKSPACE/_data/extradeps$version.json
     for d in ${deparr[@]} ; do
         if [ $d == ${deparr[0]} ] ; then
