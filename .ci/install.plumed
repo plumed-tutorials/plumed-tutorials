@@ -41,8 +41,16 @@ for mod in `ls src/*/Makefile` ;  do
     n=$((n+1))
     dep=`grep USE $mod | sed -e 's/USE=//'`
     modname=`echo $mod | sed -e 's/src\///' | sed -e 's/\/Makefile//'`
+    if [ "$modname" = "wrapper" ] ; then
+         modtype="always"
+    else
+         typename=`echo $mod | sed -e 's/Makefile/module.type/'`
+         modtype=`head $typename`
+    fi
     deparr=($dep)
-    echo -n \"$modname\" : [ >> $GITHUB_WORKSPACE/_data/extradeps$version.json
+    echo \"$modname\" : { >> $GITHUB_WORKSPACE/_data/extradeps$version.json
+    echo \"type\": $modtype, >> $GITHUB_WORKSPACE/_data/extradeps$version.json
+    echo -n \"depends\" : [ >> $GITHUB_WORKSPACE/_data/extradeps$version.json
     for d in ${deparr[@]} ; do
         if [ $d == ${deparr[0]} ] ; then
            echo -n \"$d\" >> $GITHUB_WORKSPACE/_data/extradeps$version.json
@@ -52,8 +60,10 @@ for mod in `ls src/*/Makefile` ;  do
     done
     if [ $n == $nlines ] ; then
       echo ] >> $GITHUB_WORKSPACE/_data/extradeps$version.json
+      echo } >> $GITHUB_WORKSPACE/_data/extradeps$version.json
     else
-      echo ], >> $GITHUB_WORKSPACE/_data/extradeps$version.json
+      echo ] >> $GITHUB_WORKSPACE/_data/extradeps$version.json
+      echo }, >> $GITHUB_WORKSPACE/_data/extradeps$version.json
     fi
 done
 echo } >> $GITHUB_WORKSPACE/_data/extradeps$version.json

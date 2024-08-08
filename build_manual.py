@@ -45,7 +45,7 @@ def createModuleGraph( plumed_rootdir, plumed_syntax ) :
    print( dependinfo )
    for key in requires.keys() :
        modules = []
-       for conn in dependinfo[key] :
+       for conn in dependinfo[key]["depends"] :
            if conn in requires.keys() : requires[key].add( conn )
 
    of = open("manual.md", "w")
@@ -56,7 +56,13 @@ The PLUMED CODE
 PLUMED is a community-developed code that can be used to incorporate additional functionality into multiple molecular dynamics codes and for analysing 
 trajectories. PLUMED is a composed of a modules that contain a variety of different functionalities but that share a common basic syntax. You can find 
 a list of the modules that are available within PLUMED in the following graph. The graph also shows the interdependencies between the various modules. 
-If you click on the modules in the graph module-specific information will open.
+If you click on the modules in the graph module-specific information will open.  The colors of the nodes in the graph below indicate whether the module
+is always compiled (blue), on by default (green) or off by default (red).  If you need a feature from a module that is by default off you need to explicitly tell
+PLUMED to include it during the configure stage by using:
+
+```bash
+./configure --enable-module=module-name
+```
 
 Each module contains implementations of a number of actions. You can find a list of all the actions implemented in in PLUMED [here](actionlist.md).
 
@@ -70,6 +76,9 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
    k, translate = 0, {}
    for key, data in requires.items() :
        of.write(  str(k) + "(\"" + key + "\")\n")
+       if dependinfo[key]["type"]=="always" : of.write("style " + str(k) + " fill:blue\n")
+       elif dependinfo[key]["type"]=="default-on" : of.write("style " + str(k) + " fill:green\n")
+       elif dependinfo[key]["type"]=="default-off" : of.write("style " + str(k) + " fill:red\n")
        translate[key] = k
        k = k + 1
    
