@@ -53,7 +53,7 @@ cat Info.md >> README.md
 
 # cp $root/nest.png .
 # cp $root/pigeon.png .
-# cp $root/CNAME .
+cp $root/CNAME .
 
 if [[ "${GITHUB_REF##*/}" = test ]] ; then
   sed "s/PLUMED-SCHOOL/PLUMED-SCHOOL-TEST-SITE/" _config.yml > _config.yml.tmp
