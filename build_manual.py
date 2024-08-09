@@ -4,6 +4,7 @@ import json
 import getopt
 import requests
 import subprocess
+import numpy as np
 from pathlib import Path
 from datetime import date 
 from bs4 import BeautifulSoup
@@ -24,6 +25,13 @@ def create_map( URL ) :
     
     return dict(map(lambda i,j : (i,j) , xdata,ydata))
 
+def drawModuleNode( index, key, ntype, of ) :
+    of.write(  str(index) + "(\"" + key + "\")\n")
+    if ntype=="always" : of.write("style " + str(index) + " fill:blue\n")
+    elif ntype=="default-on" : of.write("style " + str(index) + " fill:green\n")
+    elif ntype=="default-off" : of.write("style " + str(index) + " fill:red\n")    
+    else : raise Exception("don't know how to draw node of type " + ntype )
+
 def createModuleGraph( plumed_rootdir, plumed_syntax ) :
    # Get all the module dependencies
    requires = {}
@@ -42,7 +50,6 @@ def createModuleGraph( plumed_rootdir, plumed_syntax ) :
       except ValueError as ve:
         raise InvalidJSONError(ve)
    
-   print( dependinfo )
    for key in requires.keys() :
        modules = []
        for conn in dependinfo[key]["depends"] :
@@ -73,13 +80,10 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
    of.write(ghead + "\n")
    of.write("flowchart TD\n")
    
-   k, translate = 0, {}
+   k, translate, backtranslate = 0, {}, []
    for key, data in requires.items() :
-       of.write(  str(k) + "(\"" + key + "\")\n")
-       if dependinfo[key]["type"]=="always" : of.write("style " + str(k) + " fill:blue\n")
-       elif dependinfo[key]["type"]=="default-on" : of.write("style " + str(k) + " fill:green\n")
-       elif dependinfo[key]["type"]=="default-off" : of.write("style " + str(k) + " fill:red\n")
        translate[key] = k
+       backtranslate.append(key) 
        k = k + 1
    
    # And create the graph
@@ -94,12 +98,40 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
 
    # And create the graph showing the modules
    pG = nx.transitive_reduction(G)
-   for edge in pG.edges() :
-       of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
-   
-   # Add in the cycles
-   for cyc in cycles :
-       for i in range(len(cyc)-1) : of.write( str(cyc[i]) + "-->" + str(cyc[(i+1)%len(cyc)]) + ";\n" )
+
+   # Create a matrix with the connections
+   graphmat = np.zeros([k,k])
+   for edge in pG.edges() : graphmat[edge[0],edge[1]] = 1
+   for cyc in cycles : 
+       for i in range(len(cyc)-1) : graphmat[cyc[i], cyc[(i+1)%len(cyc)]] = 1
+
+   drawn = np.zeros(k)
+   for i in range(k) : 
+       if backtranslate[i]=="core" : continue
+      
+       group = set([i])
+       for j in range(k) :
+           if np.sum(graphmat[:,i])>0 and np.all(graphmat[:,j]==graphmat[:,i]) and drawn[j]==0 : group.add(j)
+
+       # This code ensures that if there are more than 2 nodes that have identical dependencies we draw them in 
+       # a subgraph.  The resulting flow chart is less clustered with arrows       
+       if len(group)>2 : 
+          of.write("subgraph g" + str(i) + " [ ]\n")
+          for j in group :  
+              if drawn[j]==0 :
+                 drawModuleNode( j, backtranslate[j], dependinfo[backtranslate[j]]["type"], of )
+                 drawn[j]==1
+          of.write("end\n")
+          for l in range(k) :
+              if graphmat[l,j]>0 :
+                 if drawn[l]==0 :
+                    drawModuleNode( l, backtranslate[l], dependinfo[backtranslate[l]]["type"], of )
+                    drawn[l]==1
+                 of.write( str(l) + "--> g" + str(i) + ";\n" )
+          for j in group : graphmat[:,j] = 0
+
+   for i in range(k) :
+       if drawn[i]==0 : drawModuleNode( i,  backtranslate[i], dependinfo[backtranslate[i]]["type"], of ) 
 
    # And finally the click stuff
    k=0
