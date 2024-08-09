@@ -23,7 +23,7 @@ Once you have prepared this file email it to the <b><a href="mailto:plumed.nest@
 ensure that your content is loaded into the site.  The instruction page for your lesson is created from the README.md file you provide.  The list of additional 
 resources, video pages and notebook pages are generated automatically from the information you provide in the yaml file  
 
-Once your content is loaded on the PLUMED-TUTORIAL site, the lesson will upload if you edit the files in the zip archive whose link you shared with us.
+Once your content is loaded on the PLUMED-TUTORIALS site, the lesson will upload if you edit the files in the zip archive whose link you shared with us.
 If for some reason you need to change the location of zip file you will will need to contact the PLUMED developers in order to update your yaml file.
 
 N.B. In the vast majority of cases you do not need to include the `command` key pair in the yaml file.  This option is used in cases where there is content in a lesson that 
@@ -34,7 +34,7 @@ its <a href="https://github.com/plumed-school/plumed-school/blob/main/lessons/20
 Lastly, note that if you want to a a link to content that you have contributed to PLUMED-TUTORIALS to your personal website you can use a url like the one below:
 
 ````
-https://plumed-school.github.io/browse.html?search=yourname
+https://www.plumed-tutorials.org/browse.html?search=yourname
 ````
 
 __Please note that:__
@@ -69,7 +69,7 @@ click D "notebooks/solultion.ipynb" "A python notebook containing a full set of 
 ```
 ```` 
 
-When the school website is built the nodes in the flowchart thus serve as links to the various pages that are built from the resources you provide.  The NAVIGATION.md file is parsed and 
+When the PLUMED-TUTORIALS website is built the nodes in the flowchart thus serve as links to the various pages that are built from the resources you provide.  The NAVIGATION.md file is parsed and
 the name of the file or object to embed that is provided in the first set of inverted commas after each click command is replaced by a suitable hyperlink.  (the text in the second set of inverted commas 
 on these lines will appear in a tooltip)
 
@@ -129,7 +129,7 @@ PRINT ARG=__FILL__ FILE-colvar
 
 To prevent broken badges from appearing by these incomplete inputs you must include a complete version of the input in your repository. Within the `README.md` file you provide the location of the complete
 input in your zip archive by using the `#SOLUTIONFILE` instruction as shown above.  This `#SOLUTIONFILE` comment will NOT appear in the version of the input file that is rendered on 
-the plumed-school website.
+the PLUMED-TUTORIALS website.
 
 # On cheating 
 

@@ -1,2 +1,2 @@
-# plumed-school 
+# plumed-tutorials
  

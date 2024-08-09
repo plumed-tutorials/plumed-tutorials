@@ -66,7 +66,7 @@ PLUMED to include it during the configure stage by using:
 
 Each module contains implementations of a number of actions. You can find a list of all the actions implemented in in PLUMED [here](actionlist.md).
 
-If you are completely unfamiliar with PLUMED we would recommend that you start by working through [the following tutorial](https://plumed-school.github.io/lessons/21/001/data/NAVIGATION.html). 
+If you are completely unfamiliar with PLUMED we would recommend that you start by working through [the following tutorial](https://www.plumed-tutorials.org/lessons/21/001/data/NAVIGATION.html).
 
 ```mermaid
    """
@@ -117,7 +117,7 @@ def createModulePage( modname, neggs, nlessons ) :
          f.write("|:--------|:--------:|\n")
          f.write("| Description of module | ")
          if nlessons>0 :
-            f.write("[![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-" + str(nlessons) + "-green.svg)](https://plumed-school.github.io/browse.html?search=" + modname + ")")
+            f.write("[![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-" + str(nlessons) + "-green.svg)](https://www.plumed-tutorials.org/browse.html?search=" + modname + ")")
          else : 
             f.write("![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-0-red.svg)")
          if neggs>0 : 
@@ -161,7 +161,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
          f.write("|:--------|:--------:|\n") 
          f.write("| " + value["description"] + " | ")
          if nlessons>0 : 
-            f.write("[![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-" + str(nlessons) + "-green.svg)](https://plumed-school.github.io/browse.html?search=" + action + ")")
+            f.write("[![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-" + str(nlessons) + "-green.svg)](https://www.plumed-tutorials.org/browse.html?search=" + action + ")")
          else : 
             f.write("![used in " + str(nlessons) + " tutorials](https://img.shields.io/badge/tutorials-0-red.svg)")
          if neggs>0 : 
@@ -247,7 +247,7 @@ if __name__ == "__main__" :
          replica = int(arg)
    print("RUNNING", nreplicas, "REPLICAS. THIS IS REPLICA", replica )
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
-   school_map = {} #create_map("https://plumed-school.github.io/summary.html")
+   school_map = {} #create_map("https://www.plumed-tutorials.org/summary.html")
    # Print the date to the data directory
    today = { "date": date.today().strftime('%B %d, %Y') }
    df = open("_data/date.json","w")

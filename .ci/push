@@ -43,7 +43,7 @@ git remote add origin https://plumedbot:$PLUMED_SCHOOL_GITHUB_TOKEN@github.com/$
 
 # create README.md
 cat > README.md << EOF
-Welcome to PLUMED-SCHOOL!
+Welcome to PLUMED-TUTORIALS!
 -----------------------------
 
 EOF
