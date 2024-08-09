@@ -132,6 +132,8 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
 
    for i in range(k) :
        if drawn[i]==0 : drawModuleNode( i,  backtranslate[i], dependinfo[backtranslate[i]]["type"], of ) 
+       for j in range(k) :
+           if graphmat[i,j]>0 : of.write( str(i) + "-->" + str(j) + ";\n" )
 
    # And finally the click stuff
    k=0
