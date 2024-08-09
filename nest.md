@@ -7,10 +7,3 @@ PLUMED-NEST is the public repository of the PLUMED consortium. It provides all t
 
 <a class="site-title" href="http://www.plumed-nest.org"><img width="20%" src="nest.png"></a>
 
-Made with PLUMED
------------------------------
-
-Here you can find an exhaustive list of works citing PLUMED:
-
-* [Publications citing PLUMED 1 on Google Scholar](http://goo.gl/iASDth)
-* [Publications citing PLUMED 2 on Google Scholar](http://goo.gl/Sn4Mn9)
