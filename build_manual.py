@@ -235,11 +235,12 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
          
          f.write("## Input\n\n")
          f.write("The input for this action is specified using one or more of the keywords in the following table.\n\n")
-         f.write("| Keyword |  Description |\n")
-         f.write("|:-------|:-----------|\n")
+         f.write("| Keyword |  Type | Description |\n")
+         f.write("|:--------|:------:|:-----------|\n")
          for key, docs in value["syntax"].items() :
              if key=="output" : continue
-             if docs["type"]=="atoms" or key=="ARG" : f.write("| " + key + " | " + docs["description"] + " |\n")
+             if docs["type"]=="atoms" : f.write("| " + key + " | $\textcolor{violet}{\textsf{atoms}}$ | " + docs["description"] + " |\n")
+             elif key=="ARG" : f.write("| " + key + " | scalar | " + docs["description"] + " |\n")
          f.write("\n\n")
 
          f.write("## Further details and examples \n")
