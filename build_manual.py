@@ -247,7 +247,7 @@ if __name__ == "__main__" :
          replica = int(arg)
    print("RUNNING", nreplicas, "REPLICAS. THIS IS REPLICA", replica )
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
-   school_map = {} #create_map("https://www.plumed-tutorials.org/summary.html")
+   school_map = create_map("https://www.plumed-tutorials.org/summary.html")
    # Print the date to the data directory
    today = { "date": date.today().strftime('%B %d, %Y') }
    df = open("_data/date.json","w")
