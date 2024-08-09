@@ -12,5 +12,4 @@ PLUMED works together with some of the most popular MD engines, such as [ACEMD](
 
 **Check it out [here](http://www.plumed.org)!**
 
-<a class="site-title" href="http://www.plumed-nest.org"><img width="15%" src="nest.png"></a>
 <a class="site-title" href="http://www.plumed.org"><img width="20%" src="pigeon.png"></a>
