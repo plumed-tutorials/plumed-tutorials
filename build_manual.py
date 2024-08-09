@@ -239,7 +239,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
          f.write("|:--------|:------:|:-----------|\n")
          for key, docs in value["syntax"].items() :
              if key=="output" : continue
-             if docs["type"]=="atoms" : f.write("| " + key + " | $\textcolor{violet}{\textsf{atoms}}$ | " + docs["description"] + " |\n")
+             if docs["type"]=="atoms" : f.write("| " + key + " | atoms | " + docs["description"] + " |\n")
              elif key=="ARG" : f.write("| " + key + " | scalar | " + docs["description"] + " |\n")
          f.write("\n\n")
 
