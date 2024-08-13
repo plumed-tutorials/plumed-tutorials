@@ -10,7 +10,7 @@
 * __What is PLUMED?__
 
   PLUMED is a freely-available, open-source library that provides a wide range of different methods, such as enhanced-sampling algorithms, free-energy methods, and tools to analyze the vast amounts
-  of data produced by MD simulations. More information can be found [here](http://www.plumed.org).
+  of data produced by MD simulations. More information can be found [here](https://www.plumed.org).
 
 * __What is the PLUMED consortium?__
 
@@ -20,7 +20,7 @@
   The mission of the consortium is to transform the way researchers communicate the
   protocols that are used in their MD simulations, in order to maximize the impact of
   new research and promote the highest possible standards of scientific reproducibility.
-  More information can be found [here](http://www.plumed-nest.org/consortium.md).
+  More information can be found [here](https://www.plumed-nest.org/consortium.md).
 
 * __How to find a lesson in PLUMED-TUTORIALS__
 
