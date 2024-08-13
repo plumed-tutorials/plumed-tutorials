@@ -1,5 +1,8 @@
 What code will I learn about here?
 ----------------------------------
+
+<center><img width="20%" src="pigeon.png"></center>
+
 PLUMED is an open-source, community-developed library that provides a wide range of different methods, which include:
 
 * enhanced-sampling algorithms
@@ -12,4 +15,3 @@ PLUMED works together with some of the most popular MD engines, such as [ACEMD](
 
 **Check it out [here](http://www.plumed.org)!**
 
-<a class="site-title" href="http://www.plumed.org"><img width="20%" src="pigeon.png"></a>
