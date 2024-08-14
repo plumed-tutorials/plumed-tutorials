@@ -1,5 +1,5 @@
 url: https://github.com/Iximiel/cudaOnPlumed/releases/download/v1.0rc/cudaOnPlumed.zip
 instructors: Daniele Rapetti
-title: Rewriting the coordination for plumed in Cuda
+title: Rewriting coordination CVs in CUDA 
 description: How I reimplemented a basic version of the CV Coordination with cuda
 tags: developers, C++, parallelism, Cuda
