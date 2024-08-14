@@ -20,7 +20,7 @@
   The mission of the consortium is to transform the way researchers communicate the
   protocols that are used in their MD simulations, in order to maximize the impact of
   new research and promote the highest possible standards of scientific reproducibility.
-  More information can be found [here](https://www.plumed-nest.org/consortium.md).
+  More information can be found [here](https://www.plumed-nest.org/consortium.html).
 
 * __How to find a lesson in PLUMED-TUTORIALS__
 
