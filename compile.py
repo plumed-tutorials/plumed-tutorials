@@ -27,6 +27,8 @@ def cd(newdir):
         os.chdir(prevdir)
 
 def processNavigation( lessonname, actions, embeds ) :
+    if os.path.exists("data/navigation.md") : os.rename("data/naviation.md","data/NAVIGATION.md")
+        
     f = open( "data/NAVIGATION.md", "r" )
     inp = f.read()
     f.close()
@@ -203,7 +205,11 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
            raise RuntimeError("No NAVIGATION.md file found in lesson")
         # Get the contents of the embeds file
         embeds = {}
-        if os.path.exists("data/EMBED.yml") :
+        if os.path.exists("data/embed.yml") :
+           stramm=open("data/embed.yml", "r")
+           embeds=yaml.load(stram,Loader=yaml.BaseLoader) or {}
+           stram.close() 
+        elif os.path.exists("data/EMBED.yml") :
            stram=open("data/EMBED.yml", "r")
            embeds=yaml.load(stram,Loader=yaml.BaseLoader) or {}
            stram.close()
