@@ -199,8 +199,6 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
              #subprocess.run(config["command"])
 
         # Check for the existence of a NAVIGATION file
-        print("STATUS Of navigation.md", os.path.exists("data/navigation.md") )
-        print("ALL FILES", os.listdir("data") )
         if os.path.exists("data/navigation.md") : os.rename("data/navigation.md","data/NAVIGATION.md")
         if not os.path.exists("data/NAVIGATION.md") : raise RuntimeError("No NAVIGATION.md file found in lesson")
         # Get the contents of the embeds file
