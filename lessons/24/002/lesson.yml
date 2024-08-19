@@ -1,4 +1,4 @@
-url:https://github.com/adpietropaolo/tutorial/raw/main/TransCisIsomerization.zip
+url: https://github.com/adpietropaolo/tutorial/raw/main/TransCisIsomerization.zip
 instructors: Adriana Pietropaolo
 title: Trans-Cis isomerization in the ground and excited states using PLUMED
 description: This tutorial shows how to run ground and excited state simulations using PLUMED patched with your MD code to simulate a trans to cis isomerization process. The flow chart will guide on the order to consult the resources, that you can easily access by clicking on them.
