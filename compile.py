@@ -200,7 +200,7 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
 
         # Check for the existence of a NAVIGATION file
         if not os.path.exists("data/NAVIGATION.md") : 
-           if os.path.exists("data/navigation.md") : os.rename("data/naviation.md","data/NAVIGATION.md")
+           if os.path.exists("data/navigation.md") : os.rename("data/navigation.md","data/NAVIGATION.md")
            else : raise RuntimeError("No NAVIGATION.md file found in lesson")
         # Get the contents of the embeds file
         embeds = {}
