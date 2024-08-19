@@ -204,7 +204,7 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         # Get the contents of the embeds file
         embeds = {}
         if os.path.exists("data/embed.yml") :
-           stramm=open("data/embed.yml", "r")
+           stram=open("data/embed.yml", "r")
            embeds=yaml.load(stram,Loader=yaml.BaseLoader) or {}
            stram.close() 
         elif os.path.exists("data/EMBED.yml") :
