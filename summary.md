@@ -20,7 +20,7 @@
 Total number of lessons and PLUMED input files deposited in PLUMED-TUTORIALS, along with number of failed inputs 
 with current ({{ site.data.plumed.stable }}) and master PLUMED versions.
 
-|   Date   |  # eggs | # inputs | ![current](https://img.shields.io/badge/current-failed-red.svg) | ![master](https://img.shields.io/badge/master-failed-red.svg) |
+|   Date   |  # lessons | # inputs | ![current](https://img.shields.io/badge/current-failed-red.svg) | ![master](https://img.shields.io/badge/master-failed-red.svg) |
 | :------: |  :------:  |  :------:  | :------:  | :------:  |
 |  {{ date }} | {{ site.data.lessons.size }} | {{ ninp }} | {{ nfail }} | {{ nfailm }} |
 
