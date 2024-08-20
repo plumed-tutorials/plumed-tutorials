@@ -1,4 +1,4 @@
 url: https://github.com/maxbonomi/EMMIVox-Plumed-Tutorials/archive/refs/heads/main.zip
-instructors: Max Bonomi and Samuel Hoff
+instructors: Samuel Hoff
 title: A Bayesian approach to integrate cryo-EM data into MD simulations with PLUMED 
 description: How to use PLUMED to perform single-structure and ensemble refinement using cryo-EM maps and EMMIVox. 
