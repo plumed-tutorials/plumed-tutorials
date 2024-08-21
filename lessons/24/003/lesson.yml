@@ -1,8 +1,5 @@
-url: https://github.com/Iximiel/plumed-school-benchmark/archive/refs/heads/main.zip
+url: https://github.com/Iximiel/plumed-school-benchmark/releases/download/School/plumed-school-benchmark.zip
 instructors: Daniele Rapetti
 title: Benchmarking PLUMED 
 description: This tutorial shows you how to use the plumed benchmark tool to measure the performance of the code
-
-
-
-
+tags: developers, benchmark, manual
