@@ -1,3 +1,4 @@
+import pytube
 from pytube import YouTube
 import datetime
 
@@ -51,6 +52,8 @@ video_url = [
 
 video_url = ["https://www.youtube.com/live/2eGhMSdIJEs?si=7Ol2gDLR5F8vHHrf"]
 
+print(pytube.__version__)
+exit()
 views = 0
 for v in video_url:
     yt = YouTube(v)
