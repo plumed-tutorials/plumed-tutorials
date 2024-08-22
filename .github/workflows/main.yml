@@ -87,7 +87,7 @@ jobs:
         # update Masterclass views
         cat masterclass > masterclass.md
         # MB: this still not working with workflows, but works on my laptop...
-        python count-views.py >> masterclass.md
+        python count-views.py # >> masterclass.md
     - name: Create tar ball
       run: |
         tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.gif") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name ".svg") $(find . -name "*.html") _data/*.yml _data/*.json
