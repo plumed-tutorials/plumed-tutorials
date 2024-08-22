@@ -2,3 +2,4 @@ url: https://github.com/luigibonati/masterclass-plumed/archive/master.zip
 instructors: Luigi Bonati
 title: Machine learning collective variables with PyTorch
 description: An introduction to designing data-driven CVs using two methods (DeepLDA and DeepTICA).
+tags: masterclass-2022

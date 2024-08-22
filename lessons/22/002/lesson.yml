@@ -1,4 +1,5 @@
 url: https://github.com/plumed/masterclass-22-02/archive/refs/heads/master.zip
 instructors: Vojtech Spiwok
 title: Analysis of PLUMED output by Metadynminer
-description: An introduction to the R package Metadynminer which can be used to analyse the output from metadynamics simulatiosn
+description: An introduction to the R package Metadynminer which can be used to analyse the output from metadynamics simulations
+tags: masterclass-2022

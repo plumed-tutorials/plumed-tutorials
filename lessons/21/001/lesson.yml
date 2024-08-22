@@ -2,3 +2,4 @@ url: https://github.com/plumed/masterclass-21-1/archive/refs/heads/main.zip
 instructors: Max Bonomi
 title: PLUMED syntax and analysis
 description: Basic features of the PLUMED input syntax with a particular focus on PBCs and selection tools
+tags: masterclass-2021
