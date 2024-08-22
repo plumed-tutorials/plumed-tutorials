@@ -105,7 +105,7 @@ def processMarkdown( filename, actions ) :
     ofile = open( "data/" + filename, "w+" )
     inplumed = False
     plumed_inp = ""
-    solutionfile = ""
+    solutionfile = None
     incomplete = False
     usemermaid = ""
     for line in inp.splitlines() :
@@ -113,7 +113,7 @@ def processMarkdown( filename, actions ) :
         if "```plumed" in line :
           inplumed = True
           plumed_inp = ""
-          solutionfile = ""
+          solutionfile = None
           incomplete = False
           ninputs = ninputs + 1 
  
@@ -125,16 +125,21 @@ def processMarkdown( filename, actions ) :
               mermaidinpt = ""
               if usemermaid=="value" : mermaidinpt = get_mermaid( "plumed_master", plumed_inp, False )
               elif usemermaid=="force" : mermaidinpt = get_mermaid( "plumed_master", plumed_inp, True )
-              else : raise Exception(usemermaid + "is invalid instruction for use mermaid") 
+              else : raise RuntimeError(usemermaid + "is invalid instruction for use mermaid") 
               ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
            if incomplete :
-               # Read solution from solution file
-               sf = open( "data/" + solutionfile, "r" )
-               solution = sf.read() 
-               sf.close()
-               # Create the full input for PlumedToHTML formatter 
-               plumed_inp += "#SOLUTION \n" + solution
-           else : 
+               if solutionfile:
+                  # Read solution from solution file
+                  try:
+                     with open( "data/" + solutionfile, "r" ) as sf:
+                        solution = sf.read() 
+                        plumed_inp += "#SOLUTION \n" + solution
+                  except:
+                     raise RuntimeError(f"error in opening {solutionfile} as solution for an incomplete input from file {filename}")
+               else:
+                  raise RuntimeError(f"an incomplete input from file {filename} does not have its solution file")      
+           # Create the full input for PlumedToHTML formatter 
+           else :
                solutionfile = filename + "_working_" + str(ninputs) + ".dat"
                sf = open( "data/" + solutionfile, "w+" )
                sf.write( plumed_inp )
