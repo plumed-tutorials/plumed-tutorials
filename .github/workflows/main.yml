@@ -60,6 +60,8 @@ jobs:
         pip install PlumedToHTML
         pip install networkx
         pip install numpy
+        pip install pytube
+        pip install DateTime
         git clone --bare https://github.com/plumed/plumed2.git
         sudo ln -s ccache /usr/local/bin/mpic++
         export PATH=/usr/lib/ccache:${PATH}
