@@ -54,6 +54,8 @@ views = 0
 for v in video_url:
     try:
      views += int(YouTube(v).views)
+    except:
+     views += 0
 
 mydate = datetime.datetime.now()
 mydate = mydate.strftime("%B")+" "+ str(mydate.strftime("%Y"))
