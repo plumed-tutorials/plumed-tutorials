@@ -84,6 +84,9 @@ jobs:
         # N.B. If you adjust the number of replicas used here you need to adjust the liquid syntax in summary.md that builds the total number of lessons that use each action 
         python compile.py --nreplicas 2 --replica ${{matrix.replica}}
         cp $(plumed info --root)/json/syntax.json syntax.${{matrix.replica}}.json
+        # update Masterclass views
+        cat masterclass > masterclass.md
+        python count-views.py >> masterclass.md
     - name: Create tar ball
       run: |
         tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.gif") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name ".svg") $(find . -name "*.html") _data/*.yml _data/*.json
@@ -122,4 +125,4 @@ jobs:
       env:
         PLUMED_SCHOOL_GITHUB_TOKEN: ${{ secrets.PLUMED_SCHOOL_GITHUB_TOKEN }}
       run: |
-        bash .ci/push _config.yml actioncount.md _layouts _data assets teacher.png nest.png pigeon.png
+        bash .ci/push _config.yml actioncount.md _layouts _data assets teacher.png nest.png pigeon.png pigeon-MC.png

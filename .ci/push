@@ -51,10 +51,6 @@ EOF
 # add general informations
 cat Info.md >> README.md
 
-# update Masterclass views
-cat masterclass > masterclass.md
-python count-views.py >> masterclass.md
-
 # cp $root/nest.png .
 # cp $root/pigeon.png .
 cp $root/CNAME .
