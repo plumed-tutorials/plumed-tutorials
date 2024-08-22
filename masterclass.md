@@ -3,7 +3,8 @@ PLUMED Masterclass
 
 PLUMED Masterclass was a series of virtual and interactive classes, each one
 focused on a specific theme ranging from basic concepts to advanced topics in molecular simulations.
-Two series of PLUMED Masterclass were run in 2021 and 2022.
+Two series of PLUMED Masterclass were run in 2021 and 2022 and were delivered by PLUMED developers and contributors.
+
 Each class was composed by two lectures held on [Zoom](https://zoom.us/): 
 * Lecture I: an overview of the methodological background followed by a brief description of the exercises assigned to the students;
 * Lecture II: a practical lecture in which the instructor solves the assigned exercises.
