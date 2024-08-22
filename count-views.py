@@ -49,6 +49,8 @@ video_url = [
 "https://www.youtube.com/watch?v=srZfm_TIgwc&list=PLmdKEn2znJEmCw1OfLLhv43TXl-QDvkUO&index=29&pp=iAQB"
 ]
 
+video_url = ["https://www.youtube.com/live/2eGhMSdIJEs?si=7Ol2gDLR5F8vHHrf"]
+
 views = 0
 for v in video_url:
     yt = YouTube(v)
