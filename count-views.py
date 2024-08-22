@@ -52,7 +52,8 @@ video_url = [
 
 views = 0
 for v in video_url:
-    views += int(YouTube(v).views)
+    try:
+     views += int(YouTube(v).views)
 
 mydate = datetime.datetime.now()
 mydate = mydate.strftime("%B")+" "+ str(mydate.strftime("%Y"))
