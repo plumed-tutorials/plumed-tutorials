@@ -99,12 +99,24 @@ def processMarkdown( filename, actions ) :
     inp = f.read()
     f.close()
  
-    ninputs, nfail, nfailm = 0, 0, 0
-    ofile, inplumed, plumed_inp, solutionfile, incomplete, usemermaid = open( "data/" + filename, "w+" ), False, "", "", False, ""
+    ninputs = 0
+    nfail = 0
+    nfailm = 0
+    ofile = open( "data/" + filename, "w+" )
+    inplumed = False
+    plumed_inp = ""
+    solutionfile = ""
+    incomplete = False
+    usemermaid = ""
     for line in inp.splitlines() :
         # Detect and copy plumed input files 
         if "```plumed" in line :
-           inplumed, plumed_inp, solutionfile, incomplete, ninputs = True, "", "", False, ninputs + 1 
+          inplumed = True
+          plumed_inp = ""
+          solutionfile = ""
+          incomplete = False
+          ninputs = ninputs + 1 
+ 
         # Test plumed input files that have been found in tutorial 
         elif inplumed and "```" in line : 
            inplumed = False
