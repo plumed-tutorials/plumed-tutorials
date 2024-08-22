@@ -227,6 +227,7 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
+        if "tags" in config.keys() : print("  tags: " + config["tags"], file=eggdb)
         print("  ninputs: " + str(ninputs), file=eggdb)
         print("  nfail: " + str(nfail), file=eggdb)
         print("  nfailm: " + str(nfailm), file=eggdb)
