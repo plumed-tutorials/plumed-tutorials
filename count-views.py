@@ -49,10 +49,10 @@ video_url = [
 "https://www.youtube.com/watch?v=srZfm_TIgwc&list=PLmdKEn2znJEmCw1OfLLhv43TXl-QDvkUO&index=29&pp=iAQB"
 ]
 
-views = 0.0
+views = 0
 for v in video_url:
     yt = YouTube(v)
-    views += yt.views
+    views += int(yt.views)
 
 mydate = datetime.datetime.now()
 mydate = mydate.strftime("%B")+" "+ str(mydate.strftime("%Y"))
