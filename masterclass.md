@@ -15,6 +15,6 @@ interact with lecturers and with other participants during the entire week.
 
 __List of Classes__
 
-All classes have been recorded and are available on [YouTube](www.youtube.com/@plumedorg1402). They have already been viewed 45000 times.
-In 2024, PLUMED Masterclass lectures were converted to PLUMED Tutorials and are available [here](www.plumed-tutorials.org/browse?search=masterclass).
+All classes have been recorded and are available on [YouTube](https://www.youtube.com/@plumedorg1402). They have already been viewed 45000 times.
+In 2024, PLUMED Masterclass lectures were converted to PLUMED Tutorials and are available [here](https://www.plumed-tutorials.org/browse?search=masterclass).
 
