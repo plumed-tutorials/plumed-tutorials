@@ -1,4 +1,3 @@
-import pytube
 from pytube import YouTube
 import datetime
 
@@ -50,6 +49,7 @@ video_url = [
 "https://www.youtube.com/watch?v=srZfm_TIgwc"
 ]
 
+# get total views
 views = 0
 for v in video_url:
     try:
@@ -57,6 +57,9 @@ for v in video_url:
     except:
      views += 0
 
+# get month and year
 mydate = datetime.datetime.now()
 mydate = mydate.strftime("%B")+" "+ str(mydate.strftime("%Y"))
+
+# print stuff
 print("All classes have been recorded and are available on [YouTube](https://www.youtube.com/@plumedorg1402). As of %s, they have been viewed %d times. In 2024, PLUMED Masterclass lectures were converted to PLUMED Tutorials and are available [here](https://www.plumed-tutorials.org/browse?search=masterclass)." % (mydate, views))
