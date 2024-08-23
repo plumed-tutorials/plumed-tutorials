@@ -51,11 +51,6 @@ EOF
 # add general informations
 cat Info.md >> README.md
 
-# test Youtube update
-pip install pytube
-pip install DateTime
-python $root/count-views.py
-
 # cp $root/nest.png .
 # cp $root/pigeon.png .
 cp $root/CNAME .
