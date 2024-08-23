@@ -51,8 +51,7 @@ video_url = [
 
 # get total views
 views = 0
-for i,v in enumerate(video_url):
-    print(i, v)
+for v in video_url:
     try:
      views += int(YouTube(v).views)
     except:
