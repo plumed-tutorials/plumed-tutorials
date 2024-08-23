@@ -62,4 +62,4 @@ mydate = datetime.datetime.now()
 mydate = mydate.strftime("%B")+" "+ str(mydate.strftime("%Y"))
 
 # print stuff
-print("All classes have been recorded and are available on [YouTube](https://www.youtube.com/@plumedorg1402). As of %s, they have been viewed %d times. In 2024, PLUMED Masterclass lectures were converted to PLUMED Tutorials and are available [here](https://www.plumed-tutorials.org/browse?search=masterclass)." % (mydate, views))
+print("All 21 classes are also available on [YouTube](https://www.youtube.com/@plumedorg1402). As of %s, they have been viewed %d times." % (mydate, views))
