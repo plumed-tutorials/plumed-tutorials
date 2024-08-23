@@ -51,6 +51,9 @@ EOF
 # add general informations
 cat Info.md >> README.md
 
+# test Youtube update
+python $root/count-views.py
+
 # cp $root/nest.png .
 # cp $root/pigeon.png .
 cp $root/CNAME .
