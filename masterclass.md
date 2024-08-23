@@ -1,4 +1,4 @@
-PLUMED Masterclass
+A bit of history: PLUMED Masterclass
 ------------------
 
 <center><img width=150 src="pigeon-MC.png"></center>
