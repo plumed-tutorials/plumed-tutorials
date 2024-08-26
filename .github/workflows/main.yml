@@ -60,8 +60,8 @@ jobs:
         ccache -s
         .ci/install.libtorch
         # version=master or version=f123f12f3 to select a specific version
-        # pick newest release branch (alphabetic, will fail at v2.10)
-        CXX="mpic++" .ci/install.plumed version="$(cd plumed2.git ; git branch | sed "s/^ *//" | grep '^v2\.[0-9]$' | tail -n 1)" repo=$PWD/plumed2.git
+        # The ordering is by version, so 2.10 will be > than 2.1 
+        CXX="mpic++" .ci/install.plumed version="$(cd plumed2.git ; git branch --list 'v2.*' --sort='version:refname'| sed "s/^ *//" | grep '^v2\.[0-9]*$' | tail -n 1)" repo=$PWD/plumed2.git
         # GB: in addition, we install master version as plumed_master
         CXX="mpic++" .ci/install.plumed version=master suffix=_master repo=$PWD/plumed2.git
         ccache -s
@@ -98,7 +98,7 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v4
     - name: Download artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v6
     - name: Set up Python 3.8
       uses: actions/setup-python@v5
       with:
