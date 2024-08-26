@@ -8,7 +8,7 @@ Suggestions for an order to work through the tutorials can be found [here](summa
 {:#browse-table .display}
 | ID | Name | Instructors | Description | Tags | Actions | Modules |
 |:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|
-{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.description }} | {{ item.tags }} | {{ item.actions }} | {{ item.modules }} |
+{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors }} | {{ item.description }} | {{ item.tags }} | {{ item.actions }} | {{ item.modules }} |
 {% endfor %}
 
 
