@@ -117,7 +117,7 @@ def processMarkdown( filename, actions ) :
               ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
            if incomplete :
                # Read solution from solution file
-               if not os.path.isfile("data/" + solutionfile, "r" ) :
+               if not os.path.isfile("data/" + solutionfile) :
                   raise Exception("could not find solution file named " + solutionfile + " promised  in file " + filename ) 
                sf = open( "data/" + solutionfile, "r" )
                solution = sf.read() 
