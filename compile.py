@@ -117,10 +117,9 @@ def processMarkdown( filename, actions ) :
               ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
            if incomplete :
                # Read solution from solution file
-               try : 
-                  sf = open( "data/" + solutionfile, "r" )
-               except : 
-                  raise Exception("could not find solution file named " + solutionfile + " promised  in file " + filename )
+               if not os.path.isfile("data/" + solutionfile, "r" ) :
+                  raise Exception("could not find solution file named " + solutionfile + " promised  in file " + filename ) 
+               sf = open( "data/" + solutionfile, "r" )
                solution = sf.read() 
                sf.close()
                # Create the full input for PlumedToHTML formatter 
