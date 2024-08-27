@@ -116,6 +116,8 @@ def processMarkdown( filename, actions ) :
               else : raise Exception(usemermaid + "is invalid instruction for use mermaid") 
               ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
            if incomplete :
+               if solutionfile.length()==0 : 
+                  raise Exception("found incomplete input but no solution was specified for input" + plumed_inp )
                # Read solution from solution file
                if not os.path.isfile("data/" + solutionfile) :
                   raise Exception("could not find solution file named " + solutionfile + " promised  in file " + filename ) 
