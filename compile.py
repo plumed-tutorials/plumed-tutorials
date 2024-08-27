@@ -44,7 +44,7 @@ def processNavigation( lessonname, actions, embeds ) :
            ofile.write( line + "\n" )
         elif inmermaid and "click" in line :
            name = line.split('"')[1]
-           name_extension = name.split(".")[1] if len(name.split("."))>1 else None
+           name_extension = name.split(".")[1] if len(name.split("."))>1 else ""
            islesson = False 
            if name in embeds :
               if "title" in embeds[name] :
