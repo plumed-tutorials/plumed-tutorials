@@ -116,10 +116,6 @@ jobs:
         PLUMED_SCHOOL_GITHUB_TOKEN: ${{ secrets.PLUMED_SCHOOL_GITHUB_TOKEN }}
       run: |
         bash .ci/push _config.yml actioncount.md _layouts _data assets teacher.png nest.png pigeon.png pigeon-MC.png
-    # - name: Upload to test page
-    #   if: github.ref != 'refs/heads/main'
-    #   run: |
-    #     bash .ci/push_test _config.yml actioncount.md _layouts _data assets teacher.png nest.png pigeon.png pigeon-MC.png
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       if: github.ref != 'refs/heads/main'
