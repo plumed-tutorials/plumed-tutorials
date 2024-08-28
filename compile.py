@@ -309,7 +309,6 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         # get citation
         ref,ref_url = get_reference(config["doi"])
         print("  doi: " + config["doi"],file=eggdb)
-        print("  path: " + path,file=eggdb)
         print("  reference: '" + ref +"'",file=eggdb)
         print("  ref_url: '" + ref_url +"'",file=eggdb)
         print("  description: " + config["description"], file=eggdb)
