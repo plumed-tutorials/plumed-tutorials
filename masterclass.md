@@ -16,7 +16,7 @@ In between the two lectures, the participants had one week to complete the exerc
 They had access to a dedicated [Slack](https://slack.com/) organization, where they were able to
 interact with lecturers and with other participants during the entire week.
 
-__List of Classes__
+### List of Classes
 
 Information about the two series of PLUMED Masterclass can be found in the table below. In 2024, these lectures were converted into PLUMED Tutorials, which can be accessed by clicking on the corresponding series. All 21 classes are also available on [YouTube](https://www.youtube.com/@plumedorg1402). As of August 2024, they have been viewed 46829 times.
 
