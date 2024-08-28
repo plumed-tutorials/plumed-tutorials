@@ -18,6 +18,7 @@ The fields you must fill are:
 * __URL:__ the location of the zipped archive containing your lesson
 * __Keywords:__ keywords describing the lesson
 * __Instructors:__ your name/s
+* __Publication:__ the DOI identifying the paper related to this lesson. If the work is not published or available on a preprint server, please type *"unpublished"*
 * __Contact:__ the name of a contact person to communicate with the coordinators of the PLUMED consortium
 * __Contact email:__ the email of the contact person
 * __Comments (optional):__ comments related to the submission or feedback on existing tutorials
@@ -65,6 +66,10 @@ Fields marked with "<sup>*</sup>" are optional
     <tr>
       <td><label for="instructor">Instructors</label></td>
       <td width="600"><input id="instructor" type="text" name="instructor" required></td>
+    </tr>
+    <tr>
+      <td><label for="publication">Publication</label></td>
+      <td width="600"><input id="publication" type="text" name="publication" placeholder="examples: 10.1016/j.cpc.2013.09.018, unpublished" required></td>
     </tr>
     <tr>
       <td><label for="contact">Contact</label></td>
