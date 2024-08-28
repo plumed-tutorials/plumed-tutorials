@@ -2,4 +2,5 @@ url: https://github.com/plumed/masterclass-21-2/archive/refs/heads/main.zip
 instructors: Gareth Tribello
 title: Statistical errors in MD
 description: How to calculate errors on averages calculated from unbiased and biased MD simulations using the method of block averages.
+doi: unpublished
 tags: masterclass-2021

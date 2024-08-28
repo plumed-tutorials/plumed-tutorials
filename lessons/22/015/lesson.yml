@@ -2,4 +2,5 @@ url: https://github.com/hockyg/masterclass-22-15/archive/refs/heads/main.zip
 instructors: Guillaume Stirnemann and Glen Hocky
 title: Mechanical pulling + FISST module
 description: This tutorial explains how mechanical forces can be modeled using PLUMED and the FISST module
+doi: 10.1063/5.0009280
 tags: masterclass-2022

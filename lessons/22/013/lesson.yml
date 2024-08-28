@@ -2,4 +2,5 @@ url: https://github.com/andrea-arsiccio/masterclass-22-13/archive/refs/heads/mai
 instructors: Andrea Arsiccio
 title: SASA module - The solvent accessible surface area of proteins as a collective variable, and the application of PLUMED for implicit solvent simulations
 description: An introduction to the SASA module and a description of how PLUMED can be used for implicit solvent simulations.
+doi: 10.1021/acs.jpcb.2c00889
 tags: masterclass-2022

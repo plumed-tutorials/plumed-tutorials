@@ -2,4 +2,5 @@ url: https://github.com/plumed/installation-instructions/archive/refs/heads/main
 instructors: Gareth Tribello
 title: Installing PLUMED
 description: An interactive tutorial resource on compiling PLUMED and linking it with MD codes.
+doi: unpublished
 command: build.py

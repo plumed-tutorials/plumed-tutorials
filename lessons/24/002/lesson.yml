@@ -2,6 +2,4 @@ url: https://github.com/adpietropaolo/tutorial/archive/refs/heads/main.zip
 instructors: Adriana Pietropaolo
 title: Trans-Cis isomerization in the ground and excited states using PLUMED
 description: A guide to perform ground and excited state simulations using PLUMED to simulate a trans to cis isomerization process.
-
-
-
+doi: 10.1063/5.0045944

@@ -2,4 +2,5 @@ url: https://github.com/Iximiel/PlumedFlagship_parallelism/releases/download/CEC
 instructors: Daniele Rapetti
 title: Introduction to the PLUMED parallel features for developers 
 description: A simple presentation of some of the available features in PLUMED to simplify the interface with OpenMP and MPI. The lesson contains also a very simple example of how to implement a CV with CUDA.
+doi: unpublished
 tags: developers, C++, parallelism

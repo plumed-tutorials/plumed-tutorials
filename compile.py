@@ -26,6 +26,30 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
+def get_reference(doi):
+    # initialize strings
+    ref=""; ref_url=""
+    # retrieve citation from doi
+    if(len(doi)>0):
+      # check if unpublished/submitted
+      if(doi.lower()=="unpublished" or doi.lower()=="submitted"):
+        ref=doi.lower()
+      # get info from doi
+      else:
+        try:
+          # get citation
+          cit = subprocess.check_output('curl -LH "Accept: text/bibliography; style=science" http://dx.doi.org/'+doi, shell=True).decode('utf-8').strip()
+          if("DOI Not Found" in cit):
+           ref="DOI not found"
+          else:
+           # get citation
+           ref=cit[3:cit.find(", doi")]
+           # and url
+           ref_url="http://dx.doi.org/"+doi
+        except:
+          ref="DOI not found"
+    return ref,ref_url
+
 def get_short_name_ini(lname, length):
     if(len(lname)>length): sname = lname[0:length]+"..."
     else: sname = lname
@@ -216,7 +240,7 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         config=yaml.load(stram,Loader=yaml.BaseLoader)
         stram.close()
         # check fields
-        for field in ("url","instructors","title"):
+        for field in ("url","instructors","title","doi"):
             if not field in config:
                raise RuntimeError(field+" not found")
         print(path,config)
@@ -282,6 +306,12 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         print("  shortitle: '" + get_short_name_ini(config["title"],15) +"'",file=eggdb)
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
+        # get citation
+        ref,ref_url = get_reference(config["doi"])
+        print("  doi: " + config["doi"],file=eggdb)
+        print("  path: " + path,file=eggdb)
+        print("  reference: '" + ref +"'",file=eggdb)
+        print("  ref_url: '" + ref_url +"'",file=eggdb)
         print("  description: " + config["description"], file=eggdb)
         if "tags" in config.keys() : print("  tags: " + config["tags"], file=eggdb)
         print("  ninputs: " + str(ninputs), file=eggdb)
