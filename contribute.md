@@ -48,7 +48,7 @@ Fields marked with "<sup>*</sup>" are optional
   <table>
     <tr>
       <td><label for="id">ID</label></td>
-      <td width="600"><select id="id" type="texy" name="ID"><option>new (ID to be assigned)</option>{% for item in sorted_less %}<option>{{ item.id }}:{{ item.title }}</option>{% endfor %} required</select> </td>
+      <td width="600"><select id="id" type="texy" name="ID"><option>new (ID to be assigned)</option>{% for item in sorted_less %}<option>{{ item.id }}:{{ item.shortitle }}</option>{% endfor %} required</select> </td>
     </tr>
     <tr>  
       <td><label for="title">Title</label></td>

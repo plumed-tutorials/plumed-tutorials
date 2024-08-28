@@ -26,6 +26,11 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
+def get_short_name_ini(lname, length):
+    if(len(lname)>length): sname = lname[0:length]+"..."
+    else: sname = lname
+    return sname
+
 def processNavigation( lessonname, actions, embeds ) :
     with open( "data/NAVIGATION.md", "r" ) as f:
       inp = f.read()
@@ -274,6 +279,7 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         lesson_id = path[8:10] + "." + path[11:14]
         print("- id: '" + lesson_id + "'",file=eggdb)
         print("  title: " + config["title"],file=eggdb)
+        print("  shortitle: '" + get_short_name_ini(config["title"],15) +"'",file=eggdb)
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
