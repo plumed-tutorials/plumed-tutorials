@@ -1,4 +1,4 @@
- __What is PLUMED-TUTORIALS?__
+### What is PLUMED-TUTORIALS?
 
   PLUMED-TUTORIALS is a living textbook that teaches students about the research done by the members of the PLUMED consortium.
   All members can upload tutorials that explain how methods that they have developed can be used.  Members
@@ -7,17 +7,17 @@
   from these files to the PLUMED manual.  The lessons in the PLUMED-TUTORIALS thus provide a rich set of learning resources that students can
   employ when they first learn to use PLUMED.
 
- __What is PLUMED?__
+### What is PLUMED?
 
   PLUMED is a freely-available, open-source library that provides a wide range of different methods, such as enhanced-sampling algorithms, free-energy methods, and tools to analyze the vast amounts
   of data produced by MD simulations. More information can be found [here](https://www.plumed.org).
 
- __How to find a lesson in PLUMED-TUTORIALS__
+### How to find a lesson in PLUMED-TUTORIALS
 
   The list of contributions to PLUMED-TUTORIALS from current members of the PLUMED consortium as well as other researchers
   can be found [here](browse.md).
 
- __How to contribute lessons to PLUMED-TUTORIALS__
+### How to contribute lessons to PLUMED-TUTORIALS
 
   Documentation matters! If you have developed a new method and implemented it in PLUMED you should 
   try totry to ensure that there is sufficient information online for others to use your method. A good way to 
