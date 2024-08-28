@@ -14,6 +14,7 @@ def create_map( URL ) :
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
     script_elements = soup.find_all("script")
+    xdata, ydata = {}, {} 
     for script in script_elements : 
         lines = script.text.splitlines()
         for line in lines :
