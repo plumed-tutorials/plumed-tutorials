@@ -13,7 +13,7 @@ Adding a lesson to PLUMED-TUTORIALS is free and easy. To do so you must:
 
 The fields you must fill are:
 
-* __Id:__ please select *"new"* for a new submission, or your ID in case of resubmission/update of an existing lesson
+* __ID:__ please select *"new"* for a new submission, or your ID in case of resubmission/update of an existing lesson
 * __Title:__ the title of your lesson 
 * __URL:__ the location of the zipped archive containing your lesson
 * __Keywords:__ keywords describing the lesson
