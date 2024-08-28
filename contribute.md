@@ -15,7 +15,7 @@ The fields you must fill are:
 
 * __Id:__ please select *"new"* for a new submission, or your ID in case of resubmission/update of an existing lesson
 * __Title:__ the title of your lesson 
-* __Url:__ the location of the zipped archive containing your lesson.
+* __URL:__ the location of the zipped archive containing your lesson.
 * __Keywords:__ keywords describing the lesson
 * __Instructors:__ your name/s
 * __Contact:__ the name of a contact person to communicate with the coordinators of the PLUMED consortium
@@ -42,3 +42,67 @@ https://www.plumed-tutorials.org/browse.html?search=yourname
 </center>
 
 Fields marked with "<sup>*</sup>" are optional
+
+{% assign sorted_less = site.data.lessons | sort: "id" | reverse %}
+<form class="wj-contact" method="POST" action="https://formspree.io/plumed.tutorials@gmail.com">
+  <table>
+    <tr>
+      <td><label for="id">ID</label></td>
+      <td width="600"><select id="id" type="texy" name="ID"><option>new (ID to be assigned)</option>{% for item in sorted_less %}<option>{{ item.id }}:{{ item.title }}</option>{% endfor %} required</select> </td>
+    </tr>
+    <tr>  
+      <td><label for="title">Title</label></td>
+      <td width="600"><input id="title" type="text" name="title" required> </td>
+    </tr>
+    <tr>
+      <td><label for="url">URL</label></td>
+      <td width="600"><input id="url" type="text" name="url" required> </td>
+    </tr>  
+    <tr>
+      <td><label for="keywords">Keywords</label></td>
+      <td width="600"><input id="keywords" type="text" name="keywords" placeholder="examples: metadynamics, RNA, protein folding, small molecules, ..." required></td>
+    </tr>
+    <tr>
+      <td><label for="instructor">Instructors</label></td>
+      <td width="600"><input id="instructor" type="text" name="instructor" required></td>
+    </tr>
+    <tr>
+      <td><label for="contact">Contact</label></td>
+      <td width="600"><input id="contact" type="text" name="contact" required></td>
+    </tr>
+    <tr>
+      <td><label for="email">Contact email</label></td>
+      <td width="600"><input id="email" type="text" name="_replyto" required></td>
+    </tr>  
+    <tr>
+      <td><label for="comments">Comments<sup>*</sup></label></td>
+      <td width="600"><input id="comments" type="text" name="comments"></td>
+    </tr>
+  </table>
+  <input type="text" name="_gotcha" style="display:none"> <br>
+  <button type="submit">Submit</button>
+  <input type="hidden" name="_subject" id="_subject" value="PLUMED-TUTORIALS submission"> <br>
+</form>
+
+<style>
+form.wj-contact input[type="text"], form.wj-contact textarea[type="text"], form.wj-contact input[type="email"]{
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    padding: 0.25em;
+    font-family: monospace, sans-serif;
+    font-weight: lighter;
+    border-style: solid;
+    border-color: #444;
+    outline-color: #2e83e6;
+    border-width: 1px;
+    border-radius: 3px;
+    transition: box-shadow .2s ease;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto
+    box-sizing: border-box;
+}
+</style>
+    
