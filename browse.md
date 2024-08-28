@@ -3,7 +3,6 @@ Browse the lessons
 The lessons that have been submitted to the PLUMED-TUTORIALS are listed below.  PLUMED-TUTORIALS monitors whether PLUMED input files in these lessons are compatible with the current and development
 versions of the code and integrates links from these files to the PLUMED manual.  Inputs in the tutorials listed below were last tested on {{ site.data.date.date }}.
 
-Here is the list of lessons already deposited in PLUMED-TUTORIALS.
 Suggestions for an order to work through the tutorials can be found [here](summarygraph.md).
 A complete bibliography of papers connected to these lessons can be found [here](bibliography.md).
 
