@@ -1,4 +1,4 @@
-How to contribute a new lesson to the PLUMED-TUTORIALS
+How to contribute a new lesson to PLUMED-TUTORIALS
 ---------------------------------------------------
 Adding a lesson to the PLUMED-TUTORIALS is free and easy. To do so you must:
 
