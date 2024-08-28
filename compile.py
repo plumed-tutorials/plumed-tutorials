@@ -106,65 +106,100 @@ def processNavigation( lessonname, actions, embeds ) :
 def processMarkdown( filename, actions ) :
     if not os.path.exists("data/" + filename) : 
        raise RuntimeError("Found no file called " + filename + " in lesson")
-    f = open( "data/" + filename, "r" )
-    inp = f.read()
-    f.close()
- 
-    ninputs, nfail, nfailm = 0, 0, 0
-    ofile, inplumed, plumed_inp, solutionfile, incomplete, usemermaid = open( "data/" + filename, "w+" ), False, "", "", False, ""
-    for line in inp.splitlines() :
-        # Detect and copy plumed input files 
-        if "```plumed" in line :
-           inplumed, plumed_inp, solutionfile, incomplete, ninputs = True, "", "", False, ninputs + 1 
-        # Test plumed input files that have been found in tutorial 
-        elif inplumed and "```" in line : 
-           inplumed = False
-           # Create mermaid graphs from PLUMED inputs if this has been requested
-           if usemermaid!="" :
-              mermaidinpt = ""
-              if usemermaid=="value" : mermaidinpt = get_mermaid( "plumed_master", plumed_inp, False )
-              elif usemermaid=="force" : mermaidinpt = get_mermaid( "plumed_master", plumed_inp, True )
-              else : raise Exception(usemermaid + "is invalid instruction for use mermaid") 
-              ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
-           if incomplete :
-               if len(solutionfile)==0 : 
-                  raise Exception("found incomplete input but no solution was specified for input" + plumed_inp )
-               # Read solution from solution file
-               if not os.path.isfile("data/" + solutionfile) :
-                  raise Exception("could not find solution file named " + solutionfile + " promised  in file " + filename ) 
-               sf = open( "data/" + solutionfile, "r" )
-               solution = sf.read() 
-               sf.close()
-               # Create the full input for PlumedToHTML formatter 
-               plumed_inp += "#SOLUTION \n" + solution
-           else : 
-               solutionfile = filename + "_working_" + str(ninputs) + ".dat"
-               sf = open( "data/" + solutionfile, "w+" )
-               sf.write( plumed_inp )
-               sf.close()
-           # Test whether the input solution can be parsed
-           success = success=test_plumed( "plumed", "data/" + solutionfile )
-           if(success!=0 and success!="custom") : nfail = nfail + 1
-           # Json files are put in directory one up from us to ensure that PlumedToHTML finds them when we do get_html (i.e. these will nto be in the data directory where the calculation is run)
-           if incomplete : success_master=test_plumed( "plumed_master", "data/" + solutionfile ) 
-           else : success_master=test_plumed( "plumed_master", "data/" + solutionfile, printjson=True, jsondir="../" )
-           if(success_master!=0 and success_master!="custom") : nfailm = nfailm + 1
-           # Find the stable version 
-           stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
-           # Use PlumedToHTML to create the input with all the bells and whistles
-           html = get_html( plumed_inp, solutionfile, solutionfile, ("v"+ stable_version,"master"), (success,success_master), ("plumed","plumed_master"), usejson=(not success_master), actions=actions )
-           # Print the html for the solution
-           ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
-        # This finds us the solution file
-        elif inplumed and "#SOLUTIONFILE=" in line : solutionfile=line.replace("#SOLUTIONFILE=","")
-        elif inplumed and "#MERMAID=" in line : 
-             usemermaid = line.replace("#MERMAID=","").strip()
-        elif inplumed :
-             if "__FILL__" in line : incomplete = True 
-             plumed_inp += line + "\n"
-        # Just copy any line that isn't part of a plumed input
-        elif not inplumed : ofile.write( line + "\n" )
-    ofile.close()
+
+    with open( "data/" + filename, "r" ) as f:
+       inp = f.read()
+    
+    ninputs = 0
+    nfail = 0
+    nfailm = 0
+    inplumed = False
+    plumed_inp = ""
+    solutionfile = None
+    incomplete = False
+    usemermaid = ""
+    with open( "data/" + filename, "w+" ) as ofile:
+      for line in inp.splitlines() :
+         # Detect and copy plumed input files 
+         if "```plumed" in line :
+            inplumed = True
+            plumed_inp = ""
+            solutionfile = None
+            incomplete = False
+            ninputs = ninputs + 1 
+   
+         # Test plumed input files that have been found in tutorial 
+         elif inplumed and "```" in line : 
+            inplumed = False
+            # Create mermaid graphs from PLUMED inputs if this has been requested
+            if usemermaid!="" :
+               mermaidinpt = ""
+               if usemermaid=="value" :
+                  mermaidinpt = get_mermaid( "plumed_master", plumed_inp, False )
+               elif usemermaid=="force" :
+                  mermaidinpt = get_mermaid( "plumed_master", plumed_inp, True )
+               else :
+                  raise RuntimeError(usemermaid + "is invalid instruction for use mermaid") 
+               ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
+            if incomplete :
+                  if solutionfile:
+                     # Read solution from solution file
+                     try:
+                        with open( "data/" + solutionfile, "r" ) as sf:
+                           solution = sf.read() 
+                           plumed_inp += "#SOLUTION \n" + solution
+                     except:
+                        raise RuntimeError(f"error in opening {solutionfile} as solution"
+                                          f" for an incomplete input from file {filename}")
+                  else:
+                     raise RuntimeError(f"an incomplete input from file {filename}"
+                                       " does not have its solution file")      
+            # Create the full input for PlumedToHTML formatter 
+            else :
+                  solutionfile = filename + "_working_" + str(ninputs) + ".dat"
+                  with open( "data/" + solutionfile, "w+" ) as sf:
+                     sf.write( plumed_inp )
+
+            # Test whether the input solution can be parsed
+            success = success=test_plumed( "plumed", "data/" + solutionfile )
+            if(success!=0 and success!="custom") : nfail = nfail + 1
+            # Json files are put in directory one up from us to ensure that
+            # PlumedToHTML finds them when we do get_html (i.e. these will be in
+            # the data directory where the calculation is run)
+            if incomplete :
+               success_master=test_plumed("plumed_master", "data/" + solutionfile ) 
+            else :
+               success_master=test_plumed("plumed_master", "data/" + solutionfile,
+                                          printjson=True, jsondir="../" )
+            if( success_master!=0 and success_master!="custom") :
+               nfailm = nfailm + 1
+            # Find the stable version 
+            stable_version=subprocess.check_output('plumed info --version',
+                                                   shell=True).decode('utf-8').strip()
+            # Use PlumedToHTML to create the input with all the bells and whistles
+            html = get_html(plumed_inp,
+                              solutionfile,
+                              solutionfile,
+                              ("v"+ stable_version,"master"),
+                              (success,success_master),
+                              ("plumed","plumed_master"),
+                              usejson=(not success_master),
+                              actions=actions )
+            # Print the html for the solution
+            ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
+         # This finds us the solution file
+         elif inplumed and "#SOLUTIONFILE=" in line :
+            solutionfile=line.replace("#SOLUTIONFILE=","")
+         elif inplumed and "#MERMAID=" in line : 
+            usemermaid = line.replace("#MERMAID=","").strip()
+         elif inplumed :
+            if "__FILL__" in line :
+               incomplete = True 
+            plumed_inp += line + "\n"
+         # Just copy any line that isn't part of a plumed input
+         elif not inplumed :
+            ofile.write( line + "\n" )
+
     return ninputs, nfail, nfailm
 
 def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
