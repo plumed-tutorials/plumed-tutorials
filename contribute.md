@@ -1,6 +1,6 @@
 How to contribute a new lesson to PLUMED-TUTORIALS
 ---------------------------------------------------
-Adding a lesson to the PLUMED-TUTORIALS is free and easy. To do so you must:
+Adding a lesson to PLUMED-TUTORIALS is free and easy. To do so you must:
 
 * Collect the input files that the students will need to run the calculations that they will perform as they complete the exercise.  
 * Write instructions in [markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) that explain the tasks that the students should work through during the lesson and how they should use the input files you provide.  More detailed information on how to do this is provided [here](instructions.md).  Notice that you can divide your instructions inbetween as many markdown files as you feel is appropriate.
