@@ -13,7 +13,7 @@ Here is the complete list of the published papers connected to the lessons depos
 
 Further reading
 ------------------------------------
-Here you can find a list of papers containing practical PLUMED tutorials:
+Here you can find a list of additional papers containing practical PLUMED tutorials:
 
 * [Bussi, G. and Tribello, G. A. (2019) Analyzing and biasing simulations with PLUMED](https://arxiv.org/abs/1812.08213)
 
