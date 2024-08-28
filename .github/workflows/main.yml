@@ -30,9 +30,10 @@ jobs:
         restore-keys: ccache-${{ runner.os }}-
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: 3.8
+        cache: 'pip'
 
     - name: Set paths
       run: |
@@ -52,16 +53,7 @@ jobs:
         sudo apt install libfftw3-dev gsl-bin libgsl0-dev libboost-serialization-dev
         sudo apt install ccache
         sudo apt-get update
-        pip install PyYAML pytz
-        pip install nbconvert
-        pip install nbformat
-        pip install requests
-        pip install bs4
-        pip install PlumedToHTML
-        pip install networkx
-        pip install numpy
-        pip install pytube
-        pip install DateTime
+        pip install -r requirements.txt
         git clone --bare https://github.com/plumed/plumed2.git
         sudo ln -s ccache /usr/local/bin/mpic++
         export PATH=/usr/lib/ccache:${PATH}
@@ -108,13 +100,14 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v3
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: 3.8
+        cache: 'pip'
     - name: Install software
       run: |
-        pip install PyYAML pytz
-        pip install networkx
+        grep 'PyYAML\|pytz\|networkx' requirements.txt > requirements-upload.txt
+        pip install -r requirements-upload.txt
     - name: Create graph
       run: |
         python create_graph.py
