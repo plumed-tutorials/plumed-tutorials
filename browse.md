@@ -6,9 +6,9 @@ versions of the code and integrates links from these files to the PLUMED manual.
 Suggestions for an order to work through the tutorials can be found [here](summarygraph.md).
 
 {:#browse-table .display}
-| ID | Name | Instructors | Description | Actions | Modules |
-|:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|
-{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.description }} | {{ item.actions }} | {{ item.modules }} |
+| ID | Name | Instructors | Description | Tags | Actions | Modules |
+|:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+{% for item in site.data.lessons %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors }} | {{ item.description }} | {{ item.tags }} | {{ item.actions }} | {{ item.modules }} |
 {% endfor %}
 
 
@@ -22,7 +22,8 @@ var table = $('#browse-table').DataTable({
   ],
   "columnDefs": [ 
      { "targets": 4, "visible": false },
-     { "targets": 5, "visible": false }
+     { "targets": 5, "visible": false },
+     { "targets": 6, "visible": false }
   ],
   "order": [[ 0, "desc" ]]
   });

@@ -27,12 +27,14 @@ def cd(newdir):
         os.chdir(prevdir)
 
 def processNavigation( lessonname, actions, embeds ) :
-    f = open( "data/NAVIGATION.md", "r" )
-    inp = f.read()
-    f.close()
-
-    ninputs, nfail, nfailm = 0, 0, 0
-    ofile, inmermaid = open( "data/NAVIGATION.md", "w+"), False
+    with open( "data/NAVIGATION.md", "r" ) as f:
+      inp = f.read()
+    
+    ninputs=0
+    nfail=0
+    nfailm=0
+    ofile = open( "data/NAVIGATION.md", "w+")
+    inmermaid = False
     for line in inp.splitlines() : 
         if "```mermaid" in line : 
            inmermaid = True
@@ -41,7 +43,9 @@ def processNavigation( lessonname, actions, embeds ) :
            inmermaid = False 
            ofile.write( line + "\n" )
         elif inmermaid and "click" in line :
-           name, islesson = line.split('"')[1], False 
+           name = line.split('"')[1]
+           name_extension = name.split(".")[1] if len(name.split("."))>1 else ""
+           islesson = False 
            if name in embeds :
               if "title" in embeds[name] :
                  efile = open( "data/" + name + ".md", "w+" ) 
@@ -55,25 +59,30 @@ def processNavigation( lessonname, actions, embeds ) :
                  islesson = True
                  if embeds[name]["type"]=="internal" : name = "../../../" + embeds[name]["location"] + "/data/NAVIGATION.html" 
                  else : name = embeds[name]["location"]
-           elif "md" in name.split(".")[1] : 
+           elif "md" in name_extension: 
               # Special treatment for README.md files as GitHub links to data/README.html don't work as pages opens the rendered README.md file when you open data/
-              if "README.md" in name : 
-                 old_name, spl_name, new_name = name, name.split("/"), ""
-                 for i in range(len(spl_name)-1) : new_name += spl_name[i] + "/"
+              if "README.md" in name :
+                 old_name=name
+                 spl_name= name.split("/")
+                 new_name = ""
+                 for i in range(len(spl_name)-1) :
+                    new_name += spl_name[i] + "/"
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
               ni, nf, nfm = processMarkdown( name, actions )
-              ninputs, nfail, nfailm = ninputs + ni, nfail + nf, nfailm + nfm
-           elif "ipynb" in name.split(".")[1] :
+              ninputs = ninputs + ni
+              nfail = nfail + nf
+              nfailm = nfailm + nfm
+           elif "ipynb" in name_extension:
               with open("data/" + name) as f : 
                   mynotebook = nbformat.read( f, as_version=4 )
               # Instantiate the exporter
               exporter = HTMLExporter(template_name = 'classic')
-              (body, resources) = exporter.from_notebook_node( mynotebook )
+              body, _ = exporter.from_notebook_node( mynotebook )
               ipfile = open("data/" + name.split(".")[0] + ".html", "w+" )
               ipfile.write( body ) 
               ipfile.close() 
-           elif "pdf" in name.split(".")[1] :
+           elif "pdf" in name_extension:
               efile = open( "data/" + name.split(".")[0] + ".md", "w+" )
               efile.write( "# " + lessonname + " \n\n")
               efile.write( line.split('"')[3] + "\n\n" )
@@ -83,10 +92,12 @@ def processNavigation( lessonname, actions, embeds ) :
               efile.close()
            else :
               print("failing for file named " + name )
-              raise RuntimeError("cannot process filname called %s use md, pdf or ipynb extension" % name)   
+              raise RuntimeError(f"cannot process filname called {name} use md, pdf or ipynb extension")   
            # And write out the updated click line with the proper link 
-           if islesson : ofile.write( line.split('"')[0] + '"' + name + '" "' + line.split('"')[3] + '"\n' )
-           else : ofile.write( line.split('"')[0] + '"' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"\n' ) 
+           if islesson :
+              ofile.write( line.split('"')[0] + '"' + name + '" "' + line.split('"')[3] + '"\n' )
+           else :
+              ofile.write( line.split('"')[0] + '"' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"\n' ) 
         else :
            ofile.write( line + "\n" )
     ofile.close()
@@ -95,6 +106,7 @@ def processNavigation( lessonname, actions, embeds ) :
 def processMarkdown( filename, actions ) :
     if not os.path.exists("data/" + filename) : 
        raise RuntimeError("Found no file called " + filename + " in lesson")
+
     with open( "data/" + filename, "r" ) as f:
        inp = f.read()
     
@@ -187,6 +199,7 @@ def processMarkdown( filename, actions ) :
          # Just copy any line that isn't part of a plumed input
          elif not inplumed :
             ofile.write( line + "\n" )
+
     return ninputs, nfail, nfailm
 
 def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
@@ -264,6 +277,7 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
         print("  instructors: " + config["instructors"], file=eggdb)
         print("  description: " + config["description"], file=eggdb)
+        if "tags" in config.keys() : print("  tags: " + config["tags"], file=eggdb)
         print("  ninputs: " + str(ninputs), file=eggdb)
         print("  nfail: " + str(nfail), file=eggdb)
         print("  nfailm: " + str(nfailm), file=eggdb)

@@ -2,3 +2,4 @@ url: https://github.com/tiwarylab/SPIB-plumed-masterclass-2022/archive/refs/head
 instructors: Pratyush Tiwary
 title: Learning and enhancing fluctuations along information bottleneck for automated enhanced sampling
 description: An introduction to the state predictive information bottleneck (SPIB) deep-learning-based framework for learning reaction coordinates from high dimensional molecular simulation trajectories.
+tags: masterclass-2022
