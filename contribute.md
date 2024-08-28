@@ -44,7 +44,7 @@ https://www.plumed-tutorials.org/browse.html?search=yourname
 Fields marked with "<sup>*</sup>" are optional
 
 {% assign sorted_less = site.data.lessons | sort: "id" | reverse %}
-<form class="wj-contact" method="POST" action="https://formspree.io/plumed.tutorials@gmail.com">
+<form class="wj-contact" method="POST" action="https://formspree.io/f/xyzgopbq">
   <table>
     <tr>
       <td><label for="id">ID</label></td>
