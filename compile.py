@@ -336,6 +336,25 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         modstr = ' '.join(modules)
         print("  modules: " + modstr, file=eggdb)
 
+def prepare_action_count_and_syntax(plumed_to_use:str) :
+    cmd = [plumed_to_use, "info", "--root"]
+    plumed_info = subprocess.run(cmd, capture_output=True, text=True)
+    keyfile = plumed_info.stdout.strip() + "/json/syntax.json"
+
+    with open(keyfile) as f:
+        try:
+            plumed_syntax = json.load(f)
+        except ValueError as ve:
+            raise InvalidJSONError(ve)
+
+    action_counts = {}
+    for key in plumed_syntax:
+        if key == "vimlink" or key == "replicalink" or key == "groups":
+            continue
+        action_counts[key] = 0
+
+    return action_counts, plumed_syntax
+
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]
     try:
@@ -358,22 +377,7 @@ if __name__ == "__main__":
     f.write("stable: v%s" % str(stable_version))
     f.close()
     # Get list of plumed actions from syntax file
-    cmd = [PLUMED_MASTER, 'info', '--root']
-    plumed_info = subprocess.run(cmd, capture_output=True, text=True )
-    keyfile = plumed_info.stdout.strip() + "/json/syntax.json" 
-    with open(keyfile) as f :
-        try:
-           plumed_syntax = json.load(f)
-        except ValueError as ve:
-           raise InvalidJSONError(ve)
-    # Make a dictionary to hold all the actions
-    action_counts = {}
-    for key in plumed_syntax :
-        if key=="vimlink" or key=="replicalink" or key=="groups" : continue
-        action_counts[key] = 0
-    # open file to store timings in /opt
-    ftime = open("_data/timing"+str(replica), "w")
-    # loop over lesson for this replica
+    action_counts, plumed_syntax = prepare_action_count_and_syntax(PLUMED_MASTER)
     with open("_data/lessons" + str(replica) + ".yml","w") as eggdb:
         print("# file containing lesson database.",file=eggdb)
 
@@ -399,4 +403,3 @@ if __name__ == "__main__":
     cfilename = "_data/actioncount" + str(replica) + ".yml"
     with open(cfilename, 'w' ) as file :
         yaml.safe_dump(action_list, file)
-
