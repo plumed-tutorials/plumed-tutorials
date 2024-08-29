@@ -17,6 +17,9 @@ from PlumedToHTML import test_plumed, get_html, get_mermaid
 if not (sys.version_info > (3, 0)):
    raise RuntimeError("We are using too many python 3 constructs, so this is only working with python 3")
 
+PLUMED_MASTER="plumed_master"
+PLUMED_STABLE="plumed"
+
 @contextmanager
 def cd(newdir):
     prevdir = os.getcwd()
@@ -164,9 +167,9 @@ def processMarkdown( filename, actions ) :
             if usemermaid!="" :
                mermaidinpt = ""
                if usemermaid=="value" :
-                  mermaidinpt = get_mermaid( "plumed_master", plumed_inp, False )
+                  mermaidinpt = get_mermaid( PLUMED_MASTER, plumed_inp, False )
                elif usemermaid=="force" :
-                  mermaidinpt = get_mermaid( "plumed_master", plumed_inp, True )
+                  mermaidinpt = get_mermaid( PLUMED_MASTER, plumed_inp, True )
                else :
                   raise RuntimeError(usemermaid + "is invalid instruction for use mermaid") 
                ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
@@ -190,15 +193,15 @@ def processMarkdown( filename, actions ) :
                      sf.write( plumed_inp )
 
             # Test whether the input solution can be parsed
-            success = success=test_plumed( "plumed", "data/" + solutionfile )
+            success = success=test_plumed( PLUMED_STABLE, "data/" + solutionfile )
             if(success!=0 and success!="custom") : nfail = nfail + 1
             # Json files are put in directory one up from us to ensure that
             # PlumedToHTML finds them when we do get_html (i.e. these will be in
             # the data directory where the calculation is run)
             if incomplete :
-               success_master=test_plumed("plumed_master", "data/" + solutionfile ) 
+               success_master=test_plumed(PLUMED_MASTER, "data/" + solutionfile ) 
             else :
-               success_master=test_plumed("plumed_master", "data/" + solutionfile,
+               success_master=test_plumed(PLUMED_MASTER, "data/" + solutionfile,
                                           printjson=True, jsondir="../" )
             if( success_master!=0 and success_master!="custom") :
                nfailm = nfailm + 1
@@ -211,7 +214,7 @@ def processMarkdown( filename, actions ) :
                               solutionfile,
                               ("v"+ stable_version,"master"),
                               (success,success_master),
-                              ("plumed","plumed_master"),
+                              (PLUMED_STABLE,PLUMED_MASTER),
                               usejson=(not success_master),
                               actions=actions )
             # Print the html for the solution
@@ -234,7 +237,6 @@ def processMarkdown( filename, actions ) :
 def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
     if not eggdb:
         eggdb=sys.stdout
-
     with cd(path):
         stram = open("lesson.yml", "r")
         config=yaml.load(stram,Loader=yaml.BaseLoader)
@@ -333,28 +335,31 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         print("  modules: " + modstr, file=eggdb)
 
 if __name__ == "__main__":
-    nreplicas, replica, argv = 1, 0, sys.argv[1:]
+   try:
+    nreplicas = 1
+    replica = 0
+    argv = sys.argv[1:]
     try:
         opts, args = getopt.getopt(argv,"hn:r:",["nreplicas=","replica="])
     except:
-       print('compile.py -n <nreplicas> -r <replica number>')
+       print('Usage "compile.py -n <nreplicas> -r <replica number>"')
 
     for opt, arg in opts:
        if opt in ['-h'] :
-          print('compile.py -n <nreplicas> -r <replica number>')
+          print('Usage "compile.py -n <nreplicas> -r <replica number>"')
           sys.exit()
        elif opt in ["-n", "--nreplicas"]:
           nreplicas = int(arg)
        elif opt in ["-r", "--replica"]:
           replica = int(arg)
-    print("RUNNING", nreplicas, "REPLICAS. THIS IS REPLICA", replica )
+    print(f"RUNNING {nreplicas} REPLICAS. THIS IS REPLICA {replica}" )
     # write plumed version to file
     stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
-    f=open("_data/plumed.yml","w")
-    f.write("stable: v%s" % str(stable_version))
-    f.close()
+    with open("_data/plumed.yml","w") as f:
+       f.write("stable: v%s" % str(stable_version))
+    
     # Get list of plumed actions from syntax file
-    cmd = ['plumed_master', 'info', '--root']
+    cmd = [PLUMED_MASTER, 'info', '--root']
     plumed_info = subprocess.run(cmd, capture_output=True, text=True )
     keyfile = plumed_info.stdout.strip() + "/json/syntax.json" 
     with open(keyfile) as f :
@@ -365,7 +370,8 @@ if __name__ == "__main__":
     # Make a dictionary to hold all the actions
     action_counts = {}
     for key in plumed_syntax :
-        if key=="vimlink" or key=="replicalink" or key=="groups" : continue
+        if key=="vimlink" or key=="replicalink" or key=="groups" :
+           continue
         action_counts[key] = 0
     with open("_data/lessons" + str(replica) + ".yml","w") as eggdb:
         print("# file containing lesson database.",file=eggdb)
@@ -380,13 +386,25 @@ if __name__ == "__main__":
         # cycle on ordered list
         k=0
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
-
-            if k%nreplicas==replica : process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
+            if k%nreplicas==replica :
+               process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
             k = k + 1
     # output yaml file with action counts
     action_list = [] 
-    for key, value in action_counts.items() : action_list.append( {'name': key, 'number': value } )
+    for key, value in action_counts.items() :
+       action_list.append( {'name': key, 'number': value } )
     cfilename = "_data/actioncount" + str(replica) + ".yml"
     with open(cfilename, 'w' ) as file :
         yaml.safe_dump(action_list, file)
+   except Exception as e:
+      
+      print(f'Found an error of type "{type(e)}"')
+      if str(e)!= "":
+         print(e)
+      else:
+         import traceback
+         print("But it has no explanatory text, here's the traceback:")
+         traceback.print_exc(e)
+
+
 
