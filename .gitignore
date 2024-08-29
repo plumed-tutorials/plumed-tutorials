@@ -1,3 +1,6 @@
+#Extrafiles in _data, due to compile.py
+_data/lessons*.yml
+_data/plumed.yml
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
