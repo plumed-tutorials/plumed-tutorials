@@ -13,6 +13,7 @@ import nbformat
 from nbconvert import HTMLExporter 
 from contextlib import contextmanager
 from PlumedToHTML import test_plumed, get_html, get_mermaid
+import time
 
 if not (sys.version_info > (3, 0)):
    raise RuntimeError("We are using too many python 3 constructs, so this is only working with python 3")
@@ -381,7 +382,13 @@ if __name__ == "__main__":
         k=0
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
 
-            if k%nreplicas==replica : process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
+            if (k%nreplicas==replica):
+               start = time.time() 
+               # process lesson
+               process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
+               end = time.time()
+               # print timing
+               print("TIME",str(path),end-start)
             k = k + 1
     # output yaml file with action counts
     action_list = [] 
