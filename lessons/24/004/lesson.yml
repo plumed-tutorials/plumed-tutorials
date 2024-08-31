@@ -1,6 +1,6 @@
 url: https://github.com/compsb-unimi/VMetaD-tutorial/raw/main/all_files.zip 
 instructors: Riccardo Capelli
-title: Volume-based Metadynamics tutorial
+title: Volume-based Metadynamics
 description: This tutorial teaches you how to run free energy calculations to investigate protein-ligand binding
 tags: Metadynamics, protein-ligand binding, free energy calculations
 doi: 10.1021/acs.jpclett.9b01183
