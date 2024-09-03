@@ -84,6 +84,23 @@ To prevent broken badges from appearing by these incomplete inputs you must incl
 input in your zip archive by using the `#SOLUTIONFILE` instruction as shown above.  This `#SOLUTIONFILE` comment will NOT appear in the version of the input file that is rendered on 
 the PLUMED-TUTORIALS website.
 
+Another useful feature is to hide parts of the PLUMED input. This is useful if you are including a line-by-line description of the contents of a long input file.  If you break up your input into pieces some of these 
+separated inputs will appear as broken as commands later in the input generally rely on variables that have been defined earlier in the input.  To resolve this problem you can include these earlier parts of the input 
+in a hidden section using the syntax shown below:
+
+````
+```plumed
+#HIDDEN
+d1: DISTANCE ATOMS=1,2 
+f: CUSTOM ARG=d1 FUNC=x*x PERIODIC=NO 
+#ENDHIDDEN 
+f2: CUSTOM ARG=d1,f FUNC=x+y PERIODIC=NO 
+PRINT ARG=d1,f,f2 FILE=colvar
+```
+````
+
+Students reading this input will only see the last two lines of the input file along with a link above them that students can click on to view the parts of the input from the hidden section.  Most importantly, however, the plumed input is complete and so will be given a green badge on the site.
+
 ### On cheating 
 
 It is tempting to argue that providing incomplete inputs in the README.md file is pointless if the solutions are available in the repository. When things are organised this way students will 
