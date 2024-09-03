@@ -394,7 +394,7 @@ if __name__ == "__main__":
                process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
                end_time = time.perf_counter()
                # store path and timing
-               ftime.write("%s %lf\n" % str(path), end_time-start_time)
+               ftime.write("%s %lf\n" % (str(path), end_time-start_time))
             k = k + 1
     # output yaml file with action counts
     action_list = [] 
