@@ -371,6 +371,9 @@ if __name__ == "__main__":
     for key in plumed_syntax :
         if key=="vimlink" or key=="replicalink" or key=="groups" : continue
         action_counts[key] = 0
+    # open file to store timings in /opt
+    ftime = open("/opt/timing"+str(replica), "w")
+    # loop over lesson for this replica
     with open("_data/lessons" + str(replica) + ".yml","w") as eggdb:
         print("# file containing lesson database.",file=eggdb)
 
@@ -386,12 +389,12 @@ if __name__ == "__main__":
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
 
             if (k%nreplicas==replica):
-               start = time.time() 
+               start_time = time.perf_counter()
                # process lesson
                process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
-               end = time.time()
-               # print timing
-               print("TIME",str(path),end-start)
+               end_time = time.perf_counter()
+               # store path and timing
+               ftime.write("%s %lf\n" % str(path), end_time-start_time)
             k = k + 1
     # output yaml file with action counts
     action_list = [] 
