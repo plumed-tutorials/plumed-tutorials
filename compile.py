@@ -377,25 +377,22 @@ if __name__ == "__main__":
     with open("_data/lessons" + str(replica) + ".yml","w") as eggdb:
         print("# file containing lesson database.",file=eggdb)
 
-        # list of paths - not ordered
-        pathlist=list(pathlib.Path('.').glob('lessons/*/*/lesson.yml'))
+        # list of paths for this replica - not ordered
+        pathlist = [line.strip() for line in open("pathlist"+str(replica), 'r')]
+
         # Reduce the number of lesson by reading in the eggs to use from a file -- used for testing
         if os.path.exists("selected_lessons.dat") :
            pathlist = []
            with open("selected_lessons.dat", "r") as file:
               for readline in file : pathlist.append( pathlib.Path( './' + readline.strip() ) )
         # cycle on ordered list
-        k=0
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
-
-            if (k%nreplicas==replica):
-               start_time = time.perf_counter()
-               # process lesson
-               process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
-               end_time = time.perf_counter()
-               # store path and timing
-               ftime.write("%s %lf\n" % (str(path), end_time-start_time))
-            k = k + 1
+            start_time = time.perf_counter()
+            # process lesson
+            process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
+            end_time = time.perf_counter()
+            # store path and timing
+            ftime.write("%s %lf\n" % (str(path), end_time-start_time))
     # output yaml file with action counts
     action_list = [] 
     for key, value in action_counts.items() : action_list.append( {'name': key, 'number': value } )
