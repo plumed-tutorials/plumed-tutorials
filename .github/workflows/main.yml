@@ -20,7 +20,6 @@ jobs:
       with:
         path: |
           ~/opt
-          ~/.ccache
         key: ccache-${{ runner.os }}-${{ github.sha }}
         restore-keys: ccache-${{ runner.os }}-
 
@@ -117,14 +116,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/opt
-          ~/.ccache
-        key: ccache-${{ runner.os }}-${{ github.sha }}
-        restore-keys: ccache-${{ runner.os }}-
-
     - uses: actions/checkout@v2
     - name: Download artifacts
       uses: actions/download-artifact@v3
