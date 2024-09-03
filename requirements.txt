@@ -4,7 +4,7 @@ nbconvert==7.16.4
 nbformat==5.10.4
 requests==2.32.3
 bs4==0.0.2
-PlumedToHTML==0.73
+PlumedToHTML==0.74
 networkx==3.1
 numpy==1.24.4
 pytube==15.0.0
