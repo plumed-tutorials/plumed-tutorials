@@ -20,6 +20,7 @@ jobs:
       with:
         path: |
           ~/opt
+          ~/.ccache
         key: ccache-${{ runner.os }}-${{ github.sha }}
         restore-keys: ccache-${{ runner.os }}-
 
