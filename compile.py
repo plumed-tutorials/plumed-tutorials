@@ -372,7 +372,7 @@ if __name__ == "__main__":
         if key=="vimlink" or key=="replicalink" or key=="groups" : continue
         action_counts[key] = 0
     # open file to store timings in /opt
-    ftime = open('_data/timing')+str(replica), "w")
+    ftime = open("_data/timing"+str(replica), "w")
     # loop over lesson for this replica
     with open("_data/lessons" + str(replica) + ".yml","w") as eggdb:
         print("# file containing lesson database.",file=eggdb)
