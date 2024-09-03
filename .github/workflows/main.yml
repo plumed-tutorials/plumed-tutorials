@@ -79,6 +79,8 @@ jobs:
         python --version
         # N.B. If you adjust the number of replicas used here you need to adjust the liquid syntax in summary.md that builds the total number of lessons that use each action 
         python compile.py --nreplicas 2 --replica ${{matrix.replica}}
+        ls ~/opt/*
+        cat ~/opt/timing*
         cp $(plumed info --root)/json/syntax.json syntax.${{matrix.replica}}.json
     - name: Create tar ball
       run: |
