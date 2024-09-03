@@ -12,8 +12,10 @@ random.seed(10)
 ID_=int(sys.argv[1])
 # number of builds
 N_=int(sys.argv[2])
+# CACHE running time
+CACHE_=float(sys.argv[3])
 # lessons/eggs yml
-YML_=sys.argv[3:]
+YML_=sys.argv[4:]
 # number of projects
 NP_=len(YML_)
 # MC parameter
@@ -25,6 +27,8 @@ def get_score(batch, rtime):
     for i in range(N_):
         for j in batch[i]:
             m[i] += rtime[j]
+        # add cache time
+        if(i==0): m[i] += CACHE_
     # calculate score
     s = max(m)
     # return score

@@ -68,7 +68,7 @@ jobs:
     - name: Optimize parallel build
       run: |
         wget https://github.com/plumed-tutorials/plumed-tutorials.github.io/raw/master/_data/timing
-        python optimize_build.py ${{matrix.replica}} 2 lessons/*/*/lesson.yml
+        python optimize_build.py ${{matrix.replica}} 2 170.0 lessons/*/*/lesson.yml
     - name: Build manual
       run: | 
         python --version
