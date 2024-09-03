@@ -65,6 +65,10 @@ jobs:
         # GB: in addition, we install master version as plumed_master
         CXX="mpic++" .ci/install.plumed version=master suffix=_master repo=$PWD/plumed2.git
         ccache -s
+    - name: Build optimization
+      run: |
+        ls ~/opt
+        cat ~/opt/timing*
     - name: Build manual
       run: | 
         python --version
@@ -108,10 +112,6 @@ jobs:
       run: |
         grep 'PyYAML\|pytz\|networkx' requirements.txt > requirements-upload.txt
         pip install -r requirements-upload.txt
-    - name: Debug optimization
-      run: |
-        ls ~/opt
-        cat ~/opt/timing*
     - name: Create graph
       run: |
         python create_graph.py
