@@ -18,6 +18,9 @@ import time
 if not (sys.version_info > (3, 0)):
    raise RuntimeError("We are using too many python 3 constructs, so this is only working with python 3")
 
+PLUMED_STABLE="plumed"
+PLUMED_MASTER="plumed_master"
+
 @contextmanager
 def cd(newdir):
     prevdir = os.getcwd()
@@ -165,9 +168,9 @@ def processMarkdown( filename, actions ) :
             if usemermaid!="" :
                mermaidinpt = ""
                if usemermaid=="value" :
-                  mermaidinpt = get_mermaid( "plumed_master", plumed_inp, False )
+                  mermaidinpt = get_mermaid( PLUMED_MASTER, plumed_inp, False )
                elif usemermaid=="force" :
-                  mermaidinpt = get_mermaid( "plumed_master", plumed_inp, True )
+                  mermaidinpt = get_mermaid( PLUMED_MASTER, plumed_inp, True )
                else :
                   raise RuntimeError(usemermaid + "is invalid instruction for use mermaid") 
                ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
@@ -191,20 +194,20 @@ def processMarkdown( filename, actions ) :
                      sf.write( plumed_inp )
 
             # Test whether the input solution can be parsed
-            success = success=test_plumed( "plumed", "data/" + solutionfile )
+            success = success=test_plumed( PLUMED_STABLE, "data/" + solutionfile )
             if(success!=0 and success!="custom") : nfail = nfail + 1
             # Json files are put in directory one up from us to ensure that
             # PlumedToHTML finds them when we do get_html (i.e. these will be in
             # the data directory where the calculation is run)
             if incomplete :
-               success_master=test_plumed("plumed_master", "data/" + solutionfile ) 
+               success_master=test_plumed(PLUMED_MASTER, "data/" + solutionfile ) 
             else :
-               success_master=test_plumed("plumed_master", "data/" + solutionfile,
+               success_master=test_plumed(PLUMED_MASTER, "data/" + solutionfile,
                                           printjson=True, jsondir="../" )
             if( success_master!=0 and success_master!="custom") :
                nfailm = nfailm + 1
             # Find the stable version 
-            stable_version=subprocess.check_output('plumed info --version',
+            stable_version=subprocess.check_output(f'{PLUMED_STABLE} info --version',
                                                    shell=True).decode('utf-8').strip()
             # Use PlumedToHTML to create the input with all the bells and whistles
             html = get_html(plumed_inp,
@@ -212,7 +215,7 @@ def processMarkdown( filename, actions ) :
                               solutionfile,
                               ("v"+ stable_version,"master"),
                               (success,success_master),
-                              ("plumed","plumed_master"),
+                              (PLUMED_STABLE,PLUMED_MASTER),
                               usejson=(not success_master),
                               actions=actions )
             # Print the html for the solution
@@ -350,12 +353,12 @@ if __name__ == "__main__":
           replica = int(arg)
     print("RUNNING", nreplicas, "REPLICAS. THIS IS REPLICA", replica )
     # write plumed version to file
-    stable_version=subprocess.check_output('plumed info --version', shell=True).decode('utf-8').strip()
+    stable_version=subprocess.check_output(f'{PLUMED_STABLE} info --version', shell=True).decode('utf-8').strip()
     f=open("_data/plumed.yml","w")
     f.write("stable: v%s" % str(stable_version))
     f.close()
     # Get list of plumed actions from syntax file
-    cmd = ['plumed_master', 'info', '--root']
+    cmd = [PLUMED_MASTER, 'info', '--root']
     plumed_info = subprocess.run(cmd, capture_output=True, text=True )
     keyfile = plumed_info.stdout.strip() + "/json/syntax.json" 
     with open(keyfile) as f :
