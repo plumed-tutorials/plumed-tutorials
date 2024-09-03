@@ -8,6 +8,26 @@ on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # add optimize build here, using cache where old timings should be stored
+  prepare:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/opt
+          ~/.ccache
+        key: ccache-${{ runner.os }}-${{ github.sha }}
+        restore-keys: ccache-${{ runner.os }}-
+
+    - name: Optimize parallel build
+      run: |
+        ls ~/opt
+ 
   # This workflow contains a job called "build"
   build:
     strategy:
