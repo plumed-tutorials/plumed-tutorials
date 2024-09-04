@@ -319,11 +319,12 @@ if __name__ == "__main__" :
    modules = {}
    for key, value in plumed_syntax.items() :  
      if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
+     nlessons, neggs = 0, 0
+     if key in school_map.keys() : nlessons = school_map[key]
+     if key in nest_map.keys() : neggs = nest_map[key]
      if value["module"] not in modules.keys() :
-        nlessons = 0
-        if key in school_map.keys() : nlessons = school_map[key]
-        modules[value["module"]] = { "neggs": nest_map[key], "nlessons": nlessons }
-     else : modules[value["module"]]["neggs"], modules[value["module"]]["nlessons"] = modules[value["module"]]["neggs"] + nest_map[key], modules[value["module"]]["nlessons"] + nlessons
+        modules[value["module"]] = { "neggs": neggs, "nlessons": nlessons }
+     else : modules[value["module"]]["neggs"], modules[value["module"]]["nlessons"] = modules[value["module"]]["neggs"] + neggs, modules[value["module"]]["nlessons"] + nlessons
 
    # And create each module page
    for module, value in modules.items() : createModulePage( module, value["neggs"], value["nlessons"] )
