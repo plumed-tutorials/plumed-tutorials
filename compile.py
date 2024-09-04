@@ -378,6 +378,9 @@ if __name__ == "__main__":
     f.close()
     # Get list of plumed actions from syntax file
     action_counts, plumed_syntax = prepare_action_count_and_syntax(PLUMED_MASTER)
+    # open file to store timings in /opt
+    ftime = open("_data/timing"+str(replica), "w")
+    # loop over lesson for this replica
     with open("_data/lessons" + str(replica) + ".yml","w") as eggdb:
         print("# file containing lesson database.",file=eggdb)
 
