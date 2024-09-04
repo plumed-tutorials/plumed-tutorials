@@ -7,9 +7,10 @@ hash=$(git log -1 --format="%h")
 root="$PWD"
 tar cfv all.tar "$@"
 #tar cf all.tar -T - # list of files from stdin
-mkdir -p tmp-testSite
+siteDir=tmp-TutorialSite
+mkdir -p ${siteDir}
 
-cd tmp-testSite || exit 1
+cd ${siteDir} || exit 1
 
 tar xf "${root}/all.tar"
 # Unzip tar files from all replicas
