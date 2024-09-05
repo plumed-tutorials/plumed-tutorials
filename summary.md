@@ -31,7 +31,7 @@ There are {{ failed.size }} tutorials with failing inputs.
 {:#browse-table .display}
 | ID | Name | Instructors | # inputs | # current | # master |
 | :------: |  :------:  |  :------: | :------: | :------:  | :------: |
-{% for item in failed %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors | split: " " | last}} {{ item.instructors | split: " " | first | slice: 0}}. | {{ item.ninputs }} | {{ item.nfail }} | {{ item.nfailm }} |
+{% for item in failed %}| {{ item.id }} | [{{ item.title }}]({{ item.path }}) | {{ item.instructors }} | {{ item.ninputs }} | {{ item.nfail }} | {{ item.nfailm }} |
 {% endfor %}
 
 __Action usage chart__
@@ -41,13 +41,15 @@ The chart below shows how many lessons make use of each of the available actions
 {% assign actionlist = site.data.actioncount0 | map: "name" %}
 {% assign actionno = site.data.actioncount0 | map: "number" %}
 {% assign actionno1 = site.data.actioncount1 | map: "number" %}
+{% assign actionno2 = site.data.actioncount2 | map: "number" %}
+{% assign actionno3 = site.data.actioncount3 | map: "number" %}
 {% assign nactions=actionno.size %}
 
 {% assign astr="" %}
 {% assign ano=actionno[0] | plus: actionno1[i] %}
 {% assign astr=astr | append: ano %}
 {% for i in (1..nactions) %}
-   {% assign ano=actionno[i] | plus: actionno1[i] %}
+   {% assign ano=actionno[i] | plus: actionno1[i] | plus: actionno2[i] | plus: actionno3[i] %}
    {% assign astr=astr | append: ", " | append: ano %}
 {% endfor %}
 
