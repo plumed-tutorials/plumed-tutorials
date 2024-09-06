@@ -17,8 +17,8 @@ The chart below shows the time needed to build each lesson in PLUMED-TUTORIALS.
 <canvas id="myChart" style="width:100%;"></canvas>
 
 <script>
-var xValues = [ {{ xx | split: ',' }} ];
-var yValues = [ {{ yy | split: ',' }} ];
+var xValues = [ {{ xx }} ];
+var yValues = [ {{ yy }} ];
 // do sorting in descending order based on yValues
 //1) combine the arrays:
 var list = [];
