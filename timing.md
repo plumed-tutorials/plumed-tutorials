@@ -7,14 +7,22 @@
  {% assign xx=xx | append: ", " | append: item.id %}
  {% assign yy=yy | append: ", " | append: item.time %}
 {% endfor %}
+{%  assign timing = yy | split:',' %}
+{%  for t in timing %}
+    {{ t | plus:0 }}
+{%  endfor %} 
+
+{% for y in yy %}
+ {{ y | plus:0 }}
+{% endfor %} 
 
 The chart below shows the time needed to build each lesson in PLUMED-TUTORIALS.
 
 <canvas id="myChart" style="width:100%;"></canvas>
 
 <script>
-var xValues = [ {{ xx }} ];
-var yValues = [ {{ yy }} ];
+var xValues = [ {{ xx | split:','}} ];
+var yValues = [ {{ timing }} ];
 // do sorting in descending order based on yValues
 //1) combine the arrays:
 var list = [];
