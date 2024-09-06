@@ -4,9 +4,9 @@
 {% assign yy="" %}
 
 {% for item in site.data.lessons %}
- {% assign xx=xx | append: ", " | append: item.id %}
+ {% assign xx=xx | append: item.id  | append: ", " %}
  {% assign t = item.time | plus: 0 %}
- {% assign yy=yy | append: ", " | append: t %}
+ {% assign yy=yy | append: t | append: ", " %}
 {% endfor %}
 
 {{ xx }}
