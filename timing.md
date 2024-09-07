@@ -1,7 +1,7 @@
 # Timing for building PLUMED-TUTORIALS lessons
 
-{% names = site.data.lessons | map: "id" %}
-{% times = site.data.lessons | map: "time" %}
+{% assign names = site.data.lessons | map: "id" %}
+{% assign times = site.data.lessons | map: "time" %}
 
 The chart below shows the time needed to build each lesson in PLUMED-TUTORIALS.
 
