@@ -9,8 +9,8 @@
  {% assign yy=yy | append: t | append: ", " %}
 {% endfor %}
 
-{{ xx }}
-{{ yy }}
+{{ xx | split: ',' }}
+{{ yy | split: ',' }}
 
 The chart below shows the time needed to build each lesson in PLUMED-TUTORIALS.
 

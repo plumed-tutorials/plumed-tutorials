@@ -53,6 +53,10 @@ The chart below shows how many lessons make use of each of the available actions
    {% assign astr=astr | append: ", " | append: ano %}
 {% endfor %}
 
+
+{{ actionlist | join: '", "' | prepend: '"' | append: '"' }}
+{{ astr }}
+
 <canvas id="myChart" style="width:100%;"></canvas>
 
 <script>
