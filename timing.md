@@ -1,12 +1,12 @@
 # Timing for building PLUMED-TUTORIALS lessons
 
-{% assign size=site.data.lessons.size %}
+{% assign size=site.data.lessons.size | plus: -1 %}
 {% assign xx="" %}
 {% assign yy="" %}
 
 {% for i in (0..size) %}
   {% capture id %}"{{ site.data.lessons[i].id }}"{% endcapture %}
-  {% assign t = site.data.lessons[i].time | plus: 0 %}
+  {% assign t = site.data.lessons[i].time | plus: 0.0 %}
   {% if i == 0 %}
      {% assign xx=xx | append: id %} 
      {% assign yy=yy | append: t %}
