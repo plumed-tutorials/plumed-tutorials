@@ -1,28 +1,15 @@
 # Timing for building PLUMED-TUTORIALS lessons
 
-{% assign size=site.data.lessons.size | plus: -1 %}
-{% assign xx="" %}
-{% assign yy="" %}
-
-{% for i in (0..size) %}
-  {% capture id %}"{{ site.data.lessons[i].id }}"{% endcapture %}
-  {% assign t = site.data.lessons[i].time | plus: 0.0 %}
-  {% if i == 0 %}
-     {% assign xx=xx | append: id %} 
-     {% assign yy=yy | append: t %}
-  {% else %}
-     {% assign xx=xx | append: ", " | append: id %}
-     {% assign yy=yy | append: ", " | append: t %} 
-  {% endif %}
-{% endfor %}
+{% names = site.data.lessons | map: "id" %}
+{% times = site.data.lessons | map: "time" %}
 
 The chart below shows the time needed to build each lesson in PLUMED-TUTORIALS.
 
 <canvas id="myChart" style="width:100%;"></canvas>
 
 <script>
-var xValues = [ {{ xx | split: ',' }} ];
-var yValues = [ {{ yy | split: ',' }} ];
+var xValues = [ {{ names | join: '", "' | prepend: '"' | append: '"' }} ];
+var yValues = [ {{ times | join: '", "' }} ];
 // do sorting in descending order based on yValues
 //1) combine the arrays:
 var list = [];
