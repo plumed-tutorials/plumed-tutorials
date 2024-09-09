@@ -60,12 +60,13 @@ def get_short_name_ini(lname, length):
     return sname
 
 def processNavigation( lessonname, actions, embeds ) :
+    # First process the NAVIGATION file with processMarkdown to deal with 
+    # any plumed inputs that have been included
+    ninputs, nfail, nfailm = processMarkdown( "NAVIGATION.md", actions )
+
     with open( "data/NAVIGATION.md", "r" ) as f:
       inp = f.read()
     
-    ninputs=0
-    nfail=0
-    nfailm=0
     ofile = open( "data/NAVIGATION.md", "w+")
     inmermaid = False
     for line in inp.splitlines() : 
