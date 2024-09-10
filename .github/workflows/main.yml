@@ -117,7 +117,7 @@ jobs:
         python create_graph.py
     - name: Prepare for upload
       run: |
-        bash .ci/prepare _config.yml actioncount.md _layouts _data assets teacher.png nest.png pigeon.png pigeon-MC.png
+        bash .ci/prepare _config.yml _layouts _data assets teacher.png nest.png pigeon.png pigeon-MC.png
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       if: github.ref == 'refs/heads/main'
