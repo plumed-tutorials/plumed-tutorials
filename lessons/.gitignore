@@ -1,4 +1,5 @@
 #the only files that we want to store is this .gitignore and the lesson settings
-!lesson.yml
+*/*/*
+
+!/**/lesson.yml
 !.gitignore
-*

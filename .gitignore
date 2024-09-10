@@ -1,6 +1,8 @@
-#Extrafiles in _data, due to compile.py
+#Extrafiles in _data, due to local compile.py
 _data/lessons*.yml
 _data/plumed.yml
+#Extra git repo for local testing purposes
+plumed2.git
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
