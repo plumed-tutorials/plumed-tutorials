@@ -91,7 +91,14 @@ def processNavigation( lessonname, actions, embeds ) :
                  efile.close()
               else : 
                  islesson = True
-                 if embeds[name]["type"]=="internal" : name = "../../../" + embeds[name]["location"] + "/data/NAVIGATION.html" 
+                 if embeds[name]["type"]=="internal" : 
+                    prevlesson = embeds[name]["location"]
+                    if "." in prevlesson :
+                        fdot = prevlesson.split(".")
+                        if len(fdot)!=2 : raise Exception("previous lesson name " + prevlesson + " is invalid")
+                        prevlesson = fdot[0] + "/" + fdot[1]
+                    elif "/" not in prevlesson : raise Exception("previous lesson name " + prevlesson + " is invalid")
+                    name = "../../../" + prevlesson + "/data/NAVIGATION.html" 
                  else : name = embeds[name]["location"]
            elif "md" in name_extension: 
               # Special treatment for README.md files as GitHub links to data/README.html don't work as pages opens the rendered README.md file when you open data/
