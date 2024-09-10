@@ -1,0 +1,54 @@
+#! /bin/bash
+
+# set -x
+
+hash=$(git log -1 --format="%h")
+
+root="$PWD"
+tar cfv all.tar "$@"
+#tar cf all.tar -T - # list of files from stdin
+siteDir=tmp-TutorialSite
+mkdir -p ${siteDir}
+
+cd ${siteDir} || exit 1
+
+tar xf "${root}/all.tar"
+# Unzip tar files from all replicas
+for file in "${root}"/lesson-content*/lessons.tar; do
+  tar xf "$file"
+done
+cat _data/lessons*.yml >_data/lessons.yml
+cat _data/actionlist*.yml >_data/actionlist.yml
+cp "${root}/summarygraph.md" .
+
+if [[ "${GITHUB_REF##*/}" = main ]]; then
+  cp "${root}/CNAME" .
+
+  # create README.md
+  {
+    cat <<EOF
+
+Welcome to PLUMED-TUTORIALS!
+-----------------------------
+
+EOF
+
+    # add general informations
+    cat Info.md
+  } >README.md
+else
+  # create README.md
+  {
+    cat <<EOF
+
+# Welcome to the test site for PLUMED-TUTORIALS! (commit $hash)
+
+EOF
+    # add general informations
+    cat Info.md
+  } >README.md
+
+  sed -i "s/PLUMED-TUTORIALS/PLUMED-TUTORIALS-TEST-SITE/" _config.yml
+
+  echo "branch ${GITHUB_REF##*/}, skipping push"
+fi

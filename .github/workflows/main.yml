@@ -115,8 +115,18 @@ jobs:
     - name: Create graph
       run: |
         python create_graph.py
-    - name: Upload
-      env:
-        PLUMED_SCHOOL_GITHUB_TOKEN: ${{ secrets.PLUMED_SCHOOL_GITHUB_TOKEN }}
+    - name: Prepare for upload
       run: |
-        bash .ci/push _config.yml actioncount.md _layouts _data assets teacher.png nest.png pigeon.png pigeon-MC.png
+        bash .ci/prepare _config.yml _layouts _data assets teacher.png nest.png pigeon.png pigeon-MC.png
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      if: github.ref == 'refs/heads/main'
+      with:
+          external_repository: plumed-tutorials/plumed-tutorials.github.io
+          publish_branch: master
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./tmp-TutorialSite
+          force_orphan: true
+          enable_jekyll: true
+          user_name: 'PlumedBot'
+          user_email: 'giovanni.bussi+plumedbot@gmail.com'
