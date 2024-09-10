@@ -36,11 +36,6 @@ EOF
     # add general informations
     cat Info.md
   } >README.md
-
-  # >/dev/null to avoid excessive noise on travis log
-  git commit -m "Update to @$hash" >/dev/null
-  # -q and 2> is not to show the PLUMED_SCHOOL_GITHUB_TOKEN log
-  git push -f origin master 2>/dev/null
 else
   # create README.md
   {
