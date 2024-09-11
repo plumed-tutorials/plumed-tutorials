@@ -6,13 +6,13 @@
 The chart below shows the time needed to build each lesson in PLUMED-TUTORIALS.
 
 {{ names | join: '", "' | prepend: '"' | append: '"' }}
-{{ times | join: '", "' }}
+{{ times | join: ', ' }}
 
 <canvas id="myChart" style="width:100%;"></canvas>
 
 <script>
 var xValues = [ {{ names | join: '", "' | prepend: '"' | append: '"' }} ];
-var yValues = [ {{ times | join: '", "' }} ];
+var yValues = [ {{ times | join: ', ' }} ];
 // do sorting in descending order based on yValues
 //1) combine the arrays:
 var list = [];
