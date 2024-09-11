@@ -1,4 +1,4 @@
-url: https://github.com/lab-cosmo/atomistic-cookbook/raw/cleanups/examples/pi-metad/plumed-tutorials.zip
+url: https://github.com/lab-cosmo/atomistic-cookbook/raw/main/examples/pi-metad/plumed-tutorials.zip
 instructors: Michele Ceriotti
 title: Path integral metadynamics
 description: Incorporating nuclear quantum effects in metadynamics simulations using path integrals
