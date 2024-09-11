@@ -5,6 +5,9 @@
 
 The chart below shows the time needed to build each lesson in PLUMED-TUTORIALS.
 
+{{ names | join: '", "' | prepend: '"' | append: '"' }}
+{{ times | join: '", "' }}
+
 <canvas id="myChart" style="width:100%;"></canvas>
 
 <script>
