@@ -18,7 +18,7 @@ interact with lecturers and with other participants during the entire week.
 
 ### List of Classes
 
-Information about the two series of PLUMED Masterclass can be found in the table below. In 2024, these lectures were converted into PLUMED Tutorials, which can be accessed by clicking on the corresponding series. All 21 classes are also available on [YouTube](https://www.youtube.com/@plumedorg1402). As of August 2024, they have been viewed 46829 times.
+Information about the two series of PLUMED Masterclass can be found in the table below. In 2024, these lectures were converted into PLUMED Tutorials, which can be accessed by clicking on the corresponding series. All 21 classes are also available on [YouTube](https://www.youtube.com/@plumedorg1402). As of September 2024, they have been viewed 47535 times.
 
 | Series | Dates | Classes | Organ<br>izers | Lectu<br>rers | Description |
 | :---------: | :---------: | :----------: | :----------: | :---------: | ----------- |
