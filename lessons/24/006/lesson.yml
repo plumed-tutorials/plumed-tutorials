@@ -1,0 +1,6 @@
+url: https://github.com/blake-armstrong/binding-tutorial-PLUMED/archive/refs/heads/main.zip 
+instructors: Blake I Armstrong, Paolo Raiteri and Julian D Gale
+title: Standard binding free energies from cylindrical restraints
+description: Calculating standard binding free energies with metadynamics, PLUMED and OpenMM
+tags: metadynamics, surface binding, cylindrical restraint, standard state, volume correction, multiple-walkers
+doi: 10.1021/acs.jpcc.3c02864
