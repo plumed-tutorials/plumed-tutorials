@@ -268,12 +268,12 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         try:
          urllib.request.urlretrieve(config["url"], 'file.zip')
         except urllib.error.URLError:
-         return
+          raise RuntimeError("Bad URL for path " + path )
         # try to open the zip file
         try:
           zf = zipfile.ZipFile("file.zip", "r")
         except zipfile.BadZipFile:
-          return
+          raise RuntimeError("Bad zip file for path " + path )
         zf_namelist = zf.namelist()
         root=list(set([ x.split("/")[0] for x in zf_namelist]))
         # there is a main root directory
