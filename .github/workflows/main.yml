@@ -82,7 +82,7 @@ jobs:
         cp $(plumed info --root)/json/syntax.json syntax.${{matrix.replica}}.json
     - name: Create tar ball
       run: |
-        tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.gif") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name ".svg") $(find . -name "*.html") _data/*.yml _data/*.json
+        tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.gif") $(find . -name "*.jpg") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name ".svg") $(find . -name "*.html") _data/*.yml _data/*.json
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
