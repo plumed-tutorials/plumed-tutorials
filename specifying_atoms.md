@@ -33,7 +33,7 @@ a PDB structure file in input. This command allows you to access the following l
 
 {:#browse-table .display}
 | Name | Description |
-|:--------:|:--------:|
+|:---------|:---------|
 {% for item in site.data.grouplist %}| {{ item.name }} | {{ item.description }} |
 {% endfor %}
 
