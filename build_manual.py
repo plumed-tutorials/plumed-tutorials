@@ -36,7 +36,7 @@ def drawModuleNode( index, key, ntype, of ) :
     elif ntype=="default-off" : of.write("style " + str(index) + " fill:red\n")    
     else : raise Exception("don't know how to draw node of type " + ntype )
 
-def processMarkdown( filename, inp, file ) :
+def processMarkdown( filename, inp, ofile ) :
     inplumed = False
     usemermaid = ""
     ninputs = 0 
