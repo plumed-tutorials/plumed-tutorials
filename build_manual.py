@@ -8,7 +8,10 @@ import numpy as np
 from pathlib import Path
 from datetime import date 
 from bs4 import BeautifulSoup
+from PlumedToHTML import test_plumed, get_html, get_mermaid
 import networkx as nx
+
+PLUMED_MASTER="plumed_master"
 
 def create_map( URL ) :
     page = requests.get(URL)
@@ -32,6 +35,60 @@ def drawModuleNode( index, key, ntype, of ) :
     elif ntype=="default-on" : of.write("style " + str(index) + " fill:green\n")
     elif ntype=="default-off" : of.write("style " + str(index) + " fill:red\n")    
     else : raise Exception("don't know how to draw node of type " + ntype )
+
+def processMarkdown( filename, inp, file ) :
+    inplumed = False
+    usemermaid = ""
+    ninputs = 0 
+    for line in inp.splitlines() :
+         # Detect and copy plumed input files 
+         if "```plumed" in line :
+            inplumed = True
+            plumed_inp = ""
+            ninputs = ninputs + 1
+         # Test plumed input files that have been found in tutorial 
+         elif inplumed and "```" in line :
+            inplumed = False
+            # Create mermaid graphs from PLUMED inputs if this has been requested
+            if usemermaid!="" : 
+               mermaidinpt = ""
+               if usemermaid=="value" :
+                  mermaidinpt = get_mermaid( PLUMED_MASTER, plumed_inp, False )
+               elif usemermaid=="force" :
+                  mermaidinpt = get_mermaid( PLUMED_MASTER, plumed_inp, True )
+               else :
+                  raise RuntimeError(usemermaid + "is invalid instruction for use mermaid")
+               ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
+            # Create the full input for PlumedToHTML formatter 
+            else :
+                  solutionfile = filename + "_working_" + str(ninputs) + ".dat"
+                  with open( "data/" + solutionfile, "w+" ) as sf:
+                     sf.write( plumed_inp )
+
+            # Json files are put in directory one up from us to ensure that
+            # PlumedToHTML finds them when we do get_html (i.e. these will be in
+            # the data directory where the calculation is run)
+            success_master=test_plumed( PLUMED_MASTER, "data/" + solutionfile,
+                                        printjson=True, jsondir="../" )
+            # Find the stable version 
+            # Use PlumedToHTML to create the input with all the bells and whistles
+            html = get_html(plumed_inp,
+                              solutionfile,
+                              solutionfile,
+                              ("master"),
+                              (success_master),
+                              (PLUMED_MASTER),
+                              usejson=(not success_master),
+                              actions=actions )
+            # Print the html for the solution
+            ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
+         elif inplumed and "#MERMAID=" in line :
+            usemermaid = line.replace("#MERMAID=","").strip()
+         elif inplumed :
+            plumed_inp += line + "\n"
+         # Just copy any line that isn't part of a plumed input
+         elif not inplumed :
+            ofile.write( line + "\n" ) 
 
 def createModuleGraph( plumed_rootdir, plumed_syntax ) :
    # Get all the module dependencies
@@ -234,15 +291,25 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
                       f.write("| " + key + " | scalar | " + docs["flag"] + " | " + docs["description"] + " | \n")
                   f.write("\n\n")
          
-         f.write("## Input\n\n")
-         f.write("The input for this action is specified using one or more of the keywords in the following table.\n\n")
-         f.write("| Keyword |  Type | Description |\n")
-         f.write("|:--------|:------:|:-----------|\n")
+         hasatoms, hasargs = False, False
          for key, docs in value["syntax"].items() :
              if key=="output" : continue
-             if docs["type"]=="atoms" : f.write("| " + key + " | atoms | " + docs["description"] + " |\n")
-             elif key=="ARG" : f.write("| " + key + " | scalar | " + docs["description"] + " |\n")
-         f.write("\n\n")
+             if docs["type"]=="atoms" : hasatoms=True 
+             elif key=="ARG" : hasargs=True 
+         
+         if hasatoms or hasargs : 
+            f.write("## Input\n\n")
+            if hasatoms and hasargs : f.write("The [arguments](specifying_arguments.html) and [atoms](specifying_atoms.html) that serve as the input for this action are specified using one or more of the keywords in the following table.\n\n")
+            elif hasatoms : f.write("The [atoms](specifying_atoms.html) that serve as the input for this action are specified using one or more of the keywords in the following table.\n\n")
+            elif hasargs : f.write("The [arguments](specifying_arguments.html) that serve as the input for this action are specified using one or more of the keywords in the following table.\n\n")
+            
+            f.write("| Keyword |  Type | Description |\n")
+            f.write("|:--------|:------:|:-----------|\n")
+            for key, docs in value["syntax"].items() :
+                if key=="output" : continue
+                if docs["type"]=="atoms" : f.write("| " + key + " | atoms | " + docs["description"] + " |\n")
+                elif key=="ARG" : f.write("| " + key + " | scalar | " + docs["description"] + " |\n")
+            f.write("\n\n")
 
          f.write("## Further details and examples \n")
          f.write("Information for the manual from the code would go in here \n")
@@ -299,8 +366,17 @@ if __name__ == "__main__" :
           plumed_syntax = json.load(f)
        except ValueError as ve:
           raise InvalidJSONError(ve)
+
+   # Create a file with all the special groups
+   with open("_data/grouplist.yml","w") as gfile :
+       print("# file containing special groups",file=gfile)
+       for key, value in plumed_syntax["groups"].items() :
+           print("-name: " + key, file=gfile )
+           print("  description: " + value["description"], file=gfile )
+
    # Create a page for each action
    os.mkdir("manual")
+   os.mkdir("manual/data")
    with open("_data/actionlist" + str(replica) + ".yml","w") as actdb :
        print("# file containing action database.",file=actdb) 
  
@@ -314,6 +390,12 @@ if __name__ == "__main__" :
               if key in school_map.keys() : nlessons = school_map[key] 
               createActionPage( key, value, neggs, nlessons, actdb ) 
            k = k + 1
+
+   # Create the general pages
+   general_pages = ["specifying_atoms.md"]
+   for page in generate_pages : 
+       with open(page,"r") as f : inp = f.read()
+       with open("Manual/" + page, "w") as of : processMarkdown(page, inp, of )
 
    # Create a list of modules
    modules = {}
