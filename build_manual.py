@@ -76,9 +76,9 @@ def processMarkdown( filename, inp, ofile ) :
             html = get_html(plumed_inp,
                               solutionfile,
                               solutionfile,
-                              ("master"),
-                              (success_master),
-                              (PLUMED_MASTER),
+                              ("master",),
+                              (success_master,),
+                              (PLUMED_MASTER,),
                               usejson=(not success_master),
                               actions=actions )
             # Print the html for the solution
