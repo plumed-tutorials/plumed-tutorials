@@ -393,7 +393,7 @@ if __name__ == "__main__" :
 
    # Create the general pages
    general_pages = ["specifying_atoms.md"]
-   for page in generate_pages : 
+   for page in general_pages : 
        with open(page,"r") as f : inp = f.read()
        with open("Manual/" + page, "w") as of : processMarkdown(page, inp, of )
 
