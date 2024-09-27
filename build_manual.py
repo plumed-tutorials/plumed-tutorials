@@ -395,7 +395,7 @@ if __name__ == "__main__" :
    general_pages = ["specifying_atoms.md"]
    for page in general_pages : 
        with open(page,"r") as f : inp = f.read()
-       with open("Manual/" + page, "w") as of : processMarkdown(page, inp, of )
+       with open("manual/" + page, "w") as of : processMarkdown(page, inp, of )
 
    # Create a list of modules
    modules = {}
