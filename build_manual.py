@@ -372,7 +372,7 @@ if __name__ == "__main__" :
    with open("_data/grouplist.yml","w") as gfile :
        print("# file containing special groups",file=gfile)
        for key, value in plumed_syntax["groups"].items() :
-           print("-name: " + key, file=gfile )
+           print("- name: \"" + key + "\"", file=gfile )
            print("  description: " + value["description"], file=gfile )
 
    # Create a page for each action
