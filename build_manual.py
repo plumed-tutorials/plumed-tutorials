@@ -62,13 +62,13 @@ def processMarkdown( filename, inp, ofile ) :
             # Create the full input for PlumedToHTML formatter 
             else :
                   solutionfile = filename + "_working_" + str(ninputs) + ".dat"
-                  with open( "data/" + solutionfile, "w+" ) as sf:
+                  with open( "manual/data/" + solutionfile, "w+" ) as sf:
                      sf.write( plumed_inp )
 
             # Json files are put in directory one up from us to ensure that
             # PlumedToHTML finds them when we do get_html (i.e. these will be in
             # the data directory where the calculation is run)
-            success_master=test_plumed( PLUMED_MASTER, "data/" + solutionfile,
+            success_master=test_plumed( PLUMED_MASTER, "manual/data/" + solutionfile,
                                         printjson=True, jsondir="../" )
             # Find the stable version 
             # Use PlumedToHTML to create the input with all the bells and whistles
