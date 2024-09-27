@@ -40,6 +40,7 @@ def processMarkdown( filename, inp, ofile ) :
     inplumed = False
     usemermaid = ""
     ninputs = 0 
+    actions = set()
     for line in inp.splitlines() :
          # Detect and copy plumed input files 
          if "```plumed" in line :
