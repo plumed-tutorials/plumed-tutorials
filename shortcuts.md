@@ -34,10 +34,10 @@ output file may differ from the name of the component.  For example, if you use 
 # This is a shortcut
 d1: DISTANCES ATOMS1=1,2 ATOMS2=3,4 ATOMS3=5,6 ATOMS4=7,8 ATOMS5=9,10 LESS_THAN={RATIONAL R_0=0.1}
 # This is not a shortcut
-PRINT ARG=d1.lessthan FILE=colvar
+PRINT ARG=d1.lessthan FILE=colvar1
 ``` 
 
-The output values in the output colvar file will be in a column with the heading `d1_lessthan` rather than `d1.lessthan` as `d1_lessthan` is the label of the action that actually calculates the 
+The output values in the output colvar1 file will be in a column with the heading `d1_lessthan` rather than `d1.lessthan` as `d1_lessthan` is the label of the action that actually calculates the 
 quantity of interest.
 
 PLUMED only allows you access the subset of the values that defined in the manual from the shortcut input using the `label.component` syntax.  So if we take the input above:
@@ -63,10 +63,10 @@ If you have the following input:
 
 ```plumed 
 d1: DISTANCES ATOMS1=1,2 ATOMS2=3,4 ATOMS3=5,6 ATOMS4=7,8 ATOMS5=9,10 LESS_THAN={RATIONAL R_0=0.1} MEAN
-PRINT ARG=d1.* FILE=colvar
+PRINT ARG=d1.* FILE=colvar2
 ```
 
-The values `d1_lessthan` and `d1_mean` will be output in the colvar file as these are the components of the DISTANCES shortcut that are defined in the manual. `d1_lt` is not output as this is an intermediate value that is not defined in the manual.
+The values `d1_lessthan` and `d1_mean` will be output in the colvar2 file as these are the components of the DISTANCES shortcut that are defined in the manual. `d1_lt` is not output as this is an intermediate value that is not defined in the manual.
 
 The same result can be obtained using the following input:
 

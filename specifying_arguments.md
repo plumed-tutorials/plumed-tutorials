@@ -8,27 +8,27 @@ scalars, vectors, matrices or functions evaluated on a grid.
 
 If an action outputs only one value it is referenced later in the input using the label of the action that calculated it.
 For example, in the input below, the DISTANCE action calculates one scalar every MD time step.  This scalar is then reused 
-by the PRINT action, which the time-series of scalars to a file called colvar.
+by the PRINT action, which the time-series of scalars to a file called colvar1.
 
 ```plumed
 d1: DISTANCE ATOMS=1,2
-PRINT ARG=d1 FILE=colvar
+PRINT ARG=d1 FILE=colvar1
 ```
 
 This next input does something similar. However, the DISTANCE action now calculates the distances between 4 separate pairs of atoms.
-The PRINT action will thus output a vector with four elements to the colvar file every MD time step.
+The PRINT action will thus output a vector with four elements to the colvar2 file every MD time step.
 
 ```plumed
 d2: DISTANCE ATOMS1=1,2 ATOMS2=3,4 ATOMS3=5,6 ATOMS4=7,8
-PRINT ARG=d2 FILE=colvar
+PRINT ARG=d2 FILE=colvar2
 ```
 
 Lastly, consider the following input, the first here calculates a 10x10 matrix of switching functions that act on the distances between
-each pair of atoms.  The PRINT action then outputs the 100 elements of this vector to the colvar file on every MD time step.
+each pair of atoms.  The PRINT action then outputs the 100 elements of this vector to the colvar3 file on every MD time step.
 
 ```plumed
 c1: CONTACT_MATRIX GROUP=1-10 SWITCH={RATIONAL R_0=0.2}
-PRINT ARG=c1 FILE=colvar
+PRINT ARG=c1 FILE=colvar3
 ```
 
 If the label refers to a function evaluated on a grid you can output the data using PRINT. However, we would recommend using DUMPGRID instead in these cases.
@@ -150,10 +150,10 @@ Perhaps, more usefully another input that used regular expressions is as follows
 
 ```plumed
 d1: DISTANCE ATOMS=1,2 COMPONENTS
-PRINT ARG=(d1\.[xy]) FILE=colvar 
+PRINT ARG=(d1\.[xy]) FILE=colvar5 
 ```
 
-The PRINT command here will output the d1.x and d1.y components of the vector connecting atoms 1 and 2 to the colvar file. Notice that in your regular expressions the
+The PRINT command here will output the d1.x and d1.y components of the vector connecting atoms 1 and 2 to the colvar5 file. Notice that in your regular expressions the
 `.` character must be escaped as `\.` in order to interpret it as a literal `.`. An un-escaped dot is a wildcard which is matched by any character,
 so for example
 
