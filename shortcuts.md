@@ -20,7 +20,7 @@ You can see an example of a shortcut in the following input:
 c1: COORDINATIONNUMBER SPECIES=1-100 SWITCH={RATIONAL R_0=0.2} MEAN
 ```
 
-Whenever shortcuts are used in example inputs in this manual, the nest or the tutorials site you have the option to expand the shortcut and see all the various constituent actions
+Whenever shortcuts are used in example inputs in this manual, the [nest](www.plumed-nest.org) or the [tutorials](www.plumed-tutorials.org) site you have the option to expand the shortcut and see all the various constituent actions
 that are used in the expanded input that evlauates the final quantity of interest. To expand the input you simply hover over the name of the action and use the approriate link
 from the tooltip that appears. 
 
