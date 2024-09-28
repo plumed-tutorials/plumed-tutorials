@@ -261,7 +261,9 @@ def createModulePage( modname, neggs, nlessons ) :
 
 def createActionPage( action, value, neggs, nlessons, actdb ) :
     with open("manual/" + action + ".md", "w") as f : 
-         f.write("# Action: " + action + "\n\n")
+         if "IS_SHORTCUT" in value["syntax"].keys() : f.write("# [Shortcut](shortcuts.md): " + action + "\n\n")
+         else : f.write("# [Action](actions.md): " + action + "\n\n")
+
          f.write("| Description    | Usage |\n")
          f.write("|:--------|:--------:|\n") 
          f.write("| " + value["description"] + " | ")
@@ -407,7 +409,7 @@ if __name__ == "__main__" :
            k = k + 1
 
    # Create the general pages
-   general_pages = ["specifying_atoms.md"]
+   general_pages = ["specifying_atoms.md", "specifying_arguments.md", "actions.md", "shortcuts.md"]
    for page in general_pages : 
        with open(page,"r") as f : inp = f.read()
        with open("manual/" + page, "w") as of : processMarkdown( page, inp, pagelist, of )

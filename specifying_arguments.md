@@ -122,7 +122,7 @@ PRINT ARG=*.* FILE=colvar
 ```
 
 __We recommend not using the * and *.* wildcards as there are often many values defined in a PLUMED input file and you will rarely want to use all them in the input to an action.  
-Furthermore, if you are using shortcuts you may not even be aware of all the values that are defined in your input as your shortcut actions work by creating intermediate actions 
+Furthermore, if you are using [shortcuts](shortcuts.md) you may not even be aware of all the values that are defined in your input as your shortcut actions work by creating intermediate actions 
 that calculate intermediate values.__
 
 ## Regular expressions
@@ -196,7 +196,7 @@ PRINT ARG=(d1\.[xy]|t[0-9]) FILE=colvar
 Constructing the regular expression this way is preferable as each value will only be generated once in the input. In the first example with the comma
 separated expressions, duplicate values can can appear if there are values that match more than one of the constituent regular expressions.
 
-**Please note that shortcuts work by creating additional actions to calculate intermediate values. You need to take care when you are designing regular expressions 
+**Please note that [shortcuts](shortcuts.md) work by creating additional actions to calculate intermediate values. You need to take care when you are designing regular expressions 
 for inputs that use shortcuts to not have regular expressions that match the labels of the intermediate values.**
 
 ## Reshaping values
