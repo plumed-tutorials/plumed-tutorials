@@ -216,7 +216,7 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
    of.close()
 
 def createModulePage( modname, neggs, nlessons ) :
-    with open( modname + ".md", "w") as f :
+    with open( "manual/" + modname + ".md", "w") as f :
          f.write("# Module: " + modname + "\n\n")
          f.write("| Description    | Usage |\n")
          f.write("|:--------|:--------:|\n")
