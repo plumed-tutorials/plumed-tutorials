@@ -36,7 +36,7 @@ def drawModuleNode( index, key, ntype, of ) :
     elif ntype=="default-off" : of.write("style " + str(index) + " fill:red\n")    
     else : raise Exception("don't know how to draw node of type " + ntype )
 
-def processMarkdown( filename, inp, ofile ) :
+def processMarkdown( filename, inp, pagelist, ofile ) :
     inplumed = False
     usemermaid = ""
     ninputs = 0 
@@ -87,9 +87,21 @@ def processMarkdown( filename, inp, ofile ) :
             usemermaid = line.replace("#MERMAID=","").strip()
          elif inplumed :
             plumed_inp += line + "\n"
-         # Just copy any line that isn't part of a plumed input
+         # Just copy any line that isn't part of a plumed input but replace plumed words with links
          elif not inplumed :
-            ofile.write( line + "\n" ) 
+            inverbatim = False
+            for word in line.split() :
+                if "`" in word and inverbatim : 
+                  ofile.write(word + " ")
+                  inverbatim = False  
+                elif "`" in word : 
+                  ofile.write(word + " ")
+                  inverbatim = True
+                elif word not in pagelist or inverbatim : 
+                  ofile.write(word + " ")
+                elif word in pagelist : 
+                  ofile.write("[" + word + "](" + word + ".md) " )
+            ofile.write( "\n" ) 
 
 def createModuleGraph( plumed_rootdir, plumed_syntax ) :
    # Get all the module dependencies
@@ -381,9 +393,11 @@ if __name__ == "__main__" :
    with open("_data/actionlist" + str(replica) + ".yml","w") as actdb :
        print("# file containing action database.",file=actdb) 
  
-       k=0
+       k, pagelist = 0, []
        for key, value in plumed_syntax.items() :
            if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
+           pagelist.append( key )
+           if value["module"] not in pagelist : pagelist.append( value["module"] )
            # Now create the page contents
            if k%nreplicas==replica : 
               neggs, nlessons = 0, 0
@@ -396,7 +410,7 @@ if __name__ == "__main__" :
    general_pages = ["specifying_atoms.md"]
    for page in general_pages : 
        with open(page,"r") as f : inp = f.read()
-       with open("manual/" + page, "w") as of : processMarkdown(page, inp, of )
+       with open("manual/" + page, "w") as of : processMarkdown( page, inp, pagelist, of )
 
    # Create a list of modules
    modules = {}
