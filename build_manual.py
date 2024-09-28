@@ -288,7 +288,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
                for key, docs in value["syntax"]["output"].items() :
                    if docs["flag"]!="default" : onlydefault = False
                if onlydefault :
-                  f.write("This action calculates the quantities in the following table.  These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
+                  f.write("This action calculates the [values](pecifying_arguments.html) in the following table.  These [values](pecifying_arguments.html) can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the [value](pecifying_arguments.html) required from the list below.\n\n")
                   f.write("| Name | Type | Description |\n")
                   f.write("|:-------|:-----|:-------|\n")
                   for key, docs in value["syntax"]["output"].items() :
@@ -296,7 +296,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
                       f.write("| " + key + " | scalar | " + docs["description"] + " | \n") 
                   f.write("\n\n")
                else : 
-                  f.write("This action can calculate the quantities in the following table when the associated keyword is included in the input for the action. These quantities can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the quantity required from the list below.\n\n")
+                  f.write("This action can calculate the [values](pecifying_arguments.html) in the following table when the associated keyword is included in the input for the action. These [values](pecifying_arguments.html) can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the [value](pecifying_arguments.html) required from the list below.\n\n")
                   f.write("| Name | Type | Keyword | Description |\n")
                   f.write("|:-------|:-----|:----:|:-------|\n")
                   for key, docs in value["syntax"]["output"].items() :
@@ -396,7 +396,7 @@ if __name__ == "__main__" :
        k, pagelist = 0, []
        for key, value in plumed_syntax.items() :
            if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
-           pagelist.append( key )
+           if key!="PLUMED" : pagelist.append( key )
            if value["module"] not in pagelist : pagelist.append( value["module"] )
            # Now create the page contents
            if k%nreplicas==replica : 

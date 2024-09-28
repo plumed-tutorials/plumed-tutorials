@@ -4,7 +4,7 @@ Specifying atoms
 Many of the actions in PLUMED take a list of atom positions in input.  Within PLUMED
 atoms are specified using their numerical indices in the molecular dynamics input file.
 
-In PLUMED lists of atoms can be either provided directly inside the definition of each collective variable, or
+In PLUMED lists of atoms can be either provided directly inside the definition of each action, or
 predefined as a GROUP that can be reused multiple times. Lists of atoms can be written as:
 
 - comma separated lists of numbers (`g1: GROUP ATOMS=10,11,15,20`)
@@ -12,7 +12,7 @@ predefined as a GROUP that can be reused multiple times. Lists of atoms can be w
 - numerical ranges with a stride. So `g3: GROUP ATOMS=10-100:10` is equivalent to `g3: GROUP ATOMS=10,20,30,40,50,60,70,80,90,100`
 - atom ranges with a negative stride. So `g4: GROUP ATOMS=100-10:-10` is equivalent to `g4: GROUP ATOMS=100,90,80,70,60,50,40,30,20,10`
 
-If you want to use the atoms in a group as the input for a colvar you use the label of the group as shown in the following input:
+If you want to use the atoms in a group as the input for a action you use the label of the group as shown in the following input:
 
 ```plumed
 g5: GROUP ATOMS=1,2
@@ -39,14 +39,14 @@ a PDB structure file in input. This command allows you to access the following l
 
 ## Virtual atoms 
 
-Sometimes, when calculating a colvar, you may not want to use the positions of a number of atoms directly. Instead
+Sometimes, when calculating a collective variable, you may not want to use the positions of a number of atoms directly. Instead
  you may wish to use the position of a virtual atom whose position is generated based on the positions of a collection
 of other atoms.  For example you might want to use the center of mass of a group of atoms. PLUMED has a number of routines
-for calculating the positions of these virtual atoms from lists of atoms that are in the [vatom module](vatom.html).
+for calculating the positions of these virtual atoms from lists of atoms that are in the vatom module.
 
-To specify to a colvar that you want to use the position of a virtual atom to calculate a colvar rather than one of the atoms
+To specify to an action that you want to use the position of a virtual atom to calculate an action rather than one of the atoms
 in your system you simply use the label for your virtual atom in place of the usual numerical index. Virtual
-atoms and normal atoms can be mixed together in the input to colvars as shown below:
+atoms and normal atoms can be mixed together in the input to actions as shown below:
 
 ```plumed
 com1: COM ATOMS=1,10 
@@ -58,10 +58,10 @@ If you don't want to calculate CVs from the virtual atom.  That is to say you ju
 
 The list of the virtual atoms defined in PLUMED can be obtained by using the command `GROUP ATOMS=@allatoms REMOVE=@mdatoms`.
 
-## Broken molecules and PBC
+## Broken molecules and Periodic Boundary Conditions
 
 PLUMED is designed so that for the majority of the CVs implemented the periodic boundary conditions are treated
-in the same manner as they would be treated in the host code.  In some codes this can be problematic when the colvars
+in the same manner as they would be treated in the host code.  In some codes this can be problematic when the actions 
 you are using involve some property of a molecule.  These codes allow the atoms in the molecules to become separated by
 periodic boundaries, a fact which PLUMED could only deal with if the topology is passed from the MD code to PLUMED.  Doing this
 work would involve a lot laborious programming and goes against our original aim of having a general patch that can be implemented
