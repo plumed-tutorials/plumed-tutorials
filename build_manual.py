@@ -70,7 +70,7 @@ def processMarkdown( filename, inp, pagelist, ofile ) :
             # PlumedToHTML finds them when we do get_html (i.e. these will be in
             # the data directory where the calculation is run)
             success_master=test_plumed( PLUMED_MASTER, "manual/data/" + solutionfile,
-                                        printjson=True, jsondir="../" )
+                                        printjson=True, jsondir="../../" )
             # Find the stable version 
             # Use PlumedToHTML to create the input with all the bells and whistles
             html = get_html(plumed_inp,
