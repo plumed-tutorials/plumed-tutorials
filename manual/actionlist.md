@@ -1,6 +1,6 @@
 Actions implemented in PLUMED
 -----------------------------
-The actions that can be used within a PLUMED input file are listed below. 
+The [actions](actions.md) that can be used within a PLUMED input file are listed below. 
 
 {:#browse-table .display}
 | Name | Description |

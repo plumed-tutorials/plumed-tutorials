@@ -142,7 +142,7 @@ PLUMED to include it during the configure stage by using:
 ./configure --enable-module=module-name
 ```
 
-Each module contains implementations of a number of actions. You can find a list of all the actions implemented in in PLUMED [here](actionlist.md).
+Each module contains implementations of a number of [actions](action.md). You can find a list of all the actions implemented in in PLUMED [here](manual/actionlist.md).
 
 If you are completely unfamiliar with PLUMED we would recommend that you start by working through [the following tutorial](https://www.plumed-tutorials.org/lessons/21/001/data/NAVIGATION.html).
 
@@ -209,7 +209,7 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
    # And finally the click stuff
    k=0
    for key, data in requires.items() :
-       of.write("click " + str(k) + " \"" + key + ".html\" \"Information about the module [Authors: list of authors]\"\n" )
+       of.write("click " + str(k) + " \"manual/" + key + ".html\" \"Information about the module [Authors: list of authors]\"\n" )
        k = k + 1
    
    of.write("```\n")
@@ -217,7 +217,7 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
 
 def createModulePage( modname, neggs, nlessons ) :
     with open( "manual/" + modname + ".md", "w") as f :
-         f.write("# Module: " + modname + "\n\n")
+         f.write("# [Module](../manual.md): " + modname + "\n\n")
          f.write("| Description    | Usage |\n")
          f.write("|:--------|:--------:|\n")
          f.write("| Description of module | ")
@@ -329,7 +329,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
          f.write("## Further details and examples \n")
          f.write("Information for the manual from the code would go in here \n")
          f.write("## Syntax \n")
-         f.write("The following table describes the keywords and options that can be used with this action \n\n")
+         f.write("The following table describes the [keywords and options](parsing.md) that can be used with this action \n\n")
          f.write("| Keyword | Type | Default | Description |\n")
          f.write("|:-------|:----:|:-------:|:-----------|\n")
          for key, docs in value["syntax"].items() : 
@@ -344,7 +344,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
              if docs["type"]=="optional" : f.write("| " + key + " | optional | not used | " + docs["description"] + " |\n")
 
     print("- name: " + action, file=actdb)
-    print("  path: manual/" + action + ".html", file=actdb)
+    print("  path: " + action + ".html", file=actdb)
     print("  description: " + value["description"], file=actdb)    
     print("  module: " + value["module"], file=actdb)
 
@@ -390,7 +390,6 @@ if __name__ == "__main__" :
            print("  description: " + value["description"], file=gfile )
 
    # Create a page for each action
-   os.mkdir("manual")
    os.mkdir("manual/data")
    with open("_data/actionlist" + str(replica) + ".yml","w") as actdb :
        print("# file containing action database.",file=actdb) 
@@ -409,7 +408,7 @@ if __name__ == "__main__" :
            k = k + 1
 
    # Create the general pages
-   general_pages = ["specifying_atoms.md", "specifying_arguments.md", "actions.md", "shortcuts.md"]
+   general_pages = ["specifying_atoms.md", "specifying_arguments.md", "actions.md", "shortcuts.md", "parsing.md"]
    for page in general_pages : 
        with open(page,"r") as f : inp = f.read()
        with open("manual/" + page, "w") as of : processMarkdown( page, inp, pagelist, of )
