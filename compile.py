@@ -124,12 +124,12 @@ def processNavigation( lessonname, actions, embeds ) :
               ipfile.write( body ) 
               ipfile.close() 
            elif "pdf" in name_extension:
-              mdname = name.split("/")[-1]
-              efile = open( "data/" + mdname.split(".")[0] + ".md", "w+" )
+              pdfname = name.split("/")[-1]
+              efile = open( "data/" + name.split(".")[0] + ".md", "w+" )
               efile.write( "# " + lessonname + " \n\n")
               efile.write( line.split('"')[3] + "\n\n" )
               efile.write("{% raw %}\n")
-              efile.write('<p align="center"><iframe width="630" height="472" src="' + name + '" allowfullscreen></iframe></p>\n')
+              efile.write('<p align="center"><iframe width="630" height="472" src="' + pdfname + '" allowfullscreen></iframe></p>\n')
               efile.write("{% endraw %}\n")
               efile.close()
            else :
