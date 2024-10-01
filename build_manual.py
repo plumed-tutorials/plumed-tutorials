@@ -144,6 +144,8 @@ PLUMED to include it during the configure stage by using:
 
 Each module contains implementations of a number of [actions](action.md). You can find a list of all the actions implemented in in PLUMED [here](manual/actionlist.md).
 
+Please also note that some developers prefer not to include their codes in PLUMED.  To use functionality that has been written by these developed you can use the LOAD command. 
+
 If you are completely unfamiliar with PLUMED we would recommend that you start by working through [the following tutorial](https://www.plumed-tutorials.org/lessons/21/001/data/NAVIGATION.html).
 
 ```mermaid
@@ -277,7 +279,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
             f.write("![used in " + str(neggs) + " eggs](https://img.shields.io/badge/nest-0-red.svg)") 
          if "output" in value["syntax"] and "value" in value["syntax"]["output"] : 
             f.write("|\n | **output value** | **type** |\n")
-            f.write("| " + value["syntax"]["output"]["value"]["description"] + " | scalar |\n\n" )
+            f.write("| " + value["syntax"]["output"]["value"]["description"] + " | " + value["syntax"]["output"]["value"]["type"] + " |\n\n" )
          else : 
             f.write(" | \n\n")
 
@@ -295,7 +297,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
                   f.write("|:-------|:-----|:-------|\n")
                   for key, docs in value["syntax"]["output"].items() :
                       if key=="value" : continue 
-                      f.write("| " + key + " | scalar | " + docs["description"] + " | \n") 
+                      f.write("| " + key + " | " + docs["type"] + " | " + docs["description"] + " | \n") 
                   f.write("\n\n")
                else : 
                   f.write("This action can calculate the [values](pecifying_arguments.html) in the following table when the associated keyword is included in the input for the action. These [values](pecifying_arguments.html) can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the [value](pecifying_arguments.html) required from the list below.\n\n")
@@ -303,7 +305,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
                   f.write("|:-------|:-----|:----:|:-------|\n")
                   for key, docs in value["syntax"]["output"].items() :
                       if key=="value" : continue 
-                      f.write("| " + key + " | scalar | " + docs["flag"] + " | " + docs["description"] + " | \n")
+                      f.write("| " + key + " | " + docs["type"] + " | " + docs["flag"] + " | " + docs["description"] + " | \n")
                   f.write("\n\n")
          
          hasatoms, hasargs = False, False
@@ -323,7 +325,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
             for key, docs in value["syntax"].items() :
                 if key=="output" : continue
                 if docs["type"]=="atoms" : f.write("| " + key + " | atoms | " + docs["description"] + " |\n")
-                elif key=="ARG" : f.write("| " + key + " | scalar | " + docs["description"] + " |\n")
+                elif key=="ARG" : f.write("| " + key + " | " + docs["type"] + " | " + docs["description"] + " |\n")
             f.write("\n\n")
 
          f.write("## Further details and examples \n")

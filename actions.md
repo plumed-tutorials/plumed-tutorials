@@ -45,3 +45,43 @@ d2: DISTANCE ATOMS=3,4
 ```
 
 PLUMED will evaluate the distance between atom 1 and 2 but will not evaluate the distance between atoms 3 and 4.
+
+## Using INCLUDE files
+
+If, for some reason, you want to spread your PLUMED input over a number of files you can use INCLUDE as shown below:
+
+```plumed
+INCLUDE FILE=filename
+```
+
+So, for example, a single "plumed.dat" file:
+
+```plumed
+DISTANCE ATOMS=1,2 LABEL=dist
+RESTRAINT ARG=dist AT=2.0 KAPPA=1.0
+```
+
+could be split up into two files as shown below:
+ 
+```plumed
+DISTANCE ATOMS=1,2 LABEL=dist 
+INCLUDE FILE=toBeIncluded.inc
+```
+plus a "toBeIncluded.inc" file
+
+```plumed
+#SETTINGS FILENAME=toBeIncluded.inc
+# this is toBeIncluded.inc
+RESTRAINT ARG=dist AT=2.0 KAPPA=1.0
+```
+
+However, when you do this it is important to recognize that INCLUDE is a real directive that is only resolved
+after all the comments have been stripped and the ContinuationLines have been unrolled.  This means it
+is not possible to do things like:
+
+```plumed
+# this is wrong: 
+DISTANCE INCLUDE FILE=options.dat
+RESTRAINT ARG=dist AT=2.0 KAPPA=1.0
+```
+
