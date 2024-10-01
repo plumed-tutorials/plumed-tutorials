@@ -414,6 +414,8 @@ if __name__ == "__main__" :
    for page in general_pages : 
        with open(page,"r") as f : inp = f.read()
        with open("manual/" + page, "w") as of : processMarkdown( page, inp, pagelist, of )
+   # Remove the original copies of the parsing.md file as it causes a problem with the rendering
+   os.remove("parsing.md")
 
    # Create a list of modules
    modules = {}

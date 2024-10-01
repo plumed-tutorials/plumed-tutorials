@@ -124,7 +124,8 @@ def processNavigation( lessonname, actions, embeds ) :
               ipfile.write( body ) 
               ipfile.close() 
            elif "pdf" in name_extension:
-              efile = open( "data/" + name.split(".")[0] + ".md", "w+" )
+              mdname = name.split("/")[-1]
+              efile = open( "data/" + mdhttps://www.theguardian.com/ukname.split(".")[0] + ".md", "w+" )
               efile.write( "# " + lessonname + " \n\n")
               efile.write( line.split('"')[3] + "\n\n" )
               efile.write("{% raw %}\n")
