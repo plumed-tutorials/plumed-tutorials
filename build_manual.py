@@ -312,7 +312,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
          for key, docs in value["syntax"].items() :
              if key=="output" : continue
              if docs["type"]=="atoms" : hasatoms=True 
-             elif key=="ARG" : hasargs=True 
+             elif "argtype" in docs.keys() : hasargs=True 
          
          if hasatoms or hasargs : 
             f.write("## Input\n\n")
@@ -325,7 +325,7 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
             for key, docs in value["syntax"].items() :
                 if key=="output" : continue
                 if docs["type"]=="atoms" : f.write("| " + key + " | atoms | " + docs["description"] + " |\n")
-                elif key=="ARG" : f.write("| " + key + " | " + docs["type"] + " | " + docs["description"] + " |\n")
+                elif "argtype" in docs.keys() : f.write("| " + key + " | " + docs["argtype"] + " | " + docs["description"] + " |\n")
             f.write("\n\n")
 
          f.write("## Further details and examples \n")
@@ -336,12 +336,12 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
          f.write("|:-------|:----:|:-------:|:-----------|\n")
          for key, docs in value["syntax"].items() : 
              if key=="output" : continue 
-             if docs["type"]=="atoms" or key=="ARG" : f.write("| " + key + " | input | none | " + docs["description"] + " |\n") 
+             if docs["type"]=="atoms" or "argtype" in docs.keys() : f.write("| " + key + " | input | none | " + docs["description"] + " |\n") 
          for key, docs in value["syntax"].items() : 
-             if key=="output" or key=="ARG" : continue
+             if key=="output" or "argtype" in docs.keys()  : continue
              if docs["type"]=="compulsory"  : f.write("| " + key + " | compulsory | none | " + docs["description"] + " |\n") 
          for key, docs in value["syntax"].items() :
-             if key=="output" or key=="ARG" : continue
+             if key=="output" or "argtype" in docs.keys() : continue
              if docs["type"]=="flag" : f.write("| " + key + " | optional | false | " + docs["description"] + " |\n")
              if docs["type"]=="optional" : f.write("| " + key + " | optional | not used | " + docs["description"] + " |\n")
 
