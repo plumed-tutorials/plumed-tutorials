@@ -336,10 +336,12 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
          f.write("|:-------|:----:|:-------:|:-----------|\n")
          for key, docs in value["syntax"].items() : 
              if key=="output" : continue 
-             if docs["type"]=="atoms" or "argtype" in docs.keys() : f.write("| " + key + " | input | none | " + docs["description"] + " |\n") 
+             if "argtype" in docs.keys() and "default" in docs.keys() : f.write("| " + key + " | input | " + docs["default"] + " | " + docs["description"] + " |\n")
+             elif docs["type"]=="atoms" or "argtype" in docs.keys() : f.write("| " + key + " | input | none | " + docs["description"] + " |\n") 
          for key, docs in value["syntax"].items() : 
              if key=="output" or "argtype" in docs.keys()  : continue
-             if docs["type"]=="compulsory"  : f.write("| " + key + " | compulsory | none | " + docs["description"] + " |\n") 
+             if docs["type"]=="compulsory" and "default" in docs.keys()  : f.write("| " + key + " | compulsory | "  + docs["default"] + " | " + docs["description"] + " |\n") 
+             elif docs["type"]=="compulsory" : f.write("| " + key + " | compulsory | none | " + docs["description"] + " |\n")
          for key, docs in value["syntax"].items() :
              if key=="output" or "argtype" in docs.keys() : continue
              if docs["type"]=="flag" : f.write("| " + key + " | optional | false | " + docs["description"] + " |\n")
