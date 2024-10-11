@@ -155,11 +155,12 @@ RESTRAINT ...
   ARG=d,t
 # indentation is not required (this is not python!)
 # but makes the input easier to read
-  AT=@replicas:{
-    {1.0,2.0}
-    {3.0,4.0}
-    {5.0,6.0}
-  }
+# NEED TO WORK ON THIS INPUT WITH PLUMED2HTML
+#  AT=@replicas:{
+#    {1.0,2.0}
+#    {3.0,4.0}
+#    {5.0,6.0}
+#  }
   KAPPA=1.0,3.0
 ...
 ```
