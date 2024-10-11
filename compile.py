@@ -65,12 +65,12 @@ def processNavigation( lessonname, actions, embeds ) :
                                            shell=True).decode('utf-8').strip()
     # First process the NAVIGATION file with processMarkdown to deal with 
     # any plumed inputs that have been included
-    ninputs, nfail, nfailm = processMarkdown( "data/NAVIGATION.md", 
-                                              (PLUMED_STABLE,PLUMED_MASTER), 
-                                              ("v"+ stable_version,"master"), 
-                                              actions,
-                                              jsondir="../" )
-
+    ninputs, nf = processMarkdown( "data/NAVIGATION.md", 
+                                   (PLUMED_STABLE,PLUMED_MASTER), 
+                                   ("v"+ stable_version,"master"), 
+                                   actions,
+                                   jsondir="../" )
+    nfail, nfailm = nf[0], nf[1]
     with open( "data/NAVIGATION.md", "r" ) as f:
       inp = f.read()
     
