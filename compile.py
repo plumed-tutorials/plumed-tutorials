@@ -12,7 +12,7 @@ import subprocess
 import nbformat
 from nbconvert import HTMLExporter 
 from contextlib import contextmanager
-from PlumedToHTML import test_plumed, get_html, get_mermaid
+from PlumedToHTML import processMarkdown
 import time
 
 if not (sys.version_info > (3, 0)):
@@ -60,9 +60,16 @@ def get_short_name_ini(lname, length):
     return sname
 
 def processNavigation( lessonname, actions, embeds ) :
+    # Find the stable version 
+    stable_version=subprocess.check_output(f'{PLUMED_STABLE} info --version',
+                                           shell=True).decode('utf-8').strip()
     # First process the NAVIGATION file with processMarkdown to deal with 
     # any plumed inputs that have been included
-    ninputs, nfail, nfailm = processMarkdown( "NAVIGATION.md", actions )
+    ninputs, nfail, nfailm = processMarkdown( "data/NAVIGATION.md", 
+                                              (PLUMED_STABLE,PLUMED_MASTER), 
+                                              ("v"+ stable_version,"master"), 
+                                              actions,
+                                              jsondir="../" )
 
     with open( "data/NAVIGATION.md", "r" ) as f:
       inp = f.read()
@@ -110,10 +117,14 @@ def processNavigation( lessonname, actions, embeds ) :
                     new_name += spl_name[i] + "/"
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
-              ni, nf, nfm = processMarkdown( name, actions )
+              ni, nf = processMarkdown( "data/" + name,
+                                        (PLUMED_STABLE,PLUMED_MASTER),
+                                        ("v"+ stable_version,"master"),
+                                        actions,
+                                        jsondir="../" )
               ninputs = ninputs + ni
-              nfail = nfail + nf
-              nfailm = nfailm + nfm
+              nfail = nfail + nf[0]
+              nfailm = nfailm + nf[1]
            elif "ipynb" in name_extension:
               with open("data/" + name) as f : 
                   mynotebook = nbformat.read( f, as_version=4 )
@@ -144,105 +155,6 @@ def processNavigation( lessonname, actions, embeds ) :
            ofile.write( line + "\n" )
     ofile.close()
     return ninputs, nfail, nfailm 
-
-def processMarkdown( filename, actions ) :
-    if not os.path.exists("data/" + filename) : 
-       raise RuntimeError("Found no file called " + filename + " in lesson")
-
-    with open( "data/" + filename, "r" ) as f:
-       inp = f.read()
-    
-    ninputs = 0
-    nfail = 0
-    nfailm = 0
-    inplumed = False
-    plumed_inp = ""
-    solutionfile = None
-    incomplete = False
-    usemermaid = ""
-    with open( "data/" + filename, "w+" ) as ofile:
-      for line in inp.splitlines() :
-         # Detect and copy plumed input files 
-         if "```plumed" in line :
-            inplumed = True
-            plumed_inp = ""
-            solutionfile = None
-            incomplete = False
-            ninputs = ninputs + 1 
-   
-         # Test plumed input files that have been found in tutorial 
-         elif inplumed and "```" in line : 
-            inplumed = False
-            # Create mermaid graphs from PLUMED inputs if this has been requested
-            if usemermaid!="" :
-               mermaidinpt = ""
-               if usemermaid=="value" :
-                  mermaidinpt = get_mermaid( PLUMED_MASTER, plumed_inp, False )
-               elif usemermaid=="force" :
-                  mermaidinpt = get_mermaid( PLUMED_MASTER, plumed_inp, True )
-               else :
-                  raise RuntimeError(usemermaid + "is invalid instruction for use mermaid") 
-               ofile.write("```mermaid\n" + mermaidinpt + "\n```\n")
-            if incomplete :
-                  if solutionfile:
-                     # Read solution from solution file
-                     try:
-                        with open( "data/" + solutionfile, "r" ) as sf:
-                           solution = sf.read() 
-                           plumed_inp += "#SOLUTION \n" + solution
-                     except:
-                        raise RuntimeError(f"error in opening {solutionfile} as solution"
-                                          f" for an incomplete input from file {filename}")
-                  else:
-                     raise RuntimeError(f"an incomplete input from file {filename}"
-                                       " does not have its solution file")      
-            # Create the full input for PlumedToHTML formatter 
-            else :
-                  solutionfile = filename + "_working_" + str(ninputs) + ".dat"
-                  with open( "data/" + solutionfile, "w+" ) as sf:
-                     sf.write( plumed_inp )
-
-            # Test whether the input solution can be parsed
-            success = success=test_plumed( PLUMED_STABLE, "data/" + solutionfile )
-            if(success!=0 and success!="custom") : nfail = nfail + 1
-            # Json files are put in directory one up from us to ensure that
-            # PlumedToHTML finds them when we do get_html (i.e. these will be in
-            # the data directory where the calculation is run)
-            if incomplete :
-               success_master=test_plumed(PLUMED_MASTER, "data/" + solutionfile ) 
-            else :
-               success_master=test_plumed(PLUMED_MASTER, "data/" + solutionfile,
-                                          printjson=True, jsondir="../" )
-            if( success_master!=0 and success_master!="custom") :
-               nfailm = nfailm + 1
-            # Find the stable version 
-            stable_version=subprocess.check_output(f'{PLUMED_STABLE} info --version',
-                                                   shell=True).decode('utf-8').strip()
-            # Use PlumedToHTML to create the input with all the bells and whistles
-            html = get_html(plumed_inp,
-                              solutionfile,
-                              solutionfile,
-                              ("v"+ stable_version,"master"),
-                              (success,success_master),
-                              (PLUMED_STABLE,PLUMED_MASTER),
-                              usejson=(not success_master),
-                              actions=actions )
-            # Print the html for the solution
-            ofile.write( "{% raw %}\n" + html + "\n {% endraw %} \n" )
-         # This finds us the solution file
-         elif inplumed and "#SOLUTIONFILE=" in line :
-            solutionfile=line.replace("#SOLUTIONFILE=","")
-         elif inplumed and "#MERMAID=" in line : 
-            usemermaid = line.replace("#MERMAID=","").strip()
-         elif inplumed :
-            if "__FILL__" in line :
-               incomplete = True 
-            plumed_inp += line + "\n"
-         # Just copy any line that isn't part of a plumed input
-         elif not inplumed :
-            ofile.write( line + "\n" )
-
-    return ninputs, nfail, nfailm
 
 def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
     if not eggdb:
