@@ -400,7 +400,7 @@ if __name__ == "__main__" :
  
        k, pagelist = 0, []
        for key, value in plumed_syntax.items() :
-           if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
+           if key=="modules" or key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
            if key!="PLUMED" : pagelist.append( key )
            if value["module"] not in pagelist : pagelist.append( value["module"] )
            # Now create the page contents
