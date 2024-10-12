@@ -422,7 +422,7 @@ if __name__ == "__main__" :
    # Create a list of modules
    modules = {}
    for key, value in plumed_syntax.items() :  
-     if key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
+     if key=="modules" or key=="vimlink" or key=="replicalink" or key=="groups" or key!=value["displayname"] : continue
      nlessons, neggs = 0, 0
      if key in school_map.keys() : nlessons = school_map[key]
      if key in nest_map.keys() : neggs = nest_map[key]
