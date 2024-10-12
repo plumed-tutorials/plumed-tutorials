@@ -68,8 +68,7 @@ def processNavigation( lessonname, actions, embeds ) :
     ninputs, nf = processMarkdown( "data/NAVIGATION.md", 
                                    (PLUMED_STABLE,PLUMED_MASTER), 
                                    ("v"+ stable_version,"master"), 
-                                   actions,
-                                   jsondir="../" )
+                                   actions )
     nfail, nfailm = nf[0], nf[1]
     with open( "data/NAVIGATION.md", "r" ) as f:
       inp = f.read()
@@ -120,8 +119,7 @@ def processNavigation( lessonname, actions, embeds ) :
               ni, nf = processMarkdown( "data/" + name,
                                         (PLUMED_STABLE,PLUMED_MASTER),
                                         ("v"+ stable_version,"master"),
-                                        actions,
-                                        jsondir="../" )
+                                        actions )
               ninputs = ninputs + ni
               nfail = nfail + nf[0]
               nfailm = nfailm + nf[1]
