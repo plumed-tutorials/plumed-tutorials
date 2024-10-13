@@ -33,41 +33,6 @@ else
   echo "installing latest stable plumed $version"
 fi
 
-# This gets all the dependency information in plumed
-n=0
-nlines=`ls src/*/Makefile | wc -l`
-echo { > $GITHUB_WORKSPACE/_data/extradeps$version.json
-for mod in `ls src/*/Makefile` ;  do 
-    n=$((n+1))
-    dep=`grep USE $mod | sed -e 's/USE=//'`
-    modname=`echo $mod | sed -e 's/src\///' | sed -e 's/\/Makefile//'`
-    typename=`echo $mod | sed -e 's/Makefile/module.type/'`
-    if [ ! -f $typename ] ; then
-         modtype="always"
-    else
-         modtype=`head $typename`
-    fi
-    deparr=($dep)
-    echo \"$modname\" : { >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-    echo \"type\": \"$modtype\", >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-    echo -n \"depends\" : [ >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-    for d in ${deparr[@]} ; do
-        if [ $d == ${deparr[0]} ] ; then
-           echo -n \"$d\" >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-        else 
-           echo -n , \"$d\" >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-        fi
-    done
-    if [ $n == $nlines ] ; then
-      echo ] >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-      echo } >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-    else
-      echo ] >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-      echo }, >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-    fi
-done
-echo } >> $GITHUB_WORKSPACE/_data/extradeps$version.json
-
 git checkout $version
 
 hash=$(git rev-parse HEAD)

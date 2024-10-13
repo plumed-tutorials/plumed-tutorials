@@ -69,11 +69,6 @@ jobs:
       run: |
         wget https://github.com/plumed-tutorials/plumed-tutorials.github.io/raw/master/_data/lessons.yml -P _data
         python optimize_build.py ${{matrix.replica}} 4 170.0 lessons/*/*/
-    - name: Build manual
-      run: | 
-        python --version
-        # N.B. If you adjust the number of replicas used here you need to adjust the liquid syntax in summary.md that builds the total number of lessons that use each action 
-        python build_manual.py --nreplicas 4 --replica ${{matrix.replica}}
     - name: Run
       run: |
         python --version
