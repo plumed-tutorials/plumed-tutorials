@@ -1,0 +1,6 @@
+url: https://github.com/aniruddha-seal/pines_tutorial/archive/refs/heads/main.zip
+instructors: Nicholas S.M. Herringer, Aniruddha Seal, Armin Shayesteh Zadeh, Siva Dasetty, Andrew L. Ferguson
+title: Permutationally Invariant Networks for Enhanced Sampling (PINES) 
+description: An introduction to using permutationally invariant networks for enhanced sampling 
+tags: Metadynamics, Permutationally invariant vectors, machine learning collective variable, parallel bias metadynamics
+doi: 10.1021/acs.jctc.3c00923
