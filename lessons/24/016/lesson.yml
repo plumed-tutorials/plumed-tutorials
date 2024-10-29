@@ -1,6 +1,6 @@
 url: https://github.com/Pefema/oneopes-tutorial-plumed2/archive/main.zip
 instructors: Pedro Febrer Martinez, Valerio Rizzi, Simone Aureli, Francesco Luigi Gervasio
-title: Host-Guest binding free energies à la carte: an automated OneOPES protocol
+title: Host-Guest binding free energies using an automated OneOPES protocol
 description: A tutorial on an automated OneOPES protocol for calculating host-guest binding free energies
 tags: OneOPES, ligand binding, binding free energy, SAMPL challenge, host-guest
 doi: 10.1101/2024.08.23.609378
