@@ -2,14 +2,35 @@
 # pip install ruff==0.6.2
 # ruff format testLesson.py
 # ruff check testLesson.py
-from compile import process_lesson
+
 
 DEFAULT_PLUMED = "plumed"
 if __name__ == "__main__":
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser(
+        prog="testLesson",
+        description="""
+Test the correctness (if the lesson can be compiled) of a single lesson.
+
+%(prog)s needs plumed installed and runnable to work.
+
+%(prog)s will check only if the lesson can be compiuled and could pass the GitHub workflow.
+Note that %(prog)s will not find any rendering error due to wrong Markdown or HTML syntax.
+""",
+    )
+    parser.add_argument(
+        "lessonPath",
+        help="The path to the lesson.yml file to test or to the directory containing it",
+    )
+    args = parser.parse_args()
+
+    from compile import process_lesson
     import subprocess
     import json
     import sys
 
+    lessonPath = args.lessonPath
     # args here:
     # first "naked" argument is the path to lesson.y(a)ml
     plumed_to_use = DEFAULT_PLUMED
@@ -29,7 +50,6 @@ if __name__ == "__main__":
             continue
         action_counts[key] = 0
 
-    lessonPath = sys.argv[1]
     if "lesson.yml" in lessonPath:
         lessonPath = lessonPath.replace("lesson.yml", "")
-    process_lesson(sys.argv[1], action_counts, plumed_syntax)
+    process_lesson(lessonPath, action_counts, plumed_syntax, plumed_master=plumed_to_use)
