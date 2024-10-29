@@ -1,4 +1,4 @@
-url: https://github.com/vendruscolo-lab/AlphaFold-MetaInference-Tutorial/raw/main/AlphaFold-MetaInference-Tutorial.zip
+url: https://github.com/vendruscolo-lab/AlphaFold-MetaInference-Tutorial/archive/refs/heads/main.zip
 instructors: Faidon Brotzakis, Hussein Murtada and Michele Vendruscolo
 title: Alpha-Fold Metainference for structural ensemble prediction of a partially disordered protein.
 description: A tutorial about how metainference can be used in tandem with Alpha-fold to predict the ensemble of structures for a partially disordered protein.
