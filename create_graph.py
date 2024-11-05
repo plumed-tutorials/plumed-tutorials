@@ -12,8 +12,14 @@ if __name__ == "__main__":
    for path in pathlist : 
        num = str(path).split("/")[0].replace("lesson-content","")
        tar = tarfile.open( str(path) )
-       lf = tar.extractfile("_data/lessons" + num + ".yml")
-       theselessons = yaml.load(lf,Loader=yaml.BaseLoader)
+       try:
+         lf = tar.extractfile("_data/lessons" + num + ".yml")
+         theselessons = yaml.load(lf,Loader=yaml.BaseLoader)
+       except Exception as e:
+         print("FILE ","_data/lessons" + num + ".yml")
+         print("ERROR ",e)
+         raise e
+           print("FILE ","_data/lessons" + num + ".yml")
        lf.close()
        for l in theselessons : lessondict.append(l)
 
