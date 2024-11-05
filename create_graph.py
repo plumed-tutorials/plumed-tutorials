@@ -19,7 +19,6 @@ if __name__ == "__main__":
          print("FILE ","_data/lessons" + num + ".yml")
          print("ERROR ",e)
          raise e
-           print("FILE ","_data/lessons" + num + ".yml")
        lf.close()
        for l in theselessons : lessondict.append(l)
 
