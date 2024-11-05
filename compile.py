@@ -59,17 +59,17 @@ def get_short_name_ini(lname, length):
     else: sname = lname
     return sname
 
-def processNavigation( lessonname, actions, embeds, plumed_stable, plumed_master ):
-    # Find the stable version 
-    stable_version=subprocess.check_output(f'{plumed_stable} info --version',
-                                           shell=True).decode('utf-8').strip()
+def processNavigation( lessonname, actions, embeds, plumeds_to_use,plumed_version_names):
     # First process the NAVIGATION file with processMarkdown to deal with 
     # any plumed inputs that have been included
     ninputs, nf = processMarkdown( "data/NAVIGATION.md", 
-                                   (plumed_stable,plumed_master), 
-                                   ("v"+ stable_version,"master"), 
+                                   plumeds_to_use,
+                                   plumed_version_names, 
                                    actions )
-    nfail, nfailm = nf[0], nf[1]
+    nfail = []
+    for failNum in nf:
+      nfail.append( failNum )
+
     with open( "data/NAVIGATION.md", "r" ) as f:
       inp = f.read()
     
@@ -117,12 +117,13 @@ def processNavigation( lessonname, actions, embeds, plumed_stable, plumed_master
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
               ni, nf = processMarkdown( "data/" + name,
-                                        (plumed_stable,plumed_master),
-                                        ("v"+ stable_version,"master"),
+                                        plumeds_to_use,
+                                        plumed_version_names,
                                         actions )
               ninputs = ninputs + ni
-              nfail = nfail + nf[0]
-              nfailm = nfailm + nf[1]
+              for i,failNum in enumerate(nf):
+                  nfail[i]+=failNum
+              
            elif "ipynb" in name_extension:
               with open("data/" + name) as f : 
                   mynotebook = nbformat.read( f, as_version=4 )
@@ -152,9 +153,9 @@ def processNavigation( lessonname, actions, embeds, plumed_stable, plumed_master
         else :
            ofile.write( line + "\n" )
     ofile.close()
-    return ninputs, nfail, nfailm 
+    return ninputs, nfail
 
-def process_lesson(path,action_counts,plumed_syntax,eggdb=None,plumed_stable=PLUMED_STABLE,plumed_master=PLUMED_MASTER):
+def process_lesson(path,action_counts,plumed_syntax,eggdb=None,plumeds_to_use=(PLUMED_STABLE,PLUMED_MASTER),plumed_version_names=("stable","master")):
     if not eggdb:
         eggdb=sys.stdout
 
@@ -220,7 +221,9 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None,plumed_stable=PLU
 
         # Process the navigation file
         actions = set({})  # This holds the list of actions used in all the plumed input files in the markdown
-        ninputs, nfail, nfailm = processNavigation( config["title"], actions, embeds, plumed_master=plumed_master,plumed_stable=plumed_stable )
+        ninputs, nfail = processNavigation( config["title"], actions, embeds,
+                                                   plumeds_to_use=plumeds_to_use,
+                                                   plumed_version_names=plumed_version_names )
 
         dependlist = []
         for key, data in embeds.items() :
@@ -228,24 +231,9 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None,plumed_stable=PLU
 
         # Get the lesson id from the path
         lesson_id = path[8:10] + "." + path[11:14]
-        print("- id: '" + lesson_id + "'",file=eggdb)
-        print("  title: " + config["title"],file=eggdb)
-        print("  shortitle: '" + get_short_name_ini(config["title"],15) +"'",file=eggdb)
-        print("  path: " + path + "data/NAVIGATION.html", file=eggdb)
-        print("  instructors: " + config["instructors"], file=eggdb)
-        # get citation
+        # Get the reference
         ref,ref_url = get_reference(config["doi"])
-        print("  doi: " + config["doi"],file=eggdb)
-        print("  reference: '" + ref +"'",file=eggdb)
-        print("  ref_url: '" + ref_url +"'",file=eggdb)
-        print("  description: " + config["description"], file=eggdb)
-        if "tags" in config.keys() : print("  tags: " + config["tags"], file=eggdb)
-        print("  ninputs: " + str(ninputs), file=eggdb)
-        print("  nfail: " + str(nfail), file=eggdb)
-        print("  nfailm: " + str(nfailm), file=eggdb)
-        if len(dependlist)>0 : 
-           print("  depends: ", file=eggdb)
-           for d in dependlist : print("    - " + str(d), file=eggdb ) 
+        # Get the modules and the actions
         modules = set()  
         for a in actions :
             if a in plumed_syntax.keys() : 
@@ -253,25 +241,61 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None,plumed_stable=PLU
                  modules.add( plumed_syntax[a]["module"] ) 
                except : 
                  raise Exception("could not find module for action " + a)
-            if a in action_counts.keys() : action_counts[a] += 1
+            if a in action_counts.keys() :
+               action_counts[a] += 1
         astr = ' '.join(actions)
-        print("  actions: " + astr, file=eggdb)
         modstr = ' '.join(modules)
-        print("  modules: " + modstr, file=eggdb)
+        # to future me:
+        # is a list of a single dict to get the '-' at the start of the dump
+        # I am using dict.update() to keep the key ordering
+        datadict = {"id":lesson_id,
+         "title":config["title"],
+         "shortitle":get_short_name_ini(config["title"],15),
+         "path":path + "data/NAVIGATION.html",
+         "instructors":config["instructors"],
+         "doi":config["doi"],
+         "reference":ref,
+         "ref_url":ref_url,
+         "description":config["description"],
+        }
+        if "tags" in config:
+          datadict.update({"tags":config["tags"]})
+        faildict = {"ninputs":ninputs,}
+        if len(nfail)>=2 :
+         #prints standard fo the site, this assumes that the tuple is stable, master:
+            faildict.update({"nfail":nfail[0],
+                   "nfailm":nfail[1]})
+        fd={}
+        for i,fail in enumerate(nfail) :
+            fd[plumed_version_names[i]]=fail
+        faildict.update({"inputfails":fd})
+        datadict.update(faildict)
+        if len(dependlist)>0 :
+           datadict.update({"depends":dependlist})
+        datadict.update({"actions":astr,
+                         "modules":modstr,})        
+        
         # end timing
         end_time = time.perf_counter()
         # store time
-        print("  time: " + str(end_time-start_time), file=eggdb)
+        datadict.update({"time":end_time-start_time})
+        yaml.dump([datadict],
+                  stream=eggdb,
+                  #to not break lines
+                  width=256,
+                  sort_keys=False)
+
     except Exception as e:
       print("+++ EXCEPTION RAISED IN: ", path)
-      print("+++ EXCEPTION text:" , e)
+      print("+++ EXCEPTION stack:")
+      import traceback
+      print(traceback.format_exc())
       return (path, e)
     return None
 
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]
-    plumed_master=PLUMED_MASTER
-    plumed_stable=PLUMED_STABLE
+
     try:
         opts, args = getopt.getopt(argv,"hn:r:",["nreplicas=","replica="])
     except:
@@ -287,12 +311,17 @@ if __name__ == "__main__":
           replica = int(arg)
     print("RUNNING", nreplicas, "REPLICAS. THIS IS REPLICA", replica )
     # write plumed version to file
-    stable_version=subprocess.check_output(f'{plumed_stable} info --version', shell=True).decode('utf-8').strip()
+    plumeds_to_use=(PLUMED_STABLE,PLUMED_MASTER)
+    stable_version=subprocess.check_output(f'{plumeds_to_use[0]} info --version', shell=True).decode('utf-8').strip()
+    
+    plumed_version_names=("v"+ stable_version,"master")
+    print(f"USING {plumeds_to_use=}")
+    print(f"USING {plumed_version_names=}")
     f=open("_data/plumed.yml","w")
     f.write("stable: v%s" % str(stable_version))
     f.close()
     # Get list of plumed actions from syntax file
-    cmd = [plumed_master, 'info', '--root']
+    cmd = [plumeds_to_use[1], 'info', '--root']
     plumed_info = subprocess.run(cmd, capture_output=True, text=True )
     keyfile = plumed_info.stdout.strip() + "/json/syntax.json" 
     with open(keyfile) as f :
@@ -321,7 +350,7 @@ if __name__ == "__main__":
         # cycle on ordered list
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
             # process lesson
-            error=process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb,plumed_stable=plumed_stable,plumed_master=plumed_master)
+            error=process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb,plumeds_to_use=plumeds_to_use,plumed_version_names=plumed_version_names)
             if error is not None :
                listOfErrors.append(error)
     if len(listOfErrors) > 0 :
