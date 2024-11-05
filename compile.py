@@ -48,6 +48,8 @@ def get_reference(doi):
           cit = subprocess.check_output('curl -LH "Accept: text/bibliography; style=science" \'http://dx.doi.org/'+doi+'\'', shell=True).decode('utf-8').strip()
           if("DOI Not Found" in cit):
            ref="DOI not found"
+          elif "which is not a DOI" in cit:
+           ref="This is not a DOI"
           else:
            # get citation
            ref=cit[3:cit.find(", doi")]
