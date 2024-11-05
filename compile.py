@@ -264,6 +264,8 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         # store time
         print("  time: " + str(end_time-start_time), file=eggdb)
     except Exception as e:
+      print("+++ EXCEPTION RAISED IN: ", path)
+      print("+++ EXCEPTION text:" , e)
       return (path, e)
     return None
 
@@ -323,9 +325,8 @@ if __name__ == "__main__":
                listOfErrors.append(error)
     if len(listOfErrors) > 0 :
         for path,e in listOfErrors :
-           print(path,e)
-           print("+++ EXCEPTION RAISED IN",path)
-           print("+++ EXCEPTION text:" ,e)
+           print("+++ EXCEPTION RAISED IN: ", path)
+           print("+++ EXCEPTION text:" , e)
 
         raise Exception("Errors while compiling lessons")
     # output yaml file with action counts
