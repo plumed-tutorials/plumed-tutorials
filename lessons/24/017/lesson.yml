@@ -1,0 +1,6 @@
+url: https://github.com/ollyfutur/mg_rna_tutorial/archive/master.zip
+instructors: Olivier Languin Cattoen
+title: Enhanced sampling for magnesium-RNA binding dynamics
+description: This tutorial will teach you how to use PLUMED, GROMACS and Python notebooks to implement an enhanced sampling strategy for magnesium-RNA binding dynamics.
+tags: CASP, RNA, Magnesium
+doi: unpublished
