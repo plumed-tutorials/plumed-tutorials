@@ -15,6 +15,9 @@ from contextlib import contextmanager
 from PlumedToHTML import processMarkdown
 import time
 
+# global variable tracking errors
+an_error_happened=False
+
 if not (sys.version_info > (3, 0)):
    raise RuntimeError("We are using too many python 3 constructs, so this is only working with python 3")
 
@@ -154,11 +157,13 @@ def processNavigation( lessonname, actions, embeds ) :
     ofile.close()
     return ninputs, nfail, nfailm 
 
+
 def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
     if not eggdb:
         eggdb=sys.stdout
 
-    with cd(path):
+    try:
+      with cd(path):
         # start timing
         start_time = time.perf_counter()
         # open file
@@ -261,6 +266,12 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
         end_time = time.perf_counter()
         # store time
         print("  time: " + str(end_time-start_time), file=eggdb)
+    except Exception as e:
+      print(" EXCEPTION RAISED IN",path)
+      print(e)
+      global an_error_happened
+      an_error_happened=True
+
 
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]
@@ -313,6 +324,8 @@ if __name__ == "__main__":
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
             # process lesson
             process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
+    if an_error_happened:
+        raise Exception("one of the lessons failed")
     # output yaml file with action counts
     action_list = [] 
     for key, value in action_counts.items() : action_list.append( {'name': key, 'number': value } )
