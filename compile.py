@@ -59,14 +59,14 @@ def get_short_name_ini(lname, length):
     else: sname = lname
     return sname
 
-def processNavigation( lessonname, actions, embeds ) :
+def processNavigation( lessonname, actions, embeds, plumed_stable, plumed_master ):
     # Find the stable version 
-    stable_version=subprocess.check_output(f'{PLUMED_STABLE} info --version',
+    stable_version=subprocess.check_output(f'{plumed_stable} info --version',
                                            shell=True).decode('utf-8').strip()
     # First process the NAVIGATION file with processMarkdown to deal with 
     # any plumed inputs that have been included
     ninputs, nf = processMarkdown( "data/NAVIGATION.md", 
-                                   (PLUMED_STABLE,PLUMED_MASTER), 
+                                   (plumed_stable,plumed_master), 
                                    ("v"+ stable_version,"master"), 
                                    actions )
     nfail, nfailm = nf[0], nf[1]
@@ -117,7 +117,7 @@ def processNavigation( lessonname, actions, embeds ) :
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
               ni, nf = processMarkdown( "data/" + name,
-                                        (PLUMED_STABLE,PLUMED_MASTER),
+                                        (plumed_stable,plumed_master),
                                         ("v"+ stable_version,"master"),
                                         actions )
               ninputs = ninputs + ni
@@ -154,8 +154,7 @@ def processNavigation( lessonname, actions, embeds ) :
     ofile.close()
     return ninputs, nfail, nfailm 
 
-
-def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
+def process_lesson(path,action_counts,plumed_syntax,eggdb=None,plumed_stable=PLUMED_STABLE,plumed_master=PLUMED_MASTER):
     if not eggdb:
         eggdb=sys.stdout
 
@@ -221,7 +220,7 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
 
         # Process the navigation file
         actions = set({})  # This holds the list of actions used in all the plumed input files in the markdown
-        ninputs, nfail, nfailm = processNavigation( config["title"], actions, embeds )
+        ninputs, nfail, nfailm = processNavigation( config["title"], actions, embeds, plumed_master=plumed_master,plumed_stable=plumed_stable )
 
         dependlist = []
         for key, data in embeds.items() :
@@ -271,6 +270,8 @@ def process_lesson(path,action_counts,plumed_syntax,eggdb=None):
 
 if __name__ == "__main__":
     nreplicas, replica, argv = 1, 0, sys.argv[1:]
+    plumed_master=PLUMED_MASTER
+    plumed_stable=PLUMED_STABLE
     try:
         opts, args = getopt.getopt(argv,"hn:r:",["nreplicas=","replica="])
     except:
@@ -286,12 +287,12 @@ if __name__ == "__main__":
           replica = int(arg)
     print("RUNNING", nreplicas, "REPLICAS. THIS IS REPLICA", replica )
     # write plumed version to file
-    stable_version=subprocess.check_output(f'{PLUMED_STABLE} info --version', shell=True).decode('utf-8').strip()
+    stable_version=subprocess.check_output(f'{plumed_stable} info --version', shell=True).decode('utf-8').strip()
     f=open("_data/plumed.yml","w")
     f.write("stable: v%s" % str(stable_version))
     f.close()
     # Get list of plumed actions from syntax file
-    cmd = [PLUMED_MASTER, 'info', '--root']
+    cmd = [plumed_master, 'info', '--root']
     plumed_info = subprocess.run(cmd, capture_output=True, text=True )
     keyfile = plumed_info.stdout.strip() + "/json/syntax.json" 
     with open(keyfile) as f :
@@ -320,7 +321,7 @@ if __name__ == "__main__":
         # cycle on ordered list
         for path in sorted(pathlist, reverse=True, key=lambda m: str(m)):
             # process lesson
-            error=process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb)
+            error=process_lesson(re.sub("lesson.yml$","",str(path)),action_counts,plumed_syntax,eggdb,plumed_stable=plumed_stable,plumed_master=plumed_master)
             if error is not None :
                listOfErrors.append(error)
     if len(listOfErrors) > 0 :
