@@ -62,7 +62,10 @@ You can return to a complete list of the tutorials by clicking [here](browse.md)
    G = nx.DiGraph()
    for key, data in plessondict.items() : 
        if "depends" not in data : continue
-       for dd in data["depends"] : G.add_edge( translate[dd], translate[key] )
+       for dd in data["depends"] : 
+           if dd not in translate.keys() : raise Exception("could not find key " + dd + " in list of lessons")
+           if key not in translate.keys() : raise Exception("could not find key " + key + " in list of lessons")
+           G.add_edge( translate[dd], translate[key] )
    
    # Find any closed loops in the graph and remove them
    cycles = list( nx.simple_cycles(G) )
