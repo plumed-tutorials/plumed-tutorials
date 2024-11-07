@@ -81,7 +81,7 @@ jobs:
         tar cf lessons.tar $(find . -name "*.pdf") $(find . -name "*.png") $(find . -name "*.gif") $(find . -name "*.jpeg") $(find . -name "*.jpg") $(find . -name "*.md") $(find . -name "*.stdout.txt.zip") $(find . -name "*.stderr.txt.zip") $(find . -name ".svg") $(find . -name "*.html") _data/*.yml
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: lesson-content${{matrix.replica}}
         path: lessons.tar 
