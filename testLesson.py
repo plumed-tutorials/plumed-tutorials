@@ -52,4 +52,4 @@ Note that %(prog)s will not find any rendering error due to wrong Markdown or HT
 
     if "lesson.yml" in lessonPath:
         lessonPath = lessonPath.replace("lesson.yml", "")
-    process_lesson(lessonPath, action_counts, plumed_syntax, plumed_master=plumed_to_use)
+    process_lesson(lessonPath, action_counts, plumed_syntax, plumeds_to_use=(plumed_to_use,),plumed_version_names=("local",))
