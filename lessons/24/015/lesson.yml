@@ -3,4 +3,4 @@ instructors: Daniele Rapetti, Toni Giorgino
 title: How to use the PLUMED PyCV plugin
 description: An introduction to the pycv module.  This module provides you with an action that allows you to call python from PLUMED. 
 tags: manual, python
-doi: unpublished
+doi: 10.21105/joss.01773 
