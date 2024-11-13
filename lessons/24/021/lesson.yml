@@ -1,0 +1,6 @@
+url: https://github.com/fabsugar/plumed-tutorial-be-aapak/archive/refs/heads/main.zip
+instructors: Fabrizio Marinelli and Vanessa Ariadna Leone Alvarez
+title: "Setting Up and Analyzing Bias-Exchange Metadynamics Simulations: the case of cis-trans isomerization of Peptidyl-Prolyl Peptides"
+description: This tutorial offers a comprehensive protocol, complemented by practical examples, for setting up and performing free energy analysis of adaptively biased replica simulations of cis-trans isomerization in a proline-containing peptide in explicit solvent. The tutorial focuses on molecular dynamics (MD), metadynamics, and bias-exchange metadynamics.
+tags: molecular dynamics, metadynamics, bias exchange metadynamics, weighted histogram analysis method, mean forces, cis-trans isomerization, peptidyl-prolyl peptide
+doi: unpublished
