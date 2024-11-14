@@ -106,7 +106,7 @@ jobs:
         cache: 'pip'
     - name: Install software
       run: |
-        grep 'PyYAML\|pytz\|networkx|numpy' requirements.txt > requirements-upload.txt
+        grep 'PyYAML\|pytz\|networkx\|numpy' requirements.txt > requirements-upload.txt
         pip install -r requirements-upload.txt
     - name: Create graph
       run: |
