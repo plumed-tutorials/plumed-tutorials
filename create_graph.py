@@ -49,7 +49,7 @@ You can return to a complete list of the tutorials by clicking [here](browse.md)
    of.write(ghead + "\n")
    of.write("flowchart TD\n")
    
-   k, translate = 0, {} 
+   k, translate, backtranslate = 0, {}, [] 
    for key, data in plessondict.items() : 
        title, wrappedtext = "", textwrap.wrap(data["title"],30)
        for i in range(len(wrappedtext)-1) : title += wrappedtext[i] + "\n"
@@ -57,6 +57,7 @@ You can return to a complete list of the tutorials by clicking [here](browse.md)
        of.write(  str(k) + "(\"" + title + "\")\n")
        translate[key] = k
        translate[key.replace(".","/")] = k
+       backtranslate.append(title)
        k = k + 1
    
    G = nx.DiGraph()
@@ -73,12 +74,56 @@ You can return to a complete list of the tutorials by clicking [here](browse.md)
       for i in range(len(cyc)-1) : G.remove_edge( cyc[i], cyc[(i+1)%len(cyc)] )
 
    pG = nx.transitive_reduction(G)
-   for edge in pG.edges() :
-       of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
-   
-   # Add in the cycles
+
+   # Create a matrix with the connections
+   graphmat = np.zeros([k,k])
+   for edge in pG.edges() : graphmat[edge[0],edge[1]] = 1
    for cyc in cycles :
-       for i in range(len(cyc)-1) : of.write( str(cyc[i]) + "-->" + str(cyc[(i+1)%len(cyc)]) + ";\n" ) 
+       for i in range(len(cyc)-1) : graphmat[cyc[i], cyc[(i+1)%len(cyc)]] = 1
+
+   drawn = np.zeros(k)
+   for i in range(k) :
+       group = set([i])
+       for j in range(k) :
+           if np.sum(graphmat[:,i])>0 and np.all(graphmat[:,j]==graphmat[:,i]) and drawn[j]==0 : group.add(j)
+
+       # This code ensures that if there are more than 2 nodes that have identical dependencies we draw them in 
+       # a subgraph.  The resulting flow chart is less clustered with arrows       
+       if len(group)>2 :
+          of.write("subgraph g" + str(i) + " [ ]\n")
+          ncols, lgroup, row, col = 5, [], 0, 0
+          for j in group :
+              lgroup.append(j)
+              if drawn[j]==0 :
+                 of.write(  str(j) + "(\"" + backtranslate[j] + "\")\n")
+                 if row>0 :
+                    ind = lgroup[(row-1)*ncols + col]
+                    of.write( str(ind) + "~~~" + str(j) + ";\n")
+                 col = col + 1
+                 if col%ncols==0 : col, row = 0, row + 1
+
+
+                 drawn[j]=1
+          of.write("end\n")
+          for l in range(k) :
+              if graphmat[l,j]>0 :
+                 if drawn[l]==0 :
+                    of.write(  str(l) + "(\"" + backtranslate[l] + "\")\n")
+                    drawn[l]=1
+                 of.write( str(l) + "--> g" + str(i) + ";\n" )
+          for j in group : graphmat[:,j] = 0
+
+   for i in range(k) :
+       if drawn[i]==0 : of.write( str(i) + "(\"" + backtranslate[i] + "\")\n" )
+       for j in range(k) :
+           if graphmat[i,j]>0 : of.write( str(i) + "-->" + str(j) + ";\n" )
+
+   # for edge in pG.edges() :
+   #     of.write( str(edge[0]) + "-->" + str(edge[1]) + ";\n" )
+   # 
+   # # Add in the cycles
+   # for cyc in cycles :
+   #     for i in range(len(cyc)-1) : of.write( str(cyc[i]) + "-->" + str(cyc[(i+1)%len(cyc)]) + ";\n" ) 
 
    k=0
    for key, data in plessondict.items() : 
