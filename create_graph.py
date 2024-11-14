@@ -99,7 +99,8 @@ You can return to a complete list of the tutorials by clicking [here](browse.md)
                  of.write(  str(j) + "(\"" + backtranslate[j] + "\")\n")
                  if row>0 :
                     ind = lgroup[(row-1)*ncols + col]
-                    of.write( str(ind) + "~~~" + str(j) + ";\n")
+                    # Commenting out this line as graphs command doesn't work on github pages
+                    #of.write( str(ind) + "~~~" + str(j) + ";\n")
                  col = col + 1
                  if col%ncols==0 : col, row = 0, row + 1
 
