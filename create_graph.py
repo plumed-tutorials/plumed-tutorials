@@ -2,6 +2,7 @@ from zipfile import ZipFile
 import tarfile
 import pathlib
 import networkx as nx
+import numpy as np
 import textwrap
 import json
 import yaml
