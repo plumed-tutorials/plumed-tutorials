@@ -46,6 +46,7 @@ The graph below shows a subset of the lessons that have been submitted to the PL
 You can return to a complete list of the tutorials by clicking [here](browse.md).
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
    """
    of.write(ghead + "\n")
    of.write("flowchart TD\n")
@@ -100,7 +101,7 @@ You can return to a complete list of the tutorials by clicking [here](browse.md)
                  if row>0 :
                     ind = lgroup[(row-1)*ncols + col]
                     # Commenting out this line as graphs command doesn't work on github pages
-                    #of.write( str(ind) + "~~~" + str(j) + ";\n")
+                    of.write( str(ind) + "~~~" + str(j) + ";\n")
                  col = col + 1
                  if col%ncols==0 : col, row = 0, row + 1
 
