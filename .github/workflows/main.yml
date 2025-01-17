@@ -30,10 +30,10 @@ jobs:
         key: ccache-${{ runner.os }}-${{ github.sha }}
         restore-keys: ccache-${{ runner.os }}-
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: '3.9'
         cache: 'pip'
 
     - name: Set paths
@@ -99,10 +99,10 @@ jobs:
     - uses: actions/checkout@v4
     - name: Download artifacts
       uses: actions/download-artifact@v4
-    - name: Set up Python 3.8
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: '3.9'
         cache: 'pip'
     - name: Install software
       run: |
