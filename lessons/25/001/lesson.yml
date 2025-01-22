@@ -1,0 +1,6 @@
+url: https://github.com/chrispy67/VisMetaDynamics/archive/refs/heads/main.zip
+instructors: Christian Phillips
+title: VisMetaDynamics
+description: A graphical tool that allows you to visually inspect how the free energy surface for a metadynamics simulation is affected by the choice of hyperparameters
+doi: unpublished
+#command:
