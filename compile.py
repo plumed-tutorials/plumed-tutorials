@@ -121,7 +121,7 @@ def processNavigation( lessonname, actions, embeds, plumeds_to_use,plumed_versio
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
               nspl_name = name.split("/")
-              if len(nspl_name)>1 ) : 
+              if len(nspl_name)>1 : 
                  path = ""
                  for i in range(len(nspl_name)-1) : path += nspl_name[i] + "/"
                  # Print the js for plumedToHTML to a file
