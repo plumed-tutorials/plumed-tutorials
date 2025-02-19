@@ -12,7 +12,7 @@ import subprocess
 import nbformat
 from nbconvert import HTMLExporter 
 from contextlib import contextmanager
-from PlumedToHTML import processMarkdown
+from PlumedToHTML import processMarkdown, get_javascript, get_css
 import time
 
 if not (sys.version_info > (3, 0)):
@@ -60,6 +60,10 @@ def get_short_name_ini(lname, length):
     return sname
 
 def processNavigation( lessonname, actions, embeds, plumeds_to_use,plumed_version_names):
+    # Print the js for plumedToHTML to a file
+    with open( "data/plumedtohtml.js", "w+") as jf : jf.write( get_javascript() )
+    # Print the css for plumed to html to a file
+    with open( "data/plumedtohtml.css", "w+") as cf : cf.write( get_css() )
     # First process the NAVIGATION file with processMarkdown to deal with 
     # any plumed inputs that have been included
     ninputs, nf = processMarkdown( "data/NAVIGATION.md", 
@@ -116,6 +120,15 @@ def processNavigation( lessonname, actions, embeds, plumeds_to_use,plumed_versio
                     new_name += spl_name[i] + "/"
                  name = new_name + "GAT_SAFE_README.md"
                  shutil.copyfile("data/" + old_name, "data/" + name)
+              nspl_name = name.split("/")
+              if len(nspl_name)>1 ) : 
+                 path = ""
+                 for i in range(len(nspl_name)-1) : path += nspl_name[i] + "/"
+                 # Print the js for plumedToHTML to a file
+                 with open( "data/" + path + "/plumedtohtml.js", "w+") as jf : jf.write( get_javascript() )
+                 # Print the css for plumed to html to a file
+                 with open( "data/" + path + "/plumedtohtml.css", "w+") as cf : cf.write( get_css() )
+              # And process the markdown 
               ni, nf = processMarkdown( "data/" + name,
                                         plumeds_to_use,
                                         plumed_version_names,

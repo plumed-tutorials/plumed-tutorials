@@ -8,6 +8,7 @@
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <link rel="stylesheet" href="plumedtohtml.css">
 	{% if page.url == "/browse.html" or page.url == "/summary.html"%}
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-flash-1.5.6/b-html5-1.5.6/datatables.min.css"/>
@@ -27,6 +28,7 @@
         }
       });
     </script>
+  script type="text/javascript" src="plumedtohtml.js"></script> 
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.min.js"></script>
   </head>
@@ -64,44 +66,6 @@
         ga('send', 'pageview');
       </script>
     {% endif %}
-    <script>
-      // var modal = document.getElementById('myModal');
-      // var btn = document.getElementById("myBtn");
-      // var span = document.getElementsByClassName("close")[0];
-      // btn.onclick = function() {
-      //   modal.style.display = "block";
-      // }
-      // span.onclick = function() {
-      //   modal.style.display = "none";
-      // }
-      // window.onclick = function(event) {
-      //   if (event.target == modal) {
-      //     modal.style.display = "none";
-      //   }
-      // }
-      var redpath="";
-      function showPath(eg,name,valfield,color) {
-        var i; var y = document.getElementsByName(redpath);
-        for (i=0; i < y.length; i++ ) { y[i].style.color=""; }
-        var x = document.getElementsByName(name); redpath=name;
-        for (i = 0; i < x.length; i++) { x[i].style.color=color; }
-        var valid="value_details_".concat(eg);
-        var valueField = document.getElementById(valid);
-        var dataField = document.getElementById(valfield);
-        valueField.innerHTML = dataField.innerHTML;
-      }
-      function toggleDisplay(name) {
-        var short_div = document.getElementById(name + "_short");
-        var long_div = document.getElementById(name + "_long");
-        if( short_div.style.display === "none" ) {
-            short_div.style.display = "block";
-            long_div.style.display = "none";
-        } else { 
-            short_div.style.display = "none";
-            long_div.style.display = "block";
-        }
-      }
-    </script>
   </body>
   <script>
     var config = {
