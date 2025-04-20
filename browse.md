@@ -6,6 +6,10 @@ versions of the code and integrates links from these files to the PLUMED manual.
 Suggestions for an order to work through the tutorials can be found [here](summarygraph.md).
 A complete bibliography of papers connected to these lessons can be found [here](bibliography.md).
 
+{% raw %}
+<div id="diplay_description"> </div>
+{% endraw %}
+
 {:#browse-table .display}
 | ID | Name | Instructors | Description | Tags | Actions | Modules |
 |:--------:|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|
@@ -35,6 +39,13 @@ $('#browse-table-searchbar').keyup(function () {
   searchfor = hu.split("=");
   if( searchfor[0]=="search" ) {
       table.search( searchfor[1].replace("%20"," ") ).draw();
+      document.getElementById("diplay_description").innerHTML = "";
+  } else if( searchfor[0]=="action" ) {
+      table.columns(5).search( "\\b" + searchfor[1] + "\\b", true, false, false ).draw();
+      document.getElementById("diplay_description").innerHTML = "(action)";
+  } else if( searchfor[0]=="module" ) {
+      table.columns(6).search( "\\b" + searchfor[1] + "\\b", true, false, false ).draw();
+      document.getElementById("diplay_description").innerHTML = "(module)"; 
   }
 });
 </script>
