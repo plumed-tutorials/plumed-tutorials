@@ -33,6 +33,8 @@ var table = $('#browse-table').DataTable({
   "order": [[ 0, "desc" ]]
   });
 $('#browse-table-searchbar').keyup(function () {
+  var page = location.href;
+  location.replace( page.split("?")[0]
   table.search( this.value ).draw();
   });
   hu = window.location.search.substring(1);
@@ -42,10 +44,10 @@ $('#browse-table-searchbar').keyup(function () {
       document.getElementById("diplay_description").innerHTML = "";
   } else if( searchfor[0]=="action" ) {
       table.columns(5).search( "\\b" + searchfor[1] + "\\b", true, false, false ).draw();
-      document.getElementById("diplay_description").innerHTML = "(action)";
+      document.getElementById("diplay_description").innerHTML = "<b>Showing lessons that use \n\n" + searchfor[1] + " (action) description of action </b>";
   } else if( searchfor[0]=="module" ) {
       table.columns(6).search( "\\b" + searchfor[1] + "\\b", true, false, false ).draw();
-      document.getElementById("diplay_description").innerHTML = "(module)"; 
+      document.getElementById("diplay_description").innerHTML = "<b>Showing lessons that use \n\n" + searchfor[1] + " (module) description of module </b>"; 
   }
 });
 </script>
