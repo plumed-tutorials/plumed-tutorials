@@ -33,7 +33,6 @@ var table = $('#browse-table').DataTable({
   "order": [[ 0, "desc" ]]
   });
 $('#browse-table-searchbar').keyup(function () {
-  document.getElementById("diplay_description").innerHTML = "";
   table.search( this.value ).draw();
   });
   hu = window.location.search.substring(1);
@@ -42,11 +41,25 @@ $('#browse-table-searchbar').keyup(function () {
       table.search( searchfor[1].replace("%20"," ") ).draw();
       document.getElementById("diplay_description").innerHTML = "";
   } else if( searchfor[0]=="action" ) {
+      fetch("./syntax.0.json")
+        .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+        })
+        .then( data => document.getElementById("diplay_description").innerHTML = "<b>Showing lessons that use:</br></br>" + searchfor[1] + " (action): " + data[ searchfor[1] ]["description"] + " <a href=\"" + data[ searchfor[1] ]["hyperlink"] + "\">More details</a></b>")
       table.columns(5).search( "\\b" + searchfor[1] + "\\b", true, false, false ).draw();
-      document.getElementById("diplay_description").innerHTML = "<b>Showing lessons that use:</br></br>" + searchfor[1] + " (action) description of action </b>";
   } else if( searchfor[0]=="module" ) {
+      fetch("./syntax.0.json")
+        .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+        })
+        .then( data => document.getElementById("diplay_description").innerHTML = "<b>Showing lessons that use:</br></br>" + searchfor[1] + " (module): " + data["modules"][ searchfor[1] ]["description"] + " <a href=\"" + data["modules"][ searchfor[1] ]["hyperlink"] + "\">More details</a></b>")
       table.columns(6).search( "\\b" + searchfor[1] + "\\b", true, false, false ).draw();
-      document.getElementById("diplay_description").innerHTML = "<b>Showing lessons that use:</br></br>" + searchfor[1] + " (module) description of module </b>"; 
   }
 });
 </script>
