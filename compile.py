@@ -165,6 +165,16 @@ def processNavigation( lessonname, actions, embeds, plumeds_to_use,plumed_versio
               ofile.write( line.split('"')[0] + '"' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"\n' ) 
         else :
            ofile.write( line + "\n" )
+    first, manlink = True, "https://www.plumed.org/doc-master/user-doc/html/actionlist/?"
+    for a in actions :
+        if first : 
+           manlink += a 
+           first = False
+        else : 
+           manlink += "|" + a
+    ofile.write("{% raw %}\n")
+    ofile.write("<b><a href=\"" + manlink + "\" target=\"_blank\">Click here</a> to open manual pages for actions discussed in this tutorial.</b>\n")
+    ofile.write("{% endraw %}\n")
     ofile.close()
     return ninputs, nfail
 
