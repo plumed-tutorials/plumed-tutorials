@@ -171,7 +171,7 @@ def processNavigation( lessonname, actions, embeds, plumeds_to_use,plumed_versio
            manlink += a 
            first = False
         else : 
-           manlink += "|" + a
+           manlink += "," + a
     ofile.write("{% raw %}\n")
     ofile.write("<b><a href=\"" + manlink + "\" target=\"_blank\">Click here</a> to open manual pages for actions discussed in this tutorial.</b>\n")
     ofile.write("{% endraw %}\n")
