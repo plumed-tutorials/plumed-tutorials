@@ -165,7 +165,7 @@ def processNavigation( lessonname, actions, embeds, plumeds_to_use,plumed_versio
               ofile.write( line.split('"')[0] + '"' + name.split(".")[0] + '.html" "' + line.split('"')[3] + '"\n' ) 
         else :
            ofile.write( line + "\n" )
-    first, manlink = True, "https://www.plumed.org/doc-master/user-doc/html/actionlist/?"
+    first, manlink = True, "https://www.plumed.org/doc-master/user-doc/html/actionlist/?actions="
     for a in actions :
         if first : 
            manlink += a 
