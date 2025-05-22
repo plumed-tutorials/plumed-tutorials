@@ -13,12 +13,17 @@ mkdir -p ${siteDir}
 cd ${siteDir} || exit 1
 
 tar xf "${root}/all.tar"
+
+nreplicas=0
 # Unzip tar files from all replicas
 for file in "${root}"/lesson-content*/lessons.tar; do
   tar xf "$file"
+  nreplicas=$((nreplicas + 1))
 done
 cat _data/lessons*.yml >_data/lessons.yml
 cp "${root}/summarygraph.md" .
+
+python "${root}/postprocessing.py" -r "${nreplicas}"
 
 if [[ "${GITHUB_REF##*/}" = main ]]; then
   cp "${root}/CNAME" .
