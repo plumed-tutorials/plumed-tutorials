@@ -38,25 +38,12 @@ __Action usage chart__
 
 The chart below shows how many lessons make use of each of the available actions in PLUMED.
 
-{% assign actionlist = site.data.actioncount0 | map: "name" %}
-{% assign actionno = site.data.actioncount0 | map: "number" %}
-{% assign actionno1 = site.data.actioncount1 | map: "number" %}
-{% assign actionno2 = site.data.actioncount2 | map: "number" %}
-{% assign actionno3 = site.data.actioncount3 | map: "number" %}
-{% assign nactions=actionno.size %}
-
-{% assign astr="" %}
-{% assign ano=actionno[0] | plus: actionno1[i] %}
-{% assign astr=astr | append: ano %}
-{% for i in (1..nactions) %}
-   {% assign ano=actionno[i] | plus: actionno1[i] | plus: actionno2[i] | plus: actionno3[i] %}
-   {% assign astr=astr | append: ", " | append: ano %}
-{% endfor %}
-
+{% assign actionlist = site.data.actioncount_sum | map: "name" %}
+{% assign actionno = site.data.actioncount_sum | map: "number" %}
 
 <canvas id="myChart" style="width:100%;"></canvas>
 
-<script>
+<script id="actionChart">
 var xValues = [ {{ actionlist | join: '", "' | prepend: '"' | append: '"' }} ];
 var yValues = [ {{ astr }} ];
 // do sorting in descending order based on yValues
