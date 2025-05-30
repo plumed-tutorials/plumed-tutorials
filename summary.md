@@ -45,7 +45,7 @@ The chart below shows how many lessons make use of each of the available actions
 
 <script id="actionChart">
 var xValues = [ {{ actionlist | join: '", "' | prepend: '"' | append: '"' }} ];
-var yValues = [ {{ astr }} ];
+var yValues = [ {{ actionno   | join: ', '}} ];
 // do sorting in descending order based on yValues
 //1) combine the arrays:
 var list = [];
