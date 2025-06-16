@@ -7,4 +7,4 @@ _PLUMED Tutorials: a collaborative, community-driven learning ecosystem_. [J. Ch
 
 Who cited us?
 -----------------------------
-If you want to discover papers that cited us, you can have a look here.
+If you want to discover papers that cited us, you can have a look [here](https://scholar.google.com/scholar?oi=bibs&hl=en&cites=1742167064100355154).
