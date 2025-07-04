@@ -1,0 +1,5 @@
+url: https://github.com/lab-cosmo/atomistic-cookbook/raw/refs/heads/main/examples/metatomic-plumed/plumed-tutorials.zip
+instructors: Guillaume Fraux, Rohit Goswami and Michele Ceriotti
+title: Defining custom machine learning CV with metatomic
+description: An introduction to the use of interface between plumed and the metatomic library
+doi: unpublished
